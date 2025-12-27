@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shortlinks-app",
+  "compatibility_date": "2025-12-28",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "@tanstack/solid-start/server-entry",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "ea34f17e-04fd-4704-91c8-47ba7d75de4b",
+      "database_name": "shortlinks_db"
+    }
+  ]
+}
