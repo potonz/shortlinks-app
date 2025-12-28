@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/solid-router";
 import { createEffect, createSignal, Show } from "solid-js";
 import { z } from "zod/mini";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
-import { createIsomorphicFn } from "@tanstack/solid-start";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -16,9 +15,7 @@ export const Route = createFileRoute("/")({
     component: App,
 });
 
-const baseUrl = createIsomorphicFn()
-    .server(() => new URL(process.env.VITE_SHORT_LINK_BASE_URL!).href.replace(/\/*$/, "/"))
-    .client(() => new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL!).href.replace(/\/*$/, "/"));
+const baseUrl = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL).href.replace(/\/*$/, "/");
 
 function App() {
     const [url, setUrl] = createSignal("");
@@ -26,7 +23,7 @@ function App() {
     let captchaToken = "";
     const isInputUrlValid = () => z.httpUrl().safeParse(url());
     const [isSubmitting, setIsSubmitting] = createSignal(false);
-    const [shortIdGenerated, setShortIdGenerated] = createSignal("zxc");
+    const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 
     function onInput(event: Event & { currentTarget: HTMLInputElement }) {
         setUrl(event.currentTarget.value);
@@ -126,7 +123,7 @@ function App() {
                 {shortId => (
                     <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
                         <div class="grow text-left">
-                            <span class="text-zinc-500">{baseUrl()}</span>
+                            <span class="text-zinc-500">{baseUrl}</span>
                             <span class="text-white">{shortId()}</span>
                         </div>
                         <div>
