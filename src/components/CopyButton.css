@@ -1,0 +1,38 @@
+@reference "../styles/styles.css";
+
+.copy-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .copy-text {
+        @apply transition-opacity duration-300;
+        opacity: 1;
+    }
+
+    .check-icon {
+        @apply transition-opacity duration-300;
+        color: green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    &[data-copied="true"] {
+        .copy-text {
+            opacity: 0;
+        }
+
+        .check-icon {
+            opacity: 1;
+        }
+    }
+}

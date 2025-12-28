@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { createEffect, createSignal, Show } from "solid-js";
+import { createEffect, createSignal, Match, Switch } from "solid-js";
 import { z } from "zod/mini";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
+import { CopyButton } from "../components/CopyButton";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -15,10 +16,9 @@ export const Route = createFileRoute("/")({
     component: App,
 });
 
-const baseUrl = (() => {
-    const url = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL);
-    return url.href.replace(/\/*$/, "/").replace(url.protocol + "//", "");
-})();
+const baseUrl = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL);
+const fullBaseHref = baseUrl.href.replace(/\/*$/, "/");
+const baseUrlWithoutScheme = fullBaseHref.replace(baseUrl.protocol + "//", "");
 
 function App() {
     const [url, setUrl] = createSignal("");
@@ -68,6 +68,7 @@ function App() {
             console.error(err);
         }).finally(() => {
             setIsSubmitting(false);
+            turnstile.reset(captchaContainerRef);
         });
     };
 
@@ -121,26 +122,29 @@ function App() {
                 </button>
             </form>
 
-            <Show when={isSubmitting()}>
-                <div class="mt-12 flex gap-2 justify-center opacity-40">
-                    <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
-                    <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
-                    <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                </div>
-            </Show>
-            <Show when={shortIdGenerated()}>
-                {shortId => (
-                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
-                        <div class="grow text-left">
-                            <span class="text-zinc-500">{baseUrl}</span>
-                            <span class="text-white">{shortId()}</span>
-                        </div>
-                        <div>
-                            <button>Copy</button>
-                        </div>
+            <Switch>
+                <Match when={isSubmitting()}>
+                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex justify-center items-center gap-2">
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
+                        <div class="h-[1lh]"></div>
                     </div>
-                )}
-            </Show>
+                </Match>
+                <Match when={shortIdGenerated()}>
+                    {shortId => (
+                        <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
+                            <div class="grow text-left">
+                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
+                                <span class="text-white">{shortId()}</span>
+                            </div>
+                            <div class="pl-2">
+                                <CopyButton text={fullBaseHref + shortId()} />
+                            </div>
+                        </div>
+                    )}
+                </Match>
+            </Switch>
         </div>
     );
 }
