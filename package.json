@@ -24,7 +24,7 @@
     "@potonz/shortlinks-manage-cf-d1": "latest",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/router-plugin": "^1.133.21",
-    "@tanstack/solid-router": "^1.133.20",
+    "@tanstack/solid-router": "^1.144.0",
     "@tanstack/solid-router-devtools": "^1.133.20",
     "@tanstack/solid-router-ssr-query": "^1.132.25",
     "@tanstack/solid-start": "^1.132.25",
