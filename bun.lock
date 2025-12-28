@@ -11,7 +11,7 @@
         "@tanstack/router-plugin": "^1.133.21",
         "@tanstack/solid-router": "^1.133.20",
         "@tanstack/solid-router-devtools": "^1.133.20",
-        "@tanstack/solid-router-ssr-query": "^1.132.25",
+        "@tanstack/solid-router-ssr-query": "^1.144.0",
         "@tanstack/solid-start": "^1.132.25",
         "solid-js": "^1.9.9",
         "tailwindcss": "^4.0.6",
@@ -384,7 +384,7 @@
 
     "@tanstack/router-plugin": ["@tanstack/router-plugin@1.143.11", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/plugin-syntax-jsx": "^7.27.1", "@babel/plugin-syntax-typescript": "^7.27.1", "@babel/template": "^7.27.2", "@babel/traverse": "^7.28.5", "@babel/types": "^7.28.5", "@tanstack/router-core": "1.143.6", "@tanstack/router-generator": "1.143.11", "@tanstack/router-utils": "1.143.11", "@tanstack/virtual-file-routes": "1.141.0", "babel-dead-code-elimination": "^1.0.11", "chokidar": "^3.6.0", "unplugin": "^2.1.2", "zod": "^3.24.2" }, "peerDependencies": { "@rsbuild/core": ">=1.0.2", "@tanstack/react-router": "^1.143.11", "vite": ">=5.0.0 || >=6.0.0 || >=7.0.0", "vite-plugin-solid": "^2.11.10", "webpack": ">=5.92.0" }, "optionalPeers": ["@rsbuild/core", "@tanstack/react-router", "vite", "vite-plugin-solid", "webpack"] }, "sha512-mG1bP30mXA89Ury5/NrjqJnEzz5QiVUomeOjaftg/OioAlCSEpq20+1t/wrCqnGHq1y+0AZDVfArAPp5YtTdcg=="],
 
-    "@tanstack/router-ssr-query-core": ["@tanstack/router-ssr-query-core@1.143.6", "", { "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/router-core": ">=1.127.0" } }, "sha512-dVqEihMg5mkR0MxnhWkepQsmBLHNhnU3SBHBpwVA4NCo9awzynmkkFE3HH5vE9ZBX/pU5YrGxQZQnc4jDUK9Ig=="],
+    "@tanstack/router-ssr-query-core": ["@tanstack/router-ssr-query-core@1.144.0", "", { "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/router-core": ">=1.127.0" } }, "sha512-ECM4T6Gtj768Oi62iprDr45KDR6J/jvmVifJK9SRmoXW9WtiASymxB9H8tkPsX+yPEs22ZCs/j38hv63Mo30sQ=="],
 
     "@tanstack/router-utils": ["@tanstack/router-utils@1.143.11", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/generator": "^7.28.5", "@babel/parser": "^7.28.5", "ansis": "^4.1.0", "diff": "^8.0.2", "pathe": "^2.0.3", "tinyglobby": "^0.2.15" } }, "sha512-N24G4LpfyK8dOlnP8BvNdkuxg1xQljkyl6PcrdiPSA301pOjatRT1y8wuCCJZKVVD8gkd0MpCZ0VEjRMGILOtA=="],
 
@@ -394,7 +394,7 @@
 
     "@tanstack/solid-router-devtools": ["@tanstack/solid-router-devtools@1.143.6", "", { "dependencies": { "@tanstack/router-devtools-core": "1.143.6" }, "peerDependencies": { "@tanstack/router-core": "^1.143.6", "@tanstack/solid-router": "^1.143.6", "solid-js": "^1.9.10" }, "optionalPeers": ["@tanstack/router-core"] }, "sha512-Zi3UZ/VxYQr117iR2rgpT2JAWRG++JFw3vcgneS8Nabqw1hk92qaRO27Fw2WdOQYu7Mu4gdSs4WKRQPiAinc9Q=="],
 
-    "@tanstack/solid-router-ssr-query": ["@tanstack/solid-router-ssr-query@1.143.7", "", { "dependencies": { "@tanstack/router-ssr-query-core": "1.143.6" }, "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/solid-query": ">=5.90.0", "@tanstack/solid-router": ">=1.127.0", "solid-js": "^1.9.10" } }, "sha512-RF/R9Z/rn1kectHf4+9w1/2UrX8CbQCsDtC13j6OM3pbwpfPzR+2q+aoChhqicRlGHygJOQwmu/2o9ij6FS/Pw=="],
+    "@tanstack/solid-router-ssr-query": ["@tanstack/solid-router-ssr-query@1.144.0", "", { "dependencies": { "@tanstack/router-ssr-query-core": "1.144.0" }, "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/solid-query": ">=5.90.0", "@tanstack/solid-router": ">=1.127.0", "solid-js": "^1.9.10" } }, "sha512-Otd7XfXBeRU9jBqLJBU2scY3m/cEUlum7I+gPD/SIIxKGqgGokahqEYShUDmOheYQZ6uRfGLWABjwCQlSv55NA=="],
 
     "@tanstack/solid-start": ["@tanstack/solid-start@1.143.12", "", { "dependencies": { "@tanstack/solid-router": "1.143.6", "@tanstack/solid-start-client": "1.143.12", "@tanstack/solid-start-server": "1.143.12", "@tanstack/start-client-core": "1.143.12", "@tanstack/start-plugin-core": "1.143.12", "@tanstack/start-server-core": "1.143.12", "pathe": "^2.0.3" }, "peerDependencies": { "solid-js": ">=1.0.0", "vite": ">=7.0.0" } }, "sha512-DrB9UZz4mst9BUxf8AY4FQYvDlvkDLgHJ2jlhcsvoOvaCgDMGpzOrS36EVRfl6a6zScxVFppLvQRBJepJ+k8RA=="],
 
