@@ -15,7 +15,10 @@ export const Route = createFileRoute("/")({
     component: App,
 });
 
-const baseUrl = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL).href.replace(/\/*$/, "/");
+const baseUrl = (() => {
+    const url = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL);
+    return url.href.replace(/\/*$/, "/").replace(url.protocol + "//", "");
+})();
 
 function App() {
     const [url, setUrl] = createSignal("");
