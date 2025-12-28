@@ -72,17 +72,19 @@ function App() {
     };
 
     createEffect(() => {
-        turnstile.render(captchaContainerRef!, {
-            "sitekey": import.meta.env.VITE_CF_TURNSTILE_SITE_KEY,
-            "action": "generate_short_link",
-            "callback": (token: string) => {
-                captchaToken = token;
-            },
-            "theme": "dark",
-            "expired-callback": () => {
-                captchaToken = "";
-            },
-        });
+        addEventListener("load", () => {
+            turnstile.render(captchaContainerRef!, {
+                "sitekey": import.meta.env.VITE_CF_TURNSTILE_SITE_KEY,
+                "action": "generate_short_link",
+                "callback": (token: string) => {
+                    captchaToken = token;
+                },
+                "theme": "dark",
+                "expired-callback": () => {
+                    captchaToken = "";
+                },
+            });
+        }, { once: true });
     });
 
     return (
