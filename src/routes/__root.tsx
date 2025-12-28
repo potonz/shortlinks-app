@@ -54,7 +54,7 @@ function RootComponent() {
                     <div class="star"></div>
                     <div class="star"></div>
                 </div>
-                <main class="min-h-screen flex flex-col items-center justify-center px-4">
+                <main class="relative min-h-screen flex flex-col items-center justify-center px-4 z-10">
                     <div class="mb-12">
                         <Logo />
                     </div>

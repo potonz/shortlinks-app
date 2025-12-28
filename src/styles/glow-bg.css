@@ -8,7 +8,7 @@
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
     animation: bgGlowPulse 4s ease-in-out infinite alternate;
-    z-index: 1;
+    z-index: 0;
 }
 
 @keyframes bgGlowPulse {

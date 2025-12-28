@@ -88,7 +88,7 @@ function App() {
     });
 
     return (
-        <div class="w-full max-w-md text-center z-10">
+        <div class="w-full max-w-md text-center">
             <form onSubmit={handleSubmit} class="space-y-6">
                 <div>
                     <input

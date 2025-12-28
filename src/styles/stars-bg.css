@@ -5,6 +5,7 @@
     width: 100dvw;
     height: 100dvh;
     overflow: hidden;
+    z-index: 1;
 }
 
 .star {
