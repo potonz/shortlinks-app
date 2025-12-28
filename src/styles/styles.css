@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@import "./tw-animate-css";
+@import "./glow-bg.css";
+@import "./stars-bg.css";
+
+@theme inline {
+  --font-sans: "Geist", Calibri, system-ui, sans-serif;
+  --font-mono: "Geist Mono", monospace;
+  --color-foreground: white;
+  --color-background: black;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    min-height: 100dvh;
+  }
+}
+
+@layer utilities {
+
+  /* Updated logo glow to white instead of cyan/blue */
+  @keyframes logo-glow {
+
+    0%,
+    100% {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
+    }
+
+    50% {
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 50px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .animate-logo-glow {
+    animation: logo-glow 3s ease-in-out infinite;
+  }
+}
