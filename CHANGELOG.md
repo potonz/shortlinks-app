@@ -1,3 +1,14 @@
+## [0.1.3] - 2025-12-28
+
+### ⛰️  Features
+
+- Removed displaying scheme for the base url
+- Added copy url button
+
+### 🐛 Bug Fixes
+
+- Retry loading turnstile
+
 ## [0.1.2] - 2025-12-28
 
 ### 🐛 Bug Fixes
