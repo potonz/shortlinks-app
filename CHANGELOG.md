@@ -1,3 +1,14 @@
+## [0.1.2] - 2025-12-28
+
+### 🐛 Bug Fixes
+
+- Fixed background had higher z-index than main content
+- Fixed cannot read base url
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump all packages
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
