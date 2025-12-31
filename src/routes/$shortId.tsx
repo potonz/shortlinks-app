@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/solid-router";
+
 import { getTargetUrl } from "../libs/shortlinks/getTargetUrl";
 import { updateLinkAccessTime } from "../libs/shortlinks/updateLinkAccessTime";
 

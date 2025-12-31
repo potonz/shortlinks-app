@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/solid-start";
-import { z } from "zod/mini";
-import { env } from "cloudflare:workers";
-import { LinksManager } from "@potonz/shortlinks-manage-cf-d1";
-import { validateCaptcha } from "../captcha/turnstileValidate";
 import { getRequest } from "@tanstack/solid-start/server";
+import { env } from "cloudflare:workers";
+import { z } from "zod/mini";
+
+import { validateCaptcha } from "../captcha/turnstileValidate";
 
 const validator = z.object({
     url: z.httpUrl(),
