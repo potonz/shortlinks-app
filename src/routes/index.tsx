@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { createEffect, createSignal, Match, Switch } from "solid-js";
 import { z } from "zod/mini";
-import { createShortLink } from "../libs/shortlinks/createShortLink";
+
 import { CopyButton } from "../components/CopyButton";
+import { createShortLink } from "../libs/shortlinks/createShortLink";
 
 export const Route = createFileRoute("/")({
     head: () => ({
