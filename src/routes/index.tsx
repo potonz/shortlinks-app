@@ -101,7 +101,7 @@ function App() {
                 <div>
                     <input
                         type="url"
-                        placeholder="Enter URL"
+                        placeholder="https://www.thisisaverylonglink.what/?utm_campaign=some_campaign..."
                         value={url()}
                         onInput={onInput}
                         onBlur={onBlur}
@@ -118,7 +118,7 @@ function App() {
                     disabled={!isInputUrlValid().success}
                 >
                     <span class="flex items-center justify-center gap-2">
-                        Squeeze
+                        Shorten it
                     </span>
                 </button>
             </form>
@@ -129,7 +129,7 @@ function App() {
                         <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
                         <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
                         <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                        <div class="h-[1lh]"></div>
+                        <div class="h-lh"></div>
                     </div>
                 </Match>
                 <Match when={shortIdGenerated()}>

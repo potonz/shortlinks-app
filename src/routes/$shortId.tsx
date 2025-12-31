@@ -1,16 +1,19 @@
 import { createFileRoute, redirect } from "@tanstack/solid-router";
 
 import { getTargetUrl } from "../libs/shortlinks/getTargetUrl";
+import { recordLinkRequest } from "../libs/shortlinks/recordLinkRequest";
 
 export const Route = createFileRoute("/$shortId")({
     server: {
         handlers: {
             GET: async ({ params, request }) => {
                 const { shortId } = params;
-                console.log(request.cf);
-                console.log(request.headers.get("x-forwarded-for"));
 
-                const targetUrl = await getTargetUrl(shortId);
+                const [targetUrl] = await Promise.all([
+                    getTargetUrl(shortId),
+                    // Record the link request before checking target URL
+                    recordLinkRequest(shortId, request),
+                ]);
 
                 if (targetUrl) {
                     throw redirect({ href: targetUrl, statusCode: 307 });
