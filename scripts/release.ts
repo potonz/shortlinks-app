@@ -1,55 +1,49 @@
-#!/usr/bin/env node
-
-import fs from "fs";
-import { argv } from "process";
-import { execSync } from "child_process";
+import { $ } from "bun";
 import { createSpinner } from "nanospinner";
+import { argv } from "process";
 import { createInterface } from "readline";
-import util from "util";
 
 const readline = createInterface({
     input: process.stdin,
     output: process.stdout,
 });
 
-const question = util.promisify(readline.question).bind(readline);
+const question = function (query: string) {
+    return new Promise<string>((resolve) => {
+        readline.question(query, resolve);
+    });
+};
 
 if (argv.length < 3) {
-    console.log("Usage: node release.js <version>");
+    console.log("Usage: bun release.ts <version>");
     process.exit(1);
 }
 
 const version = argv[2];
 
-// Write to VERSION file to trigger deploy to Pages
-let spinner = createSpinner("Writing version to VERSION file").start();
-try {
-    fs.writeFileSync("VERSION", version);
-    spinner.success({ text: "Version written to VERSION file" });
-}
-catch {
-    spinner.error({ text: "Failed to write version to VERSION file" });
-    process.exit(1);
+// Update package.json version
+async function updatePkgJson(file: string) {
+    const spinner = createSpinner(`Updating ${file} version`).start();
+    try {
+        const packageJsonFile = Bun.file(file);
+        const packageJson = await packageJsonFile.json();
+        packageJson.version = version;
+        await packageJsonFile.write(JSON.stringify(packageJson, null, 2) + "\n");
+
+        spinner.success({ text: `Updated ${file} version` });
+    }
+    catch {
+        spinner.error({ text: "Failed to update package.json version" });
+        process.exit(1);
+    }
 }
 
-// Update package version
-spinner = createSpinner("Updating package.json version").start();
-try {
-    const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    packageJson.version = version;
-    fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2) + "\n");
-
-    spinner.success({ text: "package.json version updated" });
-}
-catch {
-    spinner.error({ text: "Failed to update package.json version" });
-    process.exit(1);
-}
+await updatePkgJson("package.json");
 
 // Run git-cliff to generate CHANGELOG.md
-spinner = createSpinner("Generating CHANGELOG.md").start();
+let spinner = createSpinner("Generating CHANGELOG.md").start();
 try {
-    execSync(`git cliff -u -t v${version} -s all -p CHANGELOG.md`);
+    await $`git cliff -u -t v${version} -s all -p CHANGELOG.md`.quiet();
     spinner.success({ text: "CHANGELOG.md generated" });
 }
 catch {
@@ -60,9 +54,9 @@ catch {
 // Create a git tag
 spinner = createSpinner("Creating git tag").start();
 try {
-    execSync("git add .");
-    execSync(`git commit -m "chore(release): prepare for v${version}"`);
-    execSync(`git tag -a v${version} -m "Release v${version}"`);
+    await $`git add .`;
+    await $`git commit -m "chore(release): prepare for v${version}"`;
+    await $`git tag -a v${version} -m "Release v${version}"`;
 
     spinner.success({ text: "Git tag created" });
 }
@@ -78,7 +72,7 @@ try {
         // Push changes to GitHub
         spinner = createSpinner("Pushing changes to GitHub").start();
         try {
-            execSync("git push");
+            await $`git push`;
             spinner.success({ text: "Changes pushed to GitHub" });
         }
         catch {
@@ -86,9 +80,13 @@ try {
             process.exit(1);
         }
     }
+    else {
+        process.exit(0);
+    }
 }
 catch (err) {
     console.log(err);
+    process.exit(1);
 }
 
 try {
@@ -98,7 +96,7 @@ try {
         // Push tag to GitHub
         spinner = createSpinner("Pushing tag to GitHub").start();
         try {
-            execSync(`git push origin v${version}`);
+            await $`git push origin v${version}`;
             spinner.success({ text: "Tag pushed to GitHub" });
         }
         catch {
@@ -109,6 +107,7 @@ try {
 }
 catch (err) {
     console.log(err);
+    process.exit(1);
 }
 
 readline.close();
