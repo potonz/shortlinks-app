@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/solid-router";
 
 import { getTargetUrl } from "../libs/shortlinks/getTargetUrl";
-import { updateLinkAccessTime } from "../libs/shortlinks/updateLinkAccessTime";
 
 export const Route = createFileRoute("/$shortId")({
     server: {
@@ -14,7 +13,6 @@ export const Route = createFileRoute("/$shortId")({
                 const targetUrl = await getTargetUrl(shortId);
 
                 if (targetUrl) {
-                    await updateLinkAccessTime(shortId);
                     throw redirect({ href: targetUrl, statusCode: 307 });
                 }
 

@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequest } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 import { z } from "zod/mini";
 
 import { validateCaptcha } from "../captcha/turnstileValidate";
+import { getShortLinksManager } from "./manager";
 
 const validator = z.object({
     url: z.httpUrl(),
@@ -20,15 +20,7 @@ export const createShortLink = createServerFn({ method: "POST" })
             return null;
         }
 
-        const storedLength = await env.CONFIG.get("short_id_length");
-        const shortIdLength = storedLength ? parseInt(storedLength) : 3;
-        const manager = new LinksManager(env.DB, shortIdLength, async (newLength) => {
-            try {
-                await env.CONFIG.put("short_id_length", newLength.toString());
-            }
-            catch { /* */ }
-        });
-
+        const manager = await getShortLinksManager();
         const shortId = await manager.createShortLink(data.url);
 
         return shortId;

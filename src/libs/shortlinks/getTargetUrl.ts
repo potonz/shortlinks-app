@@ -1,8 +1,8 @@
-import { LinksManager } from "@potonz/shortlinks-manage-cf-d1";
 import { createServerOnlyFn } from "@tanstack/solid-start";
-import { env } from "cloudflare:workers";
+
+import { getShortLinksManager } from "./manager";
 
 export const getTargetUrl = createServerOnlyFn(async (shortId: string) => {
-    const manager = new LinksManager(env.DB, 3, () => undefined);
+    const manager = await getShortLinksManager();
     return await manager.getTargetUrl(shortId);
 });
