@@ -8,8 +8,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-    globalIgnores([".tanstack", ".wrangler"]),
-    globalIgnores(["dist"], "Ignore dist directories"),
+    globalIgnores(["dist", ".tanstack", ".wrangler", "**/worker-configuration.d.ts"]),
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
         languageOptions: {
