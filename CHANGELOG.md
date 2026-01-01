@@ -1,3 +1,13 @@
+## [0.2.1] - 2026-01-01
+
+### ⛰️  Features
+
+- Added caching target url using Cloudflare KV
+
+### 🎨 Styling
+
+- Truncate long url in recent links
+
 ## [0.2.0] - 2026-01-01
 
 ### ⛰️  Features
