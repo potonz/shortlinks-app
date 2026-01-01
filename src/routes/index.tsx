@@ -1,4 +1,4 @@
-import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/solid-router";
 import { createEffect, createSignal, Match, Switch } from "solid-js";
 import { z } from "zod/mini";
 
@@ -154,9 +154,7 @@ function App() {
 
             {/* Link History Section */}
             <div class="mt-12">
-                <ClientOnly>
-                    <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
-                </ClientOnly>
+                <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
             </div>
         </div>
     );
