@@ -6,6 +6,10 @@ export const validateCaptcha = createServerOnlyFn(async (token: string, clientIp
         return false;
     }
 
+    if (!token) {
+        return false;
+    }
+
     try {
         const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
             method: "POST",

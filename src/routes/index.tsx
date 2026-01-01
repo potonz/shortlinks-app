@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/solid-router";
+import { ClientOnly, createFileRoute } from "@tanstack/solid-router";
 import { createEffect, createSignal, Match, Switch } from "solid-js";
 import { z } from "zod/mini";
 
 import { CopyButton } from "../components/CopyButton";
+import { LinksHistory } from "../components/LinksHistory";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
+import { addLinkToHistory } from "../stores/linkHistoryStore";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -47,20 +49,23 @@ function App() {
     const handleSubmit = (event: SubmitEvent) => {
         event.preventDefault();
 
-        if (!url()) return;
+        const _url = url();
+        if (!_url) return;
         if (!captchaToken) return;
 
         setIsSubmitting(true);
 
         createShortLink({
             data: {
-                url: url(),
+                url: _url,
                 captchaToken: captchaToken,
             },
         }).then((shortId) => {
             if (shortId) {
                 setUrl("");
                 setShortIdGenerated(shortId);
+                // Add to history when link is successfully generated
+                addLinkToHistory(shortId, _url);
             }
             else {
                 console.error("Can't generate shit");
@@ -146,6 +151,13 @@ function App() {
                     )}
                 </Match>
             </Switch>
+
+            {/* Link History Section */}
+            <div class="mt-12">
+                <ClientOnly>
+                    <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
+                </ClientOnly>
+            </div>
         </div>
     );
 }

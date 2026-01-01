@@ -32,6 +32,7 @@ export const Route = createRootRouteWithContext()({
             { rel: "preconnect", href: "https://fonts.googleapis.com" },
             { rel: "preconnect", href: "https://fonts.gstatic.com" },
             { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap" },
+            { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13/font/bootstrap-icons.min.css" },
             { rel: "stylesheet", href: styleCss },
         ],
     }),
@@ -53,7 +54,7 @@ function RootComponent() {
                     <div class="star"></div>
                     <div class="star"></div>
                 </div>
-                <main class="relative min-h-screen flex flex-col items-center justify-center px-4 z-10">
+                <main class="relative min-h-screen flex flex-col items-center justify-center p-4 z-10">
                     <div class="mb-12">
                         <Logo />
                     </div>
@@ -61,10 +62,10 @@ function RootComponent() {
                         <Outlet />
                         <TanStackRouterDevtools />
                     </Suspense>
+                    <div class="mt-4 md:mt-8 w-full text-center">
+                        <Footer />
+                    </div>
                 </main>
-                <div class="fixed bottom-2 w-full text-center">
-                    <Footer />
-                </div>
                 <Scripts />
             </body>
         </html>
