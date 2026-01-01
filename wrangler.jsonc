@@ -20,6 +20,10 @@
 		{
 			"binding": "CONFIG",
 			"id": "e4889a8d1c0d42e0a448014dfbf54451"
+		},
+		{
+			"binding": "SHORTLINKS_CACHE",
+			"id": "b2f9b673e1a649fa84136882e46ddeba"
 		}
 	],
 	"workers_dev": false,
