@@ -1,3 +1,21 @@
+## [0.2.0] - 2026-01-01
+
+### ⛰️  Features
+
+- *(actions)* Added lint check workflow
+- Record link requests with client and Cloudflare metadata
+- Added links history
+
+### 🚜 Refactor
+
+- Added sorting imports/exports
+- Updated release script
+- Use new manager packages
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump packages
+
 ## [0.1.3] - 2025-12-28
 
 ### ⛰️  Features
