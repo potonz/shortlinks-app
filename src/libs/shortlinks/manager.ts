@@ -1,4 +1,4 @@
-import { createManager, type IShortLinksManager } from "@potonz/shortlinks-manager";
+import { createManager, type ICache, type IShortLinksManager } from "@potonz/shortlinks-manager";
 import { createD1Backend } from "@potonz/shortlinks-manager-cf-d1";
 import { createServerOnlyFn } from "@tanstack/solid-start";
 import { env } from "cloudflare:workers";
@@ -13,6 +13,10 @@ export const getShortLinksManager = createServerOnlyFn(async () => {
 
         manager = await createManager({
             backend: createD1Backend(env.DB),
+            caches: [
+                createInMemoryCache(),
+                createCloudflareKvCache(env.SHORTLINKS_CACHE),
+            ],
             shortIdLength,
             async onShortIdLengthUpdated(newLength) {
                 shortIdLength = newLength;
@@ -28,3 +32,29 @@ export const getShortLinksManager = createServerOnlyFn(async () => {
 
     return manager;
 });
+
+function createInMemoryCache(): ICache {
+    const cache: Record<string, string> = {};
+    return {
+        get(shortId) {
+            if (shortId in cache) {
+                return cache[shortId];
+            }
+            return null;
+        },
+        set(shortId, targetUrl) {
+            cache[shortId] = targetUrl;
+        },
+    };
+}
+
+function createCloudflareKvCache(kv: KVNamespace): ICache {
+    return {
+        get(shortId) {
+            return kv.get(shortId);
+        },
+        set(shortId, targetUrl) {
+            return kv.put(shortId, targetUrl, { expirationTtl: 31_536_000 });
+        },
+    };
+}

@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.19.0",
-    "@potonz/shortlinks-manager": "^0.1.1",
-    "@potonz/shortlinks-manager-cf-d1": "^0.1.1",
+    "@potonz/shortlinks-manager": "^0.2.0",
+    "@potonz/shortlinks-manager-cf-d1": "^0.2.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/router-plugin": "~1.145.2",
     "@tanstack/solid-router": "~1.144.0",

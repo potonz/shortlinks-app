@@ -6,8 +6,8 @@
       "name": "shortlinks-app",
       "dependencies": {
         "@cloudflare/vite-plugin": "^1.19.0",
-        "@potonz/shortlinks-manager": "^0.1.1",
-        "@potonz/shortlinks-manager-cf-d1": "^0.1.1",
+        "@potonz/shortlinks-manager": "^0.2.0",
+        "@potonz/shortlinks-manager-cf-d1": "^0.2.0",
         "@tailwindcss/vite": "^4.1.18",
         "@tanstack/router-plugin": "~1.145.2",
         "@tanstack/solid-router": "~1.144.0",
@@ -249,9 +249,9 @@
 
     "@poppinss/exception": ["@poppinss/exception@1.2.3", "", {}, "sha512-dCED+QRChTVatE9ibtoaxc+WkdzOSjYTKi/+uacHWIsfodVfpsueo3+DKpgU5Px8qXjgmXkSvhXvSCz3fnP9lw=="],
 
-    "@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.1.1", "", {}, "sha512-qhj0sDbw4nIGf5tQ+YNtHDATM+qUPADc3TmVSxkctRu1t3uhLHXQI+WabTn9zwvGV+r3rgGENaRVtqZ7fVB8Sw=="],
+    "@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.2.0", "", {}, "sha512-h4SbbMqYliJRtlfep3L40HceZX8WYb1KYJ0MzuLopluQy/b0RWsKv11FFEcJ/Ou4FTDVCor6wDb8kSYy44MJSA=="],
 
-    "@potonz/shortlinks-manager-cf-d1": ["@potonz/shortlinks-manager-cf-d1@0.1.1", "", { "dependencies": { "@potonz/shortlinks-manager": "0.1.0" } }, "sha512-8wOQVlRez0MWTVIaCEjv5M+kVGrD6uOuQ8bIrwYQ9TBxAE3Vl52ay53lLjm3WlgVrtNuoBe9ET2JX88BErMZVQ=="],
+    "@potonz/shortlinks-manager-cf-d1": ["@potonz/shortlinks-manager-cf-d1@0.2.0", "", { "dependencies": { "@potonz/shortlinks-manager": "0.1.1" } }, "sha512-ZGQz9BMmjR3eU+9SfhXDUJfKqLouYRX8Mr37yaV+kp6zKu1Dxok3KKuwg6QLkgLs9WB040B6VPblyeadIgs58A=="],
 
     "@remix-run/node-fetch-server": ["@remix-run/node-fetch-server@0.8.1", "", {}, "sha512-J1dev372wtJqmqn9U/qbpbZxbJSQrogNN2+Qv1lKlpATpe/WQ9aCZfl/xSb9d2Rgh1IyLSvNxZAXPZxruO6Xig=="],
 
@@ -977,7 +977,7 @@
 
     "@poppinss/dumper/supports-color": ["supports-color@10.2.2", "", {}, "sha512-SS+jx45GF1QjgEXQx4NJZV9ImqmO2NPz5FNsIHrsDjh2YsHnawpan7SNQ1o8NuhrbHZy9AZhIoCUiCeaW/C80g=="],
 
-    "@potonz/shortlinks-manager-cf-d1/@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.1.0", "", {}, "sha512-7Gz5U034B9mSKSJUiYchgW6E94SY8FQr0oec2jq4RMUFfzbDZ/yMZFfMAeqrcaLsEPlMGagEzEYO2g7MpSpxWA=="],
+    "@potonz/shortlinks-manager-cf-d1/@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.1.1", "", {}, "sha512-qhj0sDbw4nIGf5tQ+YNtHDATM+qUPADc3TmVSxkctRu1t3uhLHXQI+WabTn9zwvGV+r3rgGENaRVtqZ7fVB8Sw=="],
 
     "@tailwindcss/oxide-wasm32-wasi/@emnapi/core": ["@emnapi/core@1.7.1", "", { "dependencies": { "@emnapi/wasi-threads": "1.1.0", "tslib": "^2.4.0" }, "bundled": true }, "sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg=="],
 
