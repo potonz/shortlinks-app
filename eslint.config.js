@@ -1,5 +1,3 @@
-//  @ts-check
-
 import pluginJs from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -12,7 +10,7 @@ export default defineConfig([
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
         languageOptions: {
-            globals: { ...globals.node, ...globals.browser },
+            globals: { ...globals.bunBuiltin, ...globals.browser },
         },
     },
     {
