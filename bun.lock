@@ -6,8 +6,8 @@
       "name": "shortlinks-app",
       "dependencies": {
         "@cloudflare/vite-plugin": "^1.19.0",
-        "@potonz/shortlinks-manager": "^0.2.0",
-        "@potonz/shortlinks-manager-cf-d1": "^0.2.0",
+        "@potonz/shortlinks-manager": "^0.2.1",
+        "@potonz/shortlinks-manager-cf-d1": "^0.2.1",
         "@tailwindcss/vite": "^4.1.18",
         "@tanstack/router-plugin": "~1.145.2",
         "@tanstack/solid-router": "~1.144.0",
@@ -249,9 +249,9 @@
 
     "@poppinss/exception": ["@poppinss/exception@1.2.3", "", {}, "sha512-dCED+QRChTVatE9ibtoaxc+WkdzOSjYTKi/+uacHWIsfodVfpsueo3+DKpgU5Px8qXjgmXkSvhXvSCz3fnP9lw=="],
 
-    "@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.2.0", "", {}, "sha512-h4SbbMqYliJRtlfep3L40HceZX8WYb1KYJ0MzuLopluQy/b0RWsKv11FFEcJ/Ou4FTDVCor6wDb8kSYy44MJSA=="],
+    "@potonz/shortlinks-manager": ["@potonz/shortlinks-manager@0.2.1", "", {}, "sha512-rmW1oID7WxKDBaIirWrRAm3Mkn7gvOwQh4XxKKogcAYBzG3ce4EkrapLeVEV0ULlhGhtf+MNFAlpvD7OS7ZhaQ=="],
 
-    "@potonz/shortlinks-manager-cf-d1": ["@potonz/shortlinks-manager-cf-d1@0.2.0", "", { "dependencies": { "@potonz/shortlinks-manager": "0.1.1" } }, "sha512-ZGQz9BMmjR3eU+9SfhXDUJfKqLouYRX8Mr37yaV+kp6zKu1Dxok3KKuwg6QLkgLs9WB040B6VPblyeadIgs58A=="],
+    "@potonz/shortlinks-manager-cf-d1": ["@potonz/shortlinks-manager-cf-d1@0.2.1", "", { "dependencies": { "@potonz/shortlinks-manager": "0.1.1" } }, "sha512-geatDSjuDvWulMi3su9tQAu0rx5dfhDy9U5FIY61ymo7ThZFKHcFGzuK+b59V8+CGwghmOD0LmX/DZrg9jo5Yg=="],
 
     "@remix-run/node-fetch-server": ["@remix-run/node-fetch-server@0.8.1", "", {}, "sha512-J1dev372wtJqmqn9U/qbpbZxbJSQrogNN2+Qv1lKlpATpe/WQ9aCZfl/xSb9d2Rgh1IyLSvNxZAXPZxruO6Xig=="],
 

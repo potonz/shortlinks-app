@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/solid-router";
+import { waitUntil } from "cloudflare:workers";
 
 import { getTargetUrl } from "../libs/shortlinks/getTargetUrl";
 import { recordLinkRequest } from "../libs/shortlinks/recordLinkRequest";
@@ -9,11 +10,9 @@ export const Route = createFileRoute("/$shortId")({
             GET: async ({ params, request }) => {
                 const { shortId } = params;
 
-                const [targetUrl] = await Promise.all([
-                    getTargetUrl(shortId),
-                    // Record the link request before checking target URL
-                    recordLinkRequest(shortId, request),
-                ]);
+                const targetUrl = await getTargetUrl(shortId);
+
+                waitUntil(recordLinkRequest(shortId, request));
 
                 if (targetUrl) {
                     throw redirect({ href: targetUrl, statusCode: 307 });

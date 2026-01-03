@@ -1,7 +1,7 @@
 import { createManager, type ICache, type IShortLinksManager } from "@potonz/shortlinks-manager";
 import { createD1Backend } from "@potonz/shortlinks-manager-cf-d1";
 import { createServerOnlyFn } from "@tanstack/solid-start";
-import { env } from "cloudflare:workers";
+import { env, waitUntil } from "cloudflare:workers";
 
 let manager: IShortLinksManager;
 let shortIdLength = 3;
@@ -17,6 +17,7 @@ export const getShortLinksManager = createServerOnlyFn(async () => {
                 createInMemoryCache(),
                 createCloudflareKvCache(env.SHORTLINKS_CACHE),
             ],
+            waitUntil,
             shortIdLength,
             async onShortIdLengthUpdated(newLength) {
                 shortIdLength = newLength;
