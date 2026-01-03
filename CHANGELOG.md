@@ -1,3 +1,9 @@
+## [0.2.4] - 2026-01-03
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump shortlinks-manager
+
 ## [0.2.3] - 2026-01-03
 
 ### ⛰️  Features
