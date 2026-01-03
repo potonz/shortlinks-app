@@ -7,7 +7,7 @@ import { recordLinkRequest } from "../libs/shortlinks/recordLinkRequest";
 export const Route = createFileRoute("/$shortId")({
     server: {
         handlers: {
-            GET: async ({ params, request }) => {
+            GET: async ({ params, request }): Promise<Response> => {
                 const { shortId } = params;
 
                 const targetUrl = await getTargetUrl(shortId);
@@ -15,10 +15,10 @@ export const Route = createFileRoute("/$shortId")({
                 waitUntil(recordLinkRequest(shortId, request));
 
                 if (targetUrl) {
-                    throw redirect({ href: targetUrl, statusCode: 307 });
+                    return redirect({ href: targetUrl, statusCode: 307 });
                 }
 
-                throw redirect({ to: "/", statusCode: 307 });
+                return redirect({ to: "/", statusCode: 307 });
             },
         },
     },
