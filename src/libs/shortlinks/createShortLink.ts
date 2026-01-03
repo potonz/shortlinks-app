@@ -6,8 +6,8 @@ import { validateCaptcha } from "../captcha/turnstileValidate";
 import { getShortLinksManager } from "./manager";
 
 const validator = z.object({
-    url: z.httpUrl().check(z.refine(value => !value.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL), "we cannot shorten ourselves :(")),
-    captchaToken: z.string().check(z.minLength(1, "missing captcha token")),
+    url: z.httpUrl("Invalid URL, please check and try again.").check(z.refine(value => !value.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL), "we cannot shorten ourselves :(")),
+    captchaToken: z.string("Invalid captcha token, please reload the page or try again.").check(z.minLength(1, "missing captcha token")),
 });
 
 export const createShortLink = createServerFn({ method: "POST" })

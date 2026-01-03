@@ -4,6 +4,7 @@ import { z } from "zod/mini";
 
 import { CopyButton } from "../components/CopyButton";
 import { LinksHistory } from "../components/LinksHistory";
+import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
 import { addLinkToHistory } from "../stores/linkHistoryStore";
 
@@ -32,7 +33,15 @@ function App() {
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 
     function onInput(event: Event & { currentTarget: HTMLInputElement }) {
-        setUrl(event.currentTarget.value);
+        let value = event.currentTarget.value;
+
+        if (value.length > 0 && !/^[a-zA-Z]+:\/\//.test(value)) {
+            if (/.+\.\w{2}/.test(value)) {
+                value = "https://" + value;
+            }
+        }
+
+        setUrl(value);
     }
 
     function onBlur(event: Event & { currentTarget: HTMLInputElement }) {
@@ -64,13 +73,23 @@ function App() {
             if (shortId) {
                 setUrl("");
                 setShortIdGenerated(shortId);
-                // Add to history when link is successfully generated
                 addLinkToHistory(shortId, _url);
             }
             else {
-                console.error("Can't generate shit");
+                addNotification("Unable to generate a short link :( Please try again later.", "error");
             }
         }).catch((err) => {
+            if (err instanceof Error) {
+                const zodErrors = JSON.parse(err.message);
+                if (Array.isArray(zodErrors)) {
+                    zodErrors.forEach(err => addNotification(err.message, "error", 5000));
+                }
+            }
+            else {
+                throw err;
+            }
+        }).catch((err) => {
+            addNotification("Unable to generate a short link :( Please try again later.", "error");
             console.error(err);
         }).finally(() => {
             setIsSubmitting(false);

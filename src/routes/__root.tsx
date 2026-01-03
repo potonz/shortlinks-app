@@ -10,6 +10,7 @@ import { HydrationScript } from "solid-js/web";
 
 import { Footer } from "../components/common/Footer";
 import { Logo } from "../components/common/Logo";
+import NotificationsContainer from "../components/notifications/NotificationsContainer";
 import styleCss from "../styles/styles.css?url";
 
 export const Route = createRootRouteWithContext()({
@@ -55,6 +56,7 @@ function RootComponent() {
                     <div class="star"></div>
                 </div>
                 <main class="relative min-h-screen flex flex-col items-center justify-center p-4 z-10">
+                    <NotificationsContainer />
                     <div class="mb-12">
                         <Logo />
                     </div>
