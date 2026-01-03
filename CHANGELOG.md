@@ -1,3 +1,22 @@
+## [0.2.3] - 2026-01-03
+
+### ⛰️  Features
+
+- Added notifications and notify on errors
+
+### 🐛 Bug Fixes
+
+- Fixed return instead of throwing a redirect call
+
+### ⚡ Performance
+
+- Use `waitUntil` to push promises after responding to client
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump zod from 4.3.2 to 4.3.4
+- *(deps-dev)* Bump globals from 16.5.0 to 17.0.0
+
 ## [0.2.2] - 2026-01-02
 
 ### ⛰️  Features
