@@ -1,3 +1,9 @@
+## [0.2.5] - 2026-01-04
+
+### ⚙️ Miscellaneous Tasks
+
+- Added privacy policy
+
 ## [0.2.4] - 2026-01-03
 
 ### ⚙️ Miscellaneous Tasks
