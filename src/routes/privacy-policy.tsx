@@ -6,7 +6,7 @@ export const Route = createFileRoute("/privacy-policy")({
 
 function RouteComponent() {
     return (
-        <div class="privacy-policy prose prose-zinc dark:prose-invert max-w-4xl">
+        <div class="privacy-policy prose prose-zinc prose-invert max-w-4xl">
             <h1>Privacy Policy</h1>
 
             <p>
