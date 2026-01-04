@@ -1,31 +1,29 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "shortlinks-app",
-	"compatibility_date": "2025-12-28",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"observability": {
-		"enabled": true
-	},
-	"main": "@tanstack/solid-start/server-entry",
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_id": "ea34f17e-04fd-4704-91c8-47ba7d75de4b",
-			"database_name": "shortlinks_db"
-		}
-	],
-	"kv_namespaces": [
-		{
-			"binding": "CONFIG",
-			"id": "e4889a8d1c0d42e0a448014dfbf54451"
-		},
-		{
-			"binding": "SHORTLINKS_CACHE",
-			"id": "b2f9b673e1a649fa84136882e46ddeba"
-		}
-	],
-	"workers_dev": false,
-	"preview_urls": false
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shortlinks-app",
+  "compatibility_date": "2025-12-17",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "main": "@tanstack/solid-start/server-entry",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "ea34f17e-04fd-4704-91c8-47ba7d75de4b",
+      "database_name": "shortlinks_db"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG",
+      "id": "e4889a8d1c0d42e0a448014dfbf54451"
+    },
+    {
+      "binding": "SHORTLINKS_CACHE",
+      "id": "b2f9b673e1a649fa84136882e46ddeba"
+    }
+  ],
+  "workers_dev": false,
+  "preview_urls": false
 }

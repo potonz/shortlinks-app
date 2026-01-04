@@ -44,7 +44,7 @@ function App() {
         setUrl(value);
     }
 
-    function onBlur(event: Event & { currentTarget: HTMLInputElement }) {
+    function onChange(event: Event & { currentTarget: HTMLInputElement }) {
         let value = event.currentTarget.value.trim();
 
         // If the user doesn't input a schema, we default to https
@@ -125,10 +125,10 @@ function App() {
                 <div>
                     <input
                         type="url"
-                        placeholder="https://www.thisisaverylonglink.what/?utm_campaign=some_campaign..."
+                        placeholder="Enter your long URL"
                         value={url()}
                         onInput={onInput}
-                        onBlur={onBlur}
+                        onChange={onChange}
                         required
                         class="w-full px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-all animation-duration-300"
                     />
