@@ -24,6 +24,7 @@
     "@cloudflare/vite-plugin": "^1.19.0",
     "@potonz/shortlinks-manager": "^0.2.2",
     "@potonz/shortlinks-manager-cf-d1": "^0.2.2",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/router-plugin": "~1.145.2",
     "@tanstack/solid-router": "~1.144.0",

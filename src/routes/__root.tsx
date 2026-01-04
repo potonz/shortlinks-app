@@ -64,7 +64,7 @@ function RootComponent() {
                         <Outlet />
                         <TanStackRouterDevtools />
                     </Suspense>
-                    <div class="mt-4 md:mt-8 w-full text-center">
+                    <div class="mt-4 md:mt-8 w-full">
                         <Footer />
                     </div>
                 </main>
