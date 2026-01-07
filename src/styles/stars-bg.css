@@ -1,75 +1,76 @@
 .stars-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100dvw;
-    height: 100dvh;
-    overflow: hidden;
-    z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: 0;
+  user-select: none;
+  -moz-user-select: none;
 }
 
 .star {
-    position: absolute;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,5 61,35 95,35 67,55 78,85 50,70 22,85 33,55 5,35 39,35' fill='%23ffffffaa'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: starFloatingAnimation 20s infinite linear;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+  position: absolute;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,5 61,35 95,35 67,55 78,85 50,70 22,85 33,55 5,35 39,35' fill='%23ffffffaa'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: starFloatingAnimation 20s infinite linear;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
 }
 
 .star:nth-child(1) {
-    width: 20px;
-    height: 20px;
-    top: 20%;
-    left: 20%;
-    animation-delay: 0s;
-    animation-duration: 15s;
+  width: 20px;
+  height: 20px;
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+  animation-duration: 15s;
 }
 
 .star:nth-child(2) {
-    width: 25px;
-    height: 25px;
-    top: 70%;
-    left: 70%;
-    animation-delay: -2s;
-    animation-duration: 18s;
+  width: 25px;
+  height: 25px;
+  top: 70%;
+  left: 70%;
+  animation-delay: -2s;
+  animation-duration: 18s;
 }
 
 .star:nth-child(3) {
-    width: 15px;
-    height: 15px;
-    top: 40%;
-    left: 80%;
-    animation-delay: -4s;
-    animation-duration: 22s;
+  width: 15px;
+  height: 15px;
+  top: 40%;
+  left: 80%;
+  animation-delay: -4s;
+  animation-duration: 22s;
 }
 
 .star:nth-child(4) {
-    width: 20px;
-    height: 20px;
-    top: 60%;
-    left: 20%;
-    animation-delay: -6s;
-    animation-duration: 16s;
+  width: 20px;
+  height: 20px;
+  top: 60%;
+  left: 20%;
+  animation-delay: -6s;
+  animation-duration: 16s;
 }
 
 @keyframes starFloatingAnimation {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 0;
-    }
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
 
-    5% {
-        opacity: 1;
-    }
+  5% {
+    opacity: 1;
+  }
 
-    95% {
-        opacity: 1;
-    }
+  95% {
+    opacity: 1;
+  }
 
-    100% {
-        transform: translate(calc(100vw * 0.1),
-                calc(100vh * 0.1)) rotate(360deg);
-        opacity: 0;
-    }
+  100% {
+    transform: translate(calc(100vw * 0.1), calc(100vh * 0.1)) rotate(360deg);
+    opacity: 0;
+  }
 }

@@ -1,4 +1,4 @@
-import { ClientOnly } from "@tanstack/solid-router";
+import { ClientOnly, Link } from "@tanstack/solid-router";
 import { For, Show } from "solid-js";
 
 import { deleteLinkFromHistory, linkHistory } from "../stores/linkHistoryStore";
@@ -47,6 +47,9 @@ export function LinksHistory(props: IProps) {
                                         >
                                             <i class="bi bi-trash" />
                                         </button>
+                                        <a href={props.fullBaseHref + item.shortId} class="text-zinc-400 hover:text-white" target="potoPreviewWindow">
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
                                     </div>
                                 </div>
                             )}

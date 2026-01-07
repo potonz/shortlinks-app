@@ -9,6 +9,7 @@ import { Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
 import { Footer } from "../components/common/Footer";
+import { Navbar } from "../components/common/Navbar";
 import NotificationsContainer from "../components/notifications/NotificationsContainer";
 import styleCss from "../styles/styles.css?url";
 
@@ -54,6 +55,7 @@ function RootComponent() {
                     <div class="star"></div>
                     <div class="star"></div>
                 </div>
+                <Navbar />
                 <main class="relative min-h-screen flex flex-col items-center justify-center p-4 z-10">
                     <NotificationsContainer />
                     <Suspense>

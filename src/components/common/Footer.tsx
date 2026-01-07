@@ -11,9 +11,9 @@ export function Footer() {
                     .
                 </div>
                 <div class="text-right">
-                    <Link to="/privacy-policy">Privacy policy</Link>
-                    <br />
                     <Link to="/terms-of-service">Terms of service</Link>
+                    <br />
+                    <Link to="/privacy-policy">Privacy policy</Link>
                 </div>
             </div>
         </footer>

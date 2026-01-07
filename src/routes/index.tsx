@@ -121,66 +121,63 @@ function App() {
     });
 
     return (
-        <>
-            <div class="mb-12">
-                <Logo />
-            </div>
-            <div class="w-full max-w-xl text-center">
-                <form onSubmit={handleSubmit} class="space-y-6">
-                    <div>
-                        <input
-                            type="url"
-                            placeholder="Enter your long URL"
-                            value={url()}
-                            onInput={onInput}
-                            onChange={onChange}
-                            required
-                            class="w-full px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-all animation-duration-300"
-                        />
-                    </div>
-
-                    <div id="turnstile-container" ref={captchaContainerRef}></div>
-
-                    <button
-                        type="submit"
-                        class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
-                        disabled={!isInputUrlValid().success}
-                    >
-                        <span class="flex items-center justify-center gap-2">
-                            Shorten it
-                        </span>
-                    </button>
-                </form>
-
-                <Switch>
-                    <Match when={isSubmitting()}>
-                        <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex justify-center items-center gap-2">
-                            <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
-                            <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
-                            <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                            <div class="h-lh"></div>
-                        </div>
-                    </Match>
-                    <Match when={shortIdGenerated()}>
-                        {shortId => (
-                            <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
-                                <div class="grow text-left">
-                                    <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
-                                    <span class="text-white">{shortId()}</span>
-                                </div>
-                                <div class="pl-2">
-                                    <CopyButton text={fullBaseHref + shortId()} />
-                                </div>
-                            </div>
-                        )}
-                    </Match>
-                </Switch>
-
-                {/* Link History Section */}
-                <div class="mt-12">
-                    <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
+        <div class="w-full max-w-xl text-center">
+            <form onSubmit={handleSubmit} class="space-y-6">
+                <div>
+                    <label class="block mb-2" for="input_url">Enter your long URL</label>
+                    <input
+                        type="url"
+                        id="input_url"
+                        placeholder="https://IamAVeryLongUrlWithAnalyticsStuff.Tld/?utm_campaign=potonz&amp;utm_medium=yes"
+                        value={url()}
+                        onInput={onInput}
+                        onChange={onChange}
+                        required
+                        class="w-full px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-all animation-duration-300 placeholder-shown:text-ellipsis"
+                    />
                 </div>
+
+                <div id="turnstile-container" ref={captchaContainerRef}></div>
+
+                <button
+                    type="submit"
+                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
+                    disabled={!isInputUrlValid().success}
+                >
+                    <span class="flex items-center justify-center gap-2">
+                        Shorten it
+                    </span>
+                </button>
+            </form>
+
+            <Switch>
+                <Match when={isSubmitting()}>
+                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex justify-center items-center gap-2">
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
+                        <div class="h-lh"></div>
+                    </div>
+                </Match>
+                <Match when={shortIdGenerated()}>
+                    {shortId => (
+                        <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
+                            <div class="grow text-left">
+                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
+                                <span class="text-white">{shortId()}</span>
+                            </div>
+                            <div class="pl-2">
+                                <CopyButton text={fullBaseHref + shortId()} />
+                            </div>
+                        </div>
+                    )}
+                </Match>
+            </Switch>
+
+            {/* Link History Section */}
+            <div class="mt-12">
+                <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
             </div>
-        </>
+        </div>
     );
 }
