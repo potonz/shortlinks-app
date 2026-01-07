@@ -1,3 +1,17 @@
+## [0.2.6] - 2026-01-07
+
+### ⛰️  Features
+
+- Added navbar
+
+### 🎨 Styling
+
+- Fixed font colour only invert in browser dark mode
+
+### ⚙️ Miscellaneous Tasks
+
+- Added t&cs
+
 ## [0.2.5] - 2026-01-04
 
 ### ⚙️ Miscellaneous Tasks
