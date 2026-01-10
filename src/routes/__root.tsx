@@ -46,7 +46,7 @@ function RootComponent() {
             <head>
                 <HydrationScript />
             </head>
-            <body>
+            <body class="flex flex-col">
                 <HeadContent />
                 <div class="bg-glow select-none"></div>
                 <div class="stars-container select-none">
@@ -56,16 +56,16 @@ function RootComponent() {
                     <div class="star"></div>
                 </div>
                 <Navbar />
-                <main class="relative min-h-screen flex flex-col items-center justify-center p-4 z-10">
+                <main class="relative grow flex flex-col items-center justify-center p-4">
                     <NotificationsContainer />
                     <Suspense>
                         <Outlet />
                         <TanStackRouterDevtools />
                     </Suspense>
-                    <div class="mt-4 md:mt-8 w-full">
-                        <Footer />
-                    </div>
                 </main>
+                <div class="mt-4 md:mt-8 p-4 w-full">
+                    <Footer />
+                </div>
                 <Scripts />
             </body>
         </html>

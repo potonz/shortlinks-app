@@ -7,13 +7,13 @@ export function Footer() {
                 <div>
                     &copy;
                     {" 2025 Thomas Nguyen. "}
-                    <a href="/LICENSE">MIT license</a>
+                    <a href="/LICENSE" class="whitespace-nowrap">MIT license</a>
                     .
                 </div>
                 <div class="text-right">
-                    <Link to="/terms-of-service">Terms of service</Link>
+                    <Link to="/terms-of-service" class="whitespace-nowrap">Terms of service</Link>
                     <br />
-                    <Link to="/privacy-policy">Privacy policy</Link>
+                    <Link to="/privacy-policy" class="whitespace-nowrap">Privacy policy</Link>
                 </div>
             </div>
         </footer>

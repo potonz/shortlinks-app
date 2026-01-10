@@ -1,4 +1,4 @@
-import { ClientOnly, Link } from "@tanstack/solid-router";
+import { ClientOnly } from "@tanstack/solid-router";
 import { For, Show } from "solid-js";
 
 import { deleteLinkFromHistory, linkHistory } from "../stores/linkHistoryStore";

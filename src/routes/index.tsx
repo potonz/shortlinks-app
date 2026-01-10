@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { createEffect, createSignal, Match, Switch } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import { z } from "zod/mini";
 
-import { Logo } from "../components/common/Logo";
 import { CopyButton } from "../components/CopyButton";
 import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
@@ -144,35 +143,37 @@ function App() {
                     class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
                     disabled={!isInputUrlValid().success}
                 >
-                    <span class="flex items-center justify-center gap-2">
-                        Shorten it
-                    </span>
+                    <span class="flex items-center justify-center gap-2">Shorten it</span>
                 </button>
             </form>
 
-            <Switch>
-                <Match when={isSubmitting()}>
-                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex justify-center items-center gap-2">
-                        <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
-                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
-                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                        <div class="h-lh"></div>
-                    </div>
-                </Match>
-                <Match when={shortIdGenerated()}>
-                    {shortId => (
-                        <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
-                            <div class="grow text-left">
-                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
-                                <span class="text-white">{shortId()}</span>
-                            </div>
-                            <div class="pl-2">
-                                <CopyButton text={fullBaseHref + shortId()} />
-                            </div>
+            {/* Slide‑down indicator – collapses without reserved space */}
+            <div
+                class={`
+                    ease-out flex justify-center items-center gap-2 transition-all duration-300
+                    ${isSubmitting() ? "mt-12 p-4 max-h-full opacity-100 border border-zinc-500 rounded-2xl" : "transition-none max-h-0 opacity-0 pointer-events-none"}
+                `}
+            >
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
+                {/* forces inner height to match text */}
+                <div class="h-lh"></div>
+            </div>
+
+            <Show when={shortIdGenerated()}>
+                {shortId => (
+                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
+                        <div class="grow text-left">
+                            <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
+                            <span class="text-white">{shortId()}</span>
                         </div>
-                    )}
-                </Match>
-            </Switch>
+                        <div class="pl-2">
+                            <CopyButton text={fullBaseHref + shortId()} />
+                        </div>
+                    </div>
+                )}
+            </Show>
 
             {/* Link History Section */}
             <div class="mt-12">

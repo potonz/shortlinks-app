@@ -79,6 +79,7 @@ tsconfig.json            # TypeScript configuration
 
 ## Code Patterns and Conventions
 
+- **Format**: Use eslint, 4 space indent
 - **State Management**: Use `createSignal()` for local component state
 - **Routing**: Use TanStack Router with proper type safety
 - **Forms**: Implement proper form handling with Solid.js
