@@ -23,13 +23,15 @@ export function LinksHistory(props: IProps) {
                             {item => (
                                 <div class="text-left p-4 border border-zinc-700 rounded-2xl flex items-center justify-between gap-2">
                                     <div class="min-w-0">
-                                        <div class="font-medium">
-                                            <span class="text-zinc-500">
-                                                {props.baseUrlWithoutScheme}
-                                            </span>
-                                            <span class="text-white">
-                                                {item.shortId}
-                                            </span>
+                                        <div class="w-fit font-medium text-zinc-500 hover:text-white">
+                                            <a href={props.fullBaseHref + item.shortId} target="potoPreviewWindow">
+                                                <span>
+                                                    {props.baseUrlWithoutScheme}
+                                                </span>
+                                                <span class="text-white">
+                                                    {item.shortId}
+                                                </span>
+                                            </a>
                                         </div>
                                         <div class="text-zinc-400 text-sm mt-1 truncate w-full">
                                             {item.targetUrl}
@@ -47,9 +49,6 @@ export function LinksHistory(props: IProps) {
                                         >
                                             <i class="bi bi-trash" />
                                         </button>
-                                        <a href={props.fullBaseHref + item.shortId} class="text-zinc-400 hover:text-white" target="potoPreviewWindow">
-                                            <i class="bi bi-box-arrow-up-right"></i>
-                                        </a>
                                     </div>
                                 </div>
                             )}
