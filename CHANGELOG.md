@@ -1,3 +1,10 @@
+## [0.2.7] - 2026-01-10
+
+### 🚜 Refactor
+
+- Better animation for loading
+- Remove copy link button, make actual link clickable
+
 ## [0.2.6] - 2026-01-07
 
 ### ⛰️  Features
