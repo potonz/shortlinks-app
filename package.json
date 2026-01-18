@@ -31,6 +31,8 @@
     "@tanstack/solid-router-devtools": "~1.144.0",
     "@tanstack/solid-router-ssr-query": "~1.144.0",
     "@tanstack/solid-start": "~1.145.3",
+    "better-auth": "^1.4.14",
+    "kysely-d1": "0.4.0",
     "solid-js": "^1.9.10",
     "tailwindcss": "^4.1.18",
     "vite": "^7.3.0",
