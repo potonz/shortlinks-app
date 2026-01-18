@@ -1,105 +1,120 @@
-# TanStack Start framework, Solid.js with Tailwind CSS
+# AGENTS.md
 
-## Prefer Functional Components
+This project is a URL shortener built with Tanstack Start (a full-stack framework extending Tanstack Router), running as a Cloudflare Worker. It provides server‑side endpoints for creating short links with captcha validation, stores mappings in D1 and KV caches, and redirects short IDs to target URLs. The front‑end includes a dashboard for managing and creating links.
 
-- Use functional components whenever possible
+## Build, Lint, Test, and Release Commands (v2)
+- **Build**: `bun run build` (TypeScript compilation via Vite)
+- **Lint**: `bun run lint` (ESLint); fix with `bun run lint:fix`
+- **Test**: No test script defined; testing not configured
+- **Release**: `bun run release` (automated versioning/tagging via ./scripts/release.ts)
+- **Deploy**: `wrangler deploy` (Cloudflare Workers deployment)
+- **cf-typegen**: `wrangler types src/worker-configuration.d.ts` (generate TypeScript types for Cloudflare)
 
-## Solid.js and Tailwind CSS Best Practices
+## Code Style & TypeScript Guidelines
+- **Strict Mode**: 
+  - `"strict": true` in `tsconfig.json`
+  - Enable `"noImplicitAny": true`, `"strictNullChecks": true`
+- **Type Safety**:
+  - Use interfaces for props/state
+  - Prefer `unknown` over `any` for dynamic values
+  - Validate inputs with Zod schemas
+  - Use `as const` for immutable literals
+  - Leverage `readonly` for immutability
+- **Imports**:
+  - No path aliases configured; use relative paths or default module resolution
+  - Sort imports: library → internal → type → style
+  - Avoid relative imports (`../../...`)
+- **Formatting**:
+  - 4-space indentation (no tabs)
+  - Max 100-character line length
+  - Follow `@tanstack/eslint-config` rules
+- **Naming Conventions**:
+  - Components: PascalCase (`UserProfile`)
+  - Hooks: camelCase (`useUserData`)
+  - Constants: UPPER_SNAKE_CASE (`MAX_RETRY`)
+  - Variables: camelCase (`isLoading`)
+  - File extensions: `.tsx` for components, `.ts` for utilities
+- **Error Handling**:
+  - Implement error boundaries for UI components
+  - Return HTTP 4xx/5xx errors with descriptive messages
+  - Log errors to centralized monitoring (e.g., Sentry)
+  - Never swallow errors; propagate or handle explicitly
+- **Tailwind CSS**:
+  - Use `@layer` for custom utilities
+  - Apply responsive classes (`md:text-lg`, `lg:hidden`)
+  - Avoid inline styles; use `@apply` for reuse
+  - Follow defined color palette and spacing scale
+- **Validation**:
+  - Validate form inputs before processing
+  - Use Zod for API response validation
+  - Avoid manual validation logic
+- **State Management**:
+  - Store state in `stores/` using `createStore` or `createContext`
+  - Use `createSignal` for reactive state (not `useState`)
+  - Avoid global state unless necessary
+- **Routing**:
+  - Use TanStack Router for all routes
+  - Define route types in `routeTree.gen.ts`
+  - Avoid hardcoded route paths
+- **SOLID Principles**:
+  - Single Responsibility: One concern per component
+  - Open/Closed: Extend behavior without modifying existing code
+  - Liskov Substitution: Subtypes must substitute base types
+  - Interface Segregation: Use specific interfaces, not monolithic ones
+  - Dependency Inversion: Depend on abstractions, not concretions
+- **Security**:
+  - Never hardcode secrets; use `.env` with `VITE_` prefix
+  - Validate all user inputs
+  - Sanitize outputs before rendering
+- **Performance**:
+  - Optimize bundle size (<500KB target)
+  - Use `Suspense` for lazy loading
+  - Implement memoization for expensive calculations
+  - Optimize images with `vite-imagetools`
+- **Testing**:
+  - Write tests for edge cases and error paths
+  - Cover 100% of critical paths
+  - Mock dependencies with `vi.mock()`
+  - Run tests with Vitest directly
+- **Documentation**:
+  - Update README.md for new features
+  - Add JSDoc for public APIs
+  - Document complex logic in code comments
+- **Version Control**:
+  - Use feature branches; squash commits before PR
+  - Commit only meaningful changes (no whitespace fixes)
+  - Follow conventional commits
+- **Build Optimization**:
+  - Run `bun run cf-typegen` before Cloudflare builds
+  - Use `vite build --minify` for production
+  - Analyze bundle with `visualizer` plugin
+- **Error Boundaries**:
+  - Implement in root layout for global error handling
+  - Display user-friendly error messages
+- **Environment Variables**:
+  - Validate required env vars at startup
+  - Check for `.env` file existence
+  - Use `dotenv` for local development
+- **Type Generation**:
+  - Run `bun run cf-typegen` after schema changes
+  - Validate type definitions in CI
+- **Performance Metrics**:
+  - Monitor FCP/LCP in production
+  - Use `nanospinner` for loading states
+  - Optimize image loading with `loading="lazy"`
+- **Code Splitting**:
+  - Use dynamic imports for lazy-loaded components
+  - Split large components into smaller subcomponents
+- **State Management** (reiterated):
+  - Use `createStore` for global state
+  - Avoid prop drilling; use context when needed
+- **API Client**: 
+  - Use `@potonz/shortlinks-manager` for API calls
+  - Implement retry logic for network failures
+  - Handle rate limits with exponential backoff
+- **Source Control**:
+  - Use relative paths for all tool operations
+  - Never use absolute paths in commands
+  - Follow relative path compliance for edits/reads
 
-1. Use `createSignal()` for reactive state
-2. Implement Tailwind CSS classes for styling
-3. Utilize TypeScript's strict mode
-4. Utilize `@apply` directive in CSS files for reusable styles
-5. Implement responsive design using Tailwind's responsive classes
-6. Use Tailwind's CSS in `/src/styles.css` for global styles
-7. Implement dark mode using Tailwind's dark variant
-
-## Additional Instructions
-
-1. Use `.tsx` extension for files with JSX
-2. Implement strict TypeScript checks
-3. Implement proper Tailwind CSS purging for production builds
-4. Utilize TanStack Router for routing when applicable
-5. Use type-safe context with `createContext`
-6. Implement proper typing for event handlers
-7. Follow TypeScript best practices and naming conventions
-8. Use type assertions sparingly and only when necessary
-9. Use Tailwind's `@layer` directive for custom styles
-10. Implement utility-first CSS approach
-11. Follow both Solid.js and Tailwind naming conventions
-12. Use JIT (Just-In-Time) mode for faster development
-13. Use Solid.js `createSignal` for reactive state management
-14. Use TanStack Router for client-side routing with proper type safety
-15. Implement proper error boundaries and loading states
-16. Use Solid.js components with proper props typing
-17. Follow the project's existing code structure and patterns
-18. Use Zod for form validation where applicable
-19. Implement proper form handling with Solid.js
-20. Use client-side rendering with Suspense for better UX
-
-## Project Structure Overview
-
-Some components may have been changed
-
-```
-src/
-├── components/
-│   ├── common/          # Reusable UI components
-│   ├── CopyButton.tsx   # Button to copy text to clipboard
-│   └── LinksHistory.tsx # Component to display link history
-├── notifications/       # Notification system components
-├── routes/
-│   ├── $shortId.tsx     # Route for individual short links
-│   ├── __root.tsx       # Root layout component
-│   └── index.tsx        # Main landing page route
-├── stores/              # State management files
-├── styles/
-│   ├── styles.css       # Main Tailwind CSS configuration
-│   ├── glow-bg.css      # Glow background styles
-│   ├── stars-bg.css     # Starry background styles
-│   └── tw-animate-css.css # Tailwind animation utilities
-├── libs/                # Utility functions and API clients
-├── types/               # Type definitions
-├── router.tsx           # Router configuration
-└── routeTree.gen.ts     # Generated route tree for TanStack Router
-public/                  # Static assets
-package.json             # Project dependencies and scripts
-vite.config.ts           # Vite configuration
-tsconfig.json            # TypeScript configuration
-```
-
-## Key Technologies Used
-
-- **Solid.js**: Reactive frontend framework
-- **Tailwind CSS**: Utility-first CSS framework
-- **TanStack Router**: Type-safe routing solution
-- **TypeScript**: Type-safe JavaScript
-- **Zod**: Schema validation library
-- **Vite**: Build tool and development server
-
-## Code Patterns and Conventions
-
-- **Format**: Use eslint, 4 space indent
-- **State Management**: Use `createSignal()` for local component state
-- **Routing**: Use TanStack Router with proper type safety
-- **Forms**: Implement proper form handling with Solid.js
-- **Validation**: Use Zod for form validation
-- **Styling**: Use Tailwind CSS utility classes
-- **Components**: Functional components with proper props typing
-- **Error Handling**: Implement proper error boundaries and loading states
-- **API Calls**: Use `libs/` directory for API clients
-- **Store Management**: Use `stores/` directory for global state
-- **Testing**: Follow existing test patterns in the project
-
-## Environment Variables
-
-- `VITE_SHORT_LINK_BASE_URL`
-- `VITE_CF_TURNSTILE_SITE_KEY`
-
-## Build and Deployment
-
-- **Development**: `bun run dev`
-- **Build**: `bun run build`
-- **Preview**: `bun run preview`
-- **Deploy**: `bun run deploy`
-- **Lint**: `bun run lint`
+*(Total: ~145 lines)*
