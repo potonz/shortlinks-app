@@ -1,0 +1,6 @@
+@reference "../../styles/styles.css";
+
+.user-dropdown-item {
+  @apply hover:bg-zinc-700 rounded px-3 py-2 text-nowrap;
+  text-align: left;
+}

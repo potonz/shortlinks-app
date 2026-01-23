@@ -1,13 +1,29 @@
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute, redirect } from "@tanstack/solid-router";
+import { createServerFn } from "@tanstack/solid-start";
+import { getRequestHeaders } from "@tanstack/solid-start/server";
 
+import { auth } from "~/libs/auth/auth";
 import { authClient } from "~/libs/auth/auth-client";
 
+const checkLoggedIn = createServerFn()
+    .handler(async () => {
+        if (await auth.api.getSession({ headers: getRequestHeaders() })) {
+            redirect({
+                to: "/dashboard",
+                throw: true,
+            });
+        }
+    });
+
 export const Route = createFileRoute("/login")({
+    beforeLoad() {
+        return checkLoggedIn();
+    },
     component: RouteComponent,
 });
 
 function RouteComponent() {
-    const handleSignIn = (provider: string) => {
+    const handleSignIn = (provider: typeof auth.api.signInSocial.options.metadata.$Infer.body.provider) => {
         authClient.signIn.social({ provider }).then(console.log).catch(console.error);
     };
 

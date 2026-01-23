@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { createEffect, createSignal, Show } from "solid-js";
-import { z } from "zod/mini";
+import { z } from "zod";
 
 import { CopyButton } from "../components/CopyButton";
 import { LinksHistory } from "../components/LinksHistory";
@@ -28,7 +28,7 @@ function App() {
     const [url, setUrl] = createSignal("");
     let captchaContainerRef: HTMLDivElement | undefined;
     let captchaToken = "";
-    const isInputUrlValid = () => z.httpUrl().safeParse(url());
+    const isInputUrlValid = () => z.httpUrl().refine(url => !url.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL)).safeParse(url());
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 

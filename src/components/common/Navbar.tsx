@@ -3,11 +3,12 @@ import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 
 import { authClient } from "~/libs/auth/auth-client";
 
+import styles from "./Navbar.module.css";
+
 export function Navbar() {
     let dropdownRef!: HTMLDivElement;
     const [dropdownOpen, setDropdownOpen] = createSignal(false);
-    const [session, setSession] = createSignal<null | typeof authClient.useSession.value>(null);
-    authClient.useSession.subscribe(setSession);
+    const session = authClient.useSession();
 
     const handleSignOut = async () => {
         await authClient.signOut();
@@ -45,14 +46,11 @@ export function Navbar() {
                     <Switch>
                         <Match when={session()?.isPending}>
                             <div class="animate-pulse">
-                                <div class="w-40 h-2 rounded bg-zinc-800"></div>
+                                <div class="w-28 h-2 rounded bg-zinc-800"></div>
                             </div>
                         </Match>
                         <Match when={!session()?.data?.session.id}>
-                            <Link
-                                to="/login"
-                                class="flex gap-2 bg-white text-black px-3 py-1 rounded-md hover:bg-zinc-100"
-                            >
+                            <Link to="/login" class="flex gap-2 bg-white text-black px-3 py-1 rounded-md hover:bg-zinc-100">
                                 Sign in
                             </Link>
                         </Match>
@@ -67,14 +65,15 @@ export function Navbar() {
                                     {session()?.data?.user.name}
                                 </button>
                                 <Show when={dropdownOpen()}>
-                                    <div class="absolute right-0 mt-2 w-44 bg-zinc-800 hover:bg-zinc-700 rounded-md shadow-lg shadow-zinc-900 z-10">
+                                    <div class="absolute flex flex-col justify-end gap-1 rounded p-1 right-0 mt-2 bg-zinc-800 shadow-lg shadow-zinc-900 z-10">
+                                        <Link to="/dashboard" class={styles["user-dropdown-item"]}>My Dashboard</Link>
                                         <button
                                             type="button"
                                             onClick={() => {
                                                 handleSignOut();
                                                 setDropdownOpen(false);
                                             }}
-                                            class="w-full text-right px-4 py-2"
+                                            class={styles["user-dropdown-item"]}
                                         >
                                             Sign out
                                         </button>
