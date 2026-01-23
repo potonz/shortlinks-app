@@ -56,7 +56,7 @@ function RootComponent() {
                     <div class="star"></div>
                 </div>
                 <Navbar />
-                <main class="relative grow flex flex-col items-center justify-center p-4">
+                <main class="grow flex flex-col items-center justify-center p-4">
                     <NotificationsContainer />
                     <Suspense>
                         <Outlet />

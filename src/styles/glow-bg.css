@@ -1,24 +1,28 @@
 .bg-glow {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60vh;
-    height: 60vh;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
-    animation: bgGlowPulse 4s ease-in-out infinite alternate;
-    z-index: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vh;
+  height: 60vh;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  animation: bgGlowPulse 4s ease-in-out infinite alternate;
+  z-index: -2;
 }
 
 @keyframes bgGlowPulse {
-    0% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(1);
-    }
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
 
-    100% {
-        opacity: 0.6;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
