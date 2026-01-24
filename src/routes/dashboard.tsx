@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/solid-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/solid-router";
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { z } from "zod";
@@ -23,4 +23,5 @@ export const Route = createFileRoute("/dashboard")({
     beforeLoad({ location }) {
         return checkLoggedIn({ data: location.href });
     },
+    component: () => <div class="grow self-stretch"><Outlet /></div>,
 });

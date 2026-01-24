@@ -1,26 +1,26 @@
-export interface TAnalyticsSummary {
+export interface IAnalyticsSummary {
     totalLinks: number;
     totalClicks: number;
     uniqueVisitors: number;
     last7DaysClicks: number;
 }
 
-export interface TClicksByTimeData {
+export interface IClicksByTimeData {
     date: string;
     clicks: number;
 }
 
-export interface TReferrerData {
+export interface IReferrerData {
     referrer: string;
     clicks: number;
 }
 
-export interface TCountryData {
+export interface ICountryData {
     country: string;
     clicks: number;
 }
 
-export interface TLink {
+export interface ILink {
     shortId: string;
     targetUrl: string;
     totalClicks: number;
@@ -28,7 +28,7 @@ export interface TLink {
     lastAccessedAt: string;
 }
 
-export interface TLinkRequest {
+export interface ILinkRequest {
     id: number;
     shortId: string;
     ip: string;
@@ -45,7 +45,7 @@ export interface TLinkRequest {
     timestamp: string;
 }
 
-export interface TLinkRequestsQueryParams {
+export interface ILinkRequestsQueryParams {
     page?: number;
     pageSize?: number;
     startDate?: string;
@@ -54,8 +54,8 @@ export interface TLinkRequestsQueryParams {
     referrer?: string;
 }
 
-export interface TLinkRequestsQueryResult {
-    data: TLinkRequest[];
+export interface ILinkRequestsQueryResult {
+    data: ILinkRequest[];
     total: number;
     page: number;
     pageSize: number;

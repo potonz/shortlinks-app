@@ -1,0 +1,21 @@
+@reference "../../styles/styles.css";
+
+.analytics-card {
+  @apply bg-zinc-900 border border-zinc-800 rounded-2xl p-6 transition-all duration-300 hover:bg-zinc-800 hover:border-zinc-700;
+  display: flex;
+  flex-direction: column;
+
+  .value {
+    line-height: 1.2;
+  }
+
+  .icon {
+    @apply transition-all duration-300;
+  }
+
+  &:hover {
+    .icon {
+      transform: scale(1.1);
+    }
+  }
+}
