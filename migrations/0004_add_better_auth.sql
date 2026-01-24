@@ -2,10 +2,7 @@
 
 PRAGMA foreign_keys = ON;
 
--- =====================
--- User table
--- =====================
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
     id TEXT PRIMARY KEY,
     name TEXT,
     email TEXT,
@@ -15,13 +12,9 @@ CREATE TABLE user (
     updatedAt TEXT NOT NULL
 );
 
--- Optional but common index
-CREATE UNIQUE INDEX idx_user_email ON user(email);
+CREATE INDEX IF NOT EXISTS idx_user_email ON user(email);
 
--- =====================
--- Session table
--- =====================
-CREATE TABLE session (
+CREATE TABLE IF NOT EXISTS session (
     id TEXT PRIMARY KEY,
     userId TEXT NOT NULL,
     token TEXT NOT NULL,
@@ -33,13 +26,10 @@ CREATE TABLE session (
     FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX idx_session_token ON session(token);
-CREATE INDEX idx_session_userId ON session(userId);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_session_token ON session(token);
+CREATE INDEX IF NOT EXISTS idx_session_userId ON session(userId);
 
--- =====================
--- Account table
--- =====================
-CREATE TABLE account (
+CREATE TABLE IF NOT EXISTS account (
     id TEXT PRIMARY KEY,
     userId TEXT NOT NULL,
     accountId TEXT NOT NULL,
@@ -56,5 +46,5 @@ CREATE TABLE account (
     FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_account_userId ON account(userId);
-CREATE INDEX idx_account_provider ON account(providerId, accountId);
+CREATE INDEX IF NOT EXISTS idx_account_userId ON account(userId);
+CREATE INDEX IF NOT EXISTS idx_account_provider ON account(providerId, accountId);
