@@ -1,12 +1,25 @@
 import { createServerFn } from "@tanstack/solid-start";
+import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { env } from "cloudflare:workers";
 
-import { buildSummaryQuery } from "~/libs/analytics/summaryQuery";
+import { buildSummaryQuery } from "~/libs/analytics/summary.server";
+import { auth } from "~/libs/auth/auth";
 
 export const getSummary = createServerFn({ method: "GET" })
     .handler(async () => {
         try {
-            const summary = await buildSummaryQuery(env.DB);
+            const headers = getRequestHeaders();
+            const session = await auth.api.getSession({ headers });
+            const userId = session?.user?.id;
+
+            if (!userId) {
+                return {
+                    success: false,
+                    error: "User not authenticated",
+                };
+            }
+
+            const summary = await buildSummaryQuery(env.DB, userId);
 
             return {
                 success: true,

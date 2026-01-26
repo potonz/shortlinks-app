@@ -9,7 +9,6 @@ export const auth = betterAuth({
     database: new D1Dialect({ database: env.DB }),
     socialProviders: {
         google: {
-            enabled: true,
             clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
             clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
         },

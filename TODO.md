@@ -113,25 +113,25 @@ Columns:
   - [x] Create `src/routes/serverFns/analytics/requests.ts`
 
 ### Phase 2: Dashboard Homepage
-- [x] Create analytics cards component (`src/components/dashboard/AnalyticsCards.tsx`)
+- [x] Create analytics cards components (`src/components/dashboard/`)
   - [x] Create total links card
   - [x] Create total clicks card
   - [x] Create unique visitors card
   - [x] Create last 7 days clicks card
-- [ ] Implement click-by-time chart
-  - [ ] Create `src/components/dashboard/ClicksByTimeChart.tsx`
-  - [ ] Integrate charting library
-  - [ ] Add loading state
-  - [ ] Add error state
+- [x] Implement click-by-time chart
+  - [x] Create `src/components/dashboard/commonAnalytics/ClicksByTimeChart.tsx`
+  - [x] Integrate charting library (d3.js)
+  - [x] Add loading state
+  - [x] Add error state
 - [ ] Implement top-referrers chart
   - [ ] Create `src/components/dashboard/TopReferrersChart.tsx`
   - [ ] Integrate charting library
   - [ ] Add loading state
   - [ ] Add error state
-- [ ] Add loading and error states
-  - [ ] Create loading component for charts
-  - [ ] Create error message component
-  - [ ] Handle network errors gracefully
+- [x] Add loading and error states
+  - [x] Create loading component for charts
+  - [x] Create error message component
+  - [x] Handle network errors gracefully
 - [ ] Integrate with existing auth middleware
   - [ ] Verify dashboard route uses existing auth middleware
   - [ ] Test protected route access

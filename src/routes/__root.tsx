@@ -1,3 +1,4 @@
+import { type QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import {
     createRootRouteWithContext,
     HeadContent,
@@ -5,15 +6,16 @@ import {
     Scripts,
 } from "@tanstack/solid-router";
 import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools";
-import { Suspense } from "solid-js";
+import { type JSXElement, Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
-import { Footer } from "../components/common/Footer";
-import { Navbar } from "../components/common/Navbar";
-import NotificationsContainer from "../components/notifications/NotificationsContainer";
-import styleCss from "../styles/styles.css?url";
+import { Footer } from "~/components/common/Footer";
+import { Navbar } from "~/components/common/Navbar";
+import NotificationsContainer from "~/components/notifications/NotificationsContainer";
+import { queryClient } from "~/queryClient";
+import styleCss from "~/styles/styles.css?url";
 
-export const Route = createRootRouteWithContext()({
+export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()({
     head: () => ({
         meta: [
             {
@@ -37,10 +39,20 @@ export const Route = createRootRouteWithContext()({
             { rel: "stylesheet", href: styleCss },
         ],
     }),
-    shellComponent: RootComponent,
+    component: RootComponent,
 });
 
 function RootComponent() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <RootDocument>
+                <Outlet />
+            </RootDocument>
+        </QueryClientProvider>
+    );
+}
+
+function RootDocument(props: { children: JSXElement }) {
     return (
         <html>
             <head>
@@ -59,7 +71,7 @@ function RootComponent() {
                 <main class="grow flex flex-col items-center justify-center p-4">
                     <NotificationsContainer />
                     <Suspense>
-                        <Outlet />
+                        {props.children}
                         <TanStackRouterDevtools />
                     </Suspense>
                 </main>

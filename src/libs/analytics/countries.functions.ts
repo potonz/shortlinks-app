@@ -1,12 +1,25 @@
 import { createServerFn } from "@tanstack/solid-start";
+import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { env } from "cloudflare:workers";
+import { auth } from "~/libs/auth/auth";
 
-import { buildCountriesQuery } from "~/libs/analytics/countriesQuery";
+import { buildCountriesQuery } from "~/libs/analytics/countries.server";
 
 export const getCountries = createServerFn({ method: "GET" })
     .handler(async () => {
         try {
-            const data = await buildCountriesQuery(env.DB, 10);
+            const headers = getRequestHeaders();
+            const session = await auth.api.getSession({ headers });
+            const userId = session?.user?.id;
+
+            if (!userId) {
+                return {
+                    success: false,
+                    error: "User not authenticated",
+                };
+            }
+
+            const data = await buildCountriesQuery(env.DB, 10, userId);
 
             return {
                 success: true,

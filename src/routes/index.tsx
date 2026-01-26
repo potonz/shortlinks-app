@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { createEffect, createSignal, Show } from "solid-js";
+import { createSignal, onMount, Show } from "solid-js";
 import { z } from "zod";
 
 import { CopyButton } from "../components/CopyButton";
@@ -26,9 +26,10 @@ const baseUrlWithoutScheme = fullBaseHref.replace(baseUrl.protocol + "//", "");
 
 function App() {
     const [url, setUrl] = createSignal("");
-    let captchaContainerRef: HTMLDivElement | undefined;
-    let captchaToken = "";
-    const isInputUrlValid = () => z.httpUrl().refine(url => !url.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL)).safeParse(url());
+    let captchaContainerRef!: HTMLDivElement;
+    let captchaLoaderRef!: HTMLDivElement;
+    const [captchaToken, setCaptchaToken] = createSignal("");
+    const canSubmit = () => captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 
@@ -59,15 +60,16 @@ function App() {
         event.preventDefault();
 
         const _url = url();
+        const _captchaToken = captchaToken();
         if (!_url) return;
-        if (!captchaToken) return;
+        if (!_captchaToken) return;
 
         setIsSubmitting(true);
 
         createShortLink({
             data: {
                 url: _url,
-                captchaToken: captchaToken,
+                captchaToken: _captchaToken,
             },
         }).then((shortId) => {
             if (shortId) {
@@ -97,23 +99,29 @@ function App() {
         });
     };
 
-    createEffect(() => {
+    onMount(() => {
         function loadTurnstile() {
             if ("turnstile" in globalThis) {
-                turnstile.render(captchaContainerRef!, {
+                turnstile.render(captchaContainerRef, {
                     "sitekey": import.meta.env.VITE_CF_TURNSTILE_SITE_KEY,
                     "action": "generate_short_link",
                     "callback": (token: string) => {
-                        captchaToken = token;
+                        setCaptchaToken(token);
                     },
                     "theme": "dark",
+                    "size": "flexible",
                     "expired-callback": () => {
-                        captchaToken = "";
+                        setCaptchaToken("");
+                    },
+                    "error-callback": (error) => {
+                        console.error(error);
+                        setCaptchaToken("");
                     },
                 });
+                captchaLoaderRef.style.display = "none";
             }
             else {
-                setTimeout(loadTurnstile, 1000);
+                setTimeout(loadTurnstile, 500);
             }
         }
         loadTurnstile();
@@ -136,12 +144,14 @@ function App() {
                     />
                 </div>
 
-                <div id="turnstile-container" ref={captchaContainerRef}></div>
+                <div id="turnstile-container" ref={captchaContainerRef}>
+                    <div class="h-[65px] animate-pulse rounded-lg bg-zinc-900" ref={captchaLoaderRef}></div>
+                </div>
 
                 <button
                     type="submit"
                     class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
-                    disabled={!isInputUrlValid().success}
+                    disabled={!canSubmit()}
                 >
                     <span class="flex items-center justify-center gap-2">Shorten it</span>
                 </button>
