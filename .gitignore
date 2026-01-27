@@ -8,3 +8,5 @@ dist-ssr
 .tanstack
 .wrangler
 .dev.vars*
+.opencode/*
+!.opencode/opencode.jsonc
