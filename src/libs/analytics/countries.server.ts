@@ -1,4 +1,6 @@
-export async function buildCountriesQuery(db: D1Database, limit: number = 10, userId: string) {
+import { env } from "cloudflare:workers";
+
+export async function buildCountriesQuery(limit: number = 10, userId: string) {
     const query = `
         SELECT
             sl_link_request.country,
@@ -12,7 +14,7 @@ export async function buildCountriesQuery(db: D1Database, limit: number = 10, us
         LIMIT ?
     `;
 
-    const result = await db.prepare(query).bind(userId, limit).all<{ country: string; clicks: number }>();
+    const result = await env.DB.prepare(query).bind(userId, limit).all<{ country: string; clicks: number }>();
 
     return result.results.map(row => ({
         country: row.country,

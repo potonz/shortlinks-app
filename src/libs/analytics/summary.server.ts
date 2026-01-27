@@ -1,6 +1,8 @@
+import { env } from "cloudflare:workers";
+
 import type { IBuildSummaryQueryResult } from "./schemas";
 
-export async function buildSummaryQuery(db: D1Database, userId: string): Promise<IBuildSummaryQueryResult> {
+export async function buildSummaryQuery(userId: string): Promise<IBuildSummaryQueryResult> {
     const totalLinksQuery = `
         SELECT COUNT(*) as count
         FROM sl_user_links
@@ -29,11 +31,11 @@ export async function buildSummaryQuery(db: D1Database, userId: string): Promise
         AND sl_link_request.timestamp >= datetime('now', '-7 days')
     `;
 
-    const [linksResult, clicksResult, visitorsResult, last7DaysResult] = await db.batch<{ count: number }>([
-        db.prepare(totalLinksQuery).bind(userId),
-        db.prepare(totalClicksQuery).bind(userId),
-        db.prepare(uniqueVisitorsQuery).bind(userId),
-        db.prepare(last7DaysQuery).bind(userId),
+    const [linksResult, clicksResult, visitorsResult, last7DaysResult] = await env.DB.batch<{ count: number }>([
+        env.DB.prepare(totalLinksQuery).bind(userId),
+        env.DB.prepare(totalClicksQuery).bind(userId),
+        env.DB.prepare(uniqueVisitorsQuery).bind(userId),
+        env.DB.prepare(last7DaysQuery).bind(userId),
     ]);
 
     return {

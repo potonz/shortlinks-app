@@ -1,4 +1,6 @@
-export async function buildReferrersQuery(db: D1Database, limit: number = 10, userId: string) {
+import { env } from "cloudflare:workers";
+
+export async function buildReferrersQuery(limit: number = 10, userId: string) {
     const query = `
         SELECT
             substr(sl_link_request.referer, instr(sl_link_request.referer, '://') + 3) as referrer,
@@ -12,7 +14,7 @@ export async function buildReferrersQuery(db: D1Database, limit: number = 10, us
         LIMIT ?
     `;
 
-    const result = await db.prepare(query).bind(userId, limit).all<{ referrer: string; clicks: number }>();
+    const result = await env.DB.prepare(query).bind(userId, limit).all<{ referrer: string; clicks: number }>();
 
     return result.results.map(row => ({
         referrer: row.referrer,

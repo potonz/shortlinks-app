@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 import { auth } from "~/libs/auth/auth";
 
 import { buildReferrersQuery } from "~/libs/analytics/referrers.server";
@@ -19,7 +18,7 @@ export const getReferrers = createServerFn({ method: "GET" })
                 };
             }
 
-            const data = await buildReferrersQuery(env.DB, 10, userId);
+            const data = await buildReferrersQuery(10, userId);
 
             return {
                 success: true,

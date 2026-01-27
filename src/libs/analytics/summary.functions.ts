@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 
 import { buildSummaryQuery } from "~/libs/analytics/summary.server";
 import { auth } from "~/libs/auth/auth";
@@ -19,7 +18,7 @@ export const getSummary = createServerFn({ method: "GET" })
                 };
             }
 
-            const summary = await buildSummaryQuery(env.DB, userId);
+            const summary = await buildSummaryQuery(userId);
 
             return {
                 success: true,

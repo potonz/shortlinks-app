@@ -1,8 +1,9 @@
+import { env } from "cloudflare:workers";
 import { parse } from "date-fns";
 
 import type { IBuildClicksByTimeQueryResult } from "./schemas";
 
-export async function buildClicksByTimeQuery(db: D1Database, days: number = 30, userId: string): Promise<IBuildClicksByTimeQueryResult[]> {
+export async function buildClicksByTimeQuery(days: number = 30, userId: string): Promise<IBuildClicksByTimeQueryResult[]> {
     const query = `
         SELECT
             substr(sl_link_request.timestamp, 1, 10) as date,
@@ -15,7 +16,7 @@ export async function buildClicksByTimeQuery(db: D1Database, days: number = 30, 
         ORDER BY date ASC
     `;
 
-    const result = await db.prepare(query).bind(userId, days).all<{ date: string; clicks: number }>();
+    const result = await env.DB.prepare(query).bind(userId, days).all<{ date: string; clicks: number }>();
 
     return result.results.map(row => ({
         date: parse(row.date, "yyyy-MM-dd", new Date()),

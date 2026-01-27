@@ -1,13 +1,12 @@
 import { createServerFn } from "@tanstack/solid-start";
-import { env } from "cloudflare:workers";
 
-import { buildLinkRequestsQuery, buildLinkRequestsQueryValidator } from "~/libs/analytics/linkRequestsQuery";
+import { buildLinkRequestsQuery, buildLinkRequestsQueryValidator } from "~/libs/analytics/linkRequests.server";
 
 export const getRequests = createServerFn({ method: "GET" })
     .inputValidator(buildLinkRequestsQueryValidator)
     .handler(async ({ data: params }) => {
         try {
-            const result = await buildLinkRequestsQuery(env.DB, params);
+            const result = await buildLinkRequestsQuery(params);
 
             return {
                 success: true,

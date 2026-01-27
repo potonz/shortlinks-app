@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 import { auth } from "~/libs/auth/auth";
 
 import { buildCountriesQuery } from "~/libs/analytics/countries.server";
@@ -19,7 +18,7 @@ export const getCountries = createServerFn({ method: "GET" })
                 };
             }
 
-            const data = await buildCountriesQuery(env.DB, 10, userId);
+            const data = await buildCountriesQuery(10, userId);
 
             return {
                 success: true,

@@ -1,9 +1,8 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
-import { auth } from "~/libs/auth/auth";
 
 import { buildClicksByTimeQuery } from "~/libs/analytics/clicksByTime.server";
+import { auth } from "~/libs/auth/auth";
 
 export const getClicksByTime = createServerFn({ method: "GET" })
     .handler(async () => {
@@ -19,7 +18,7 @@ export const getClicksByTime = createServerFn({ method: "GET" })
                 };
             }
 
-            const data = await buildClicksByTimeQuery(env.DB, 30, userId);
+            const data = await buildClicksByTimeQuery(30, userId);
 
             return {
                 success: true,
