@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { auth } from "~/libs/auth/auth";
 
 import { buildCountriesQuery } from "~/libs/analytics/countries.server";
+import { auth } from "~/libs/auth/auth";
 
 export const getCountries = createServerFn({ method: "GET" })
     .handler(async () => {

@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { auth } from "~/libs/auth/auth";
 
 import { buildReferrersQuery } from "~/libs/analytics/referrers.server";
+import { auth } from "~/libs/auth/auth";
 
 export const getReferrers = createServerFn({ method: "GET" })
     .handler(async () => {
