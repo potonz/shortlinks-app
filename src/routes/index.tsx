@@ -168,13 +168,16 @@ function App() {
 
             <Show when={shortIdGenerated()}>
                 {shortId => (
-                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
-                        <div class="grow text-left">
-                            <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
-                            <span class="text-white">{shortId()}</span>
-                        </div>
-                        <div class="pl-2">
-                            <CopyButton text={fullBaseHref + shortId()} />
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-zinc-300 mb-4">Your new link</h3>
+                        <div class="p-4 border-2 border-zinc-400 rounded-2xl flex">
+                            <div class="grow text-left">
+                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
+                                <span class="text-white">{shortId()}</span>
+                            </div>
+                            <div class="pl-2">
+                                <CopyButton text={fullBaseHref + shortId()} />
+                            </div>
                         </div>
                     </div>
                 )}
