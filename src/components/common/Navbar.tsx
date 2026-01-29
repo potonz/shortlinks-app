@@ -40,7 +40,7 @@ export function Navbar() {
                         rel="noopener noreferrer"
                         class="text-white hover:text-zinc-300 mr-2"
                     >
-                        <i class="bi bi-github text-2xl"></i>
+                        <i class="bi bi-github text-xl"></i>
                     </a>
                     <div class="w-px h-full bg-zinc-500 mx-4"></div>
                     <Switch>
@@ -59,14 +59,17 @@ export function Navbar() {
                                 <button
                                     type="button"
                                     onClick={() => setDropdownOpen(prev => !prev)}
-                                    class="flex gap-2 px-3 py-2 rounded hover:bg-zinc-800"
+                                    class="flex items-center gap-2 px-3 py-2 rounded hover:bg-zinc-800"
                                 >
-                                    <i class="bi bi-person" />
+                                    <i class="bi bi-person text-xl" />
                                     {session()?.data?.user.name}
                                 </button>
                                 <Show when={dropdownOpen()}>
                                     <div class="absolute flex flex-col justify-end gap-1 rounded p-1 right-0 mt-2 bg-zinc-800 shadow-lg shadow-zinc-900 z-10">
-                                        <Link to="/dashboard" class={styles["user-dropdown-item"]}>My Dashboard</Link>
+                                        <Link to="/dashboard" class={styles["user-dropdown-item"]}>
+                                            <i class="bi bi-speedometer2"></i>
+                                            My Dashboard
+                                        </Link>
                                         <button
                                             type="button"
                                             onClick={() => {
@@ -75,6 +78,7 @@ export function Navbar() {
                                             }}
                                             class={styles["user-dropdown-item"]}
                                         >
+                                            <i class="bi bi-box-arrow-right"></i>
                                             Sign out
                                         </button>
                                     </div>
