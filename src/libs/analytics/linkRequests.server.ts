@@ -1,6 +1,8 @@
 import { env } from "cloudflare:workers";
 import { z } from "zod";
 
+import { escapeLikeWildcards } from "~/utils/db";
+
 import type { TLinkRequest } from "./schemas";
 
 export const buildLinkRequestsQueryValidator = z.object({
@@ -39,10 +41,13 @@ export async function buildLinkRequestsQuery(
 
     if (referrer) {
         whereClause += " AND sl_link_request.referer LIKE ?";
-        bindings.push(`%${referrer}%`);
+        bindings.push(`%${escapeLikeWildcards(referrer)}%`);
     }
 
-    const countQuery = `SELECT COUNT(*) as total FROM sl_link_request ${whereClause}`;
+    const countQuery = `SELECT COUNT(*) as total
+        FROM sl_link_request
+        INNER JOIN sl_user_links ON sl_user_links.short_id = sl_link_request.short_id
+        ${whereClause}`;
     const dataQuery = `
         SELECT
             sl_link_request.id,
@@ -61,6 +66,7 @@ export async function buildLinkRequestsQuery(
             sl_link_request.timestamp,
             sl_user_links.user_id as userId
         FROM sl_link_request
+        INNER JOIN sl_user_links ON sl_user_links.short_id = sl_link_request.short_id
         ${whereClause}
         ORDER BY sl_link_request.timestamp DESC
         LIMIT ?
