@@ -29,7 +29,7 @@ function App() {
     let captchaContainerRef!: HTMLDivElement;
     let captchaLoaderRef!: HTMLDivElement;
     const [captchaToken, setCaptchaToken] = createSignal("");
-    const canSubmit = () => captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
+    const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 
@@ -150,26 +150,21 @@ function App() {
 
                 <button
                     type="submit"
-                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
+                    class="w-full py-4 flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
                     disabled={!canSubmit()}
                 >
-                    <span class="flex items-center justify-center gap-2">Shorten it</span>
+                    <Show
+                        when={isSubmitting()}
+                        fallback="Shorten it"
+                    >
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
+                        {/* forces inner height to match text */}
+                        <div class="h-lh"></div>
+                    </Show>
                 </button>
             </form>
-
-            {/* Slide‑down indicator – collapses without reserved space */}
-            <div
-                class={`
-                    ease-out flex justify-center items-center gap-2 transition-all duration-300
-                    ${isSubmitting() ? "mt-12 p-4 max-h-full opacity-100 border border-zinc-500 rounded-2xl" : "transition-none max-h-0 opacity-0 pointer-events-none"}
-                `}
-            >
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                {/* forces inner height to match text */}
-                <div class="h-lh"></div>
-            </div>
 
             <Show when={shortIdGenerated()}>
                 {shortId => (
