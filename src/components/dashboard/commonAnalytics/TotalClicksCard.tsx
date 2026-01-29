@@ -13,7 +13,7 @@ export function TotalClicksCard() {
             title="Total Clicks"
             value={analyticsQuery.isPending ? "Loading..." : totalClicks()}
             subtitle={analyticsQuery.error?.message}
-            icon="📊"
+            icon={<i class="bi bi-cursor" />}
         />
     );
 }

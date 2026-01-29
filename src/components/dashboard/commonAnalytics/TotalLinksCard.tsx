@@ -13,7 +13,7 @@ export function TotalLinksCard() {
             title="Total Links Created"
             value={analyticsQuery.isPending ? "Loading..." : totalLinks()}
             subtitle={analyticsQuery.error?.message}
-            icon="🔗"
+            icon={<i class="bi bi-link-45deg" />}
         />
     );
 }

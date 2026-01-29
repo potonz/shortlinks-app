@@ -13,7 +13,7 @@ export function Last7DaysClicksCard() {
             title="Last 7 Days Clicks"
             value={analyticsQuery.isPending ? "Loading..." : last7DaysClicks()}
             subtitle={analyticsQuery.error?.message}
-            icon="📈"
+            icon={<i class="bi bi-graph-up" />}
         />
     );
 }

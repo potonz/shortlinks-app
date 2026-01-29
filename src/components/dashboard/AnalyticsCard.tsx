@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { type JSXElement, Show } from "solid-js";
 
 import styles from "./AnalyticsCard.module.css";
 
@@ -6,7 +6,7 @@ interface IAnalyticsCardProps {
     title: string;
     value: number | string;
     subtitle?: string;
-    icon: string;
+    icon: JSXElement;
     trend?: {
         value: number;
         isPositive: boolean;

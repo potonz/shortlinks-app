@@ -80,7 +80,7 @@ export function ClicksByTimeChart() {
                         </p>
                     </div>
                     <div class="text-zinc-400">
-                        <span class="text-2xl">📈</span>
+                        <span class="text-2xl"><i class="bi bi-bar-chart-line" /></span>
                     </div>
                 </div>
 
