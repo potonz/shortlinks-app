@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { createEffect, createSignal, Show } from "solid-js";
+import { createSignal, onMount, Show } from "solid-js";
 import { z } from "zod";
 
 import { CopyButton } from "../components/CopyButton";
@@ -7,6 +7,7 @@ import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
 import { addLinkToHistory } from "../stores/linkHistoryStore";
+import { baseUrlWithoutScheme, fullBaseHref } from "../utils/urls";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -20,15 +21,12 @@ export const Route = createFileRoute("/")({
     component: App,
 });
 
-const baseUrl = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL);
-const fullBaseHref = baseUrl.href.replace(/\/*$/, "/");
-const baseUrlWithoutScheme = fullBaseHref.replace(baseUrl.protocol + "//", "");
-
 function App() {
     const [url, setUrl] = createSignal("");
-    let captchaContainerRef: HTMLDivElement | undefined;
-    let captchaToken = "";
-    const isInputUrlValid = () => z.httpUrl().refine(url => !url.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL)).safeParse(url());
+    let captchaContainerRef!: HTMLDivElement;
+    let captchaLoaderRef!: HTMLDivElement;
+    const [captchaToken, setCaptchaToken] = createSignal("");
+    const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
 
@@ -59,15 +57,16 @@ function App() {
         event.preventDefault();
 
         const _url = url();
+        const _captchaToken = captchaToken();
         if (!_url) return;
-        if (!captchaToken) return;
+        if (!_captchaToken) return;
 
         setIsSubmitting(true);
 
         createShortLink({
             data: {
                 url: _url,
-                captchaToken: captchaToken,
+                captchaToken: _captchaToken,
             },
         }).then((shortId) => {
             if (shortId) {
@@ -83,11 +82,10 @@ function App() {
                 const zodErrors = JSON.parse(err.message);
                 if (Array.isArray(zodErrors)) {
                     zodErrors.forEach(err => addNotification(err.message, "error", 5000));
+                    return;
                 }
             }
-            else {
-                throw err;
-            }
+            throw err;
         }).catch((err) => {
             addNotification("Unable to generate a short link :( Please try again later.", "error");
             console.error(err);
@@ -97,23 +95,29 @@ function App() {
         });
     };
 
-    createEffect(() => {
+    onMount(() => {
         function loadTurnstile() {
             if ("turnstile" in globalThis) {
-                turnstile.render(captchaContainerRef!, {
+                turnstile.render(captchaContainerRef, {
                     "sitekey": import.meta.env.VITE_CF_TURNSTILE_SITE_KEY,
                     "action": "generate_short_link",
                     "callback": (token: string) => {
-                        captchaToken = token;
+                        setCaptchaToken(token);
                     },
                     "theme": "dark",
+                    "size": "flexible",
                     "expired-callback": () => {
-                        captchaToken = "";
+                        setCaptchaToken("");
+                    },
+                    "error-callback": (error) => {
+                        console.error(error);
+                        setCaptchaToken("");
                     },
                 });
+                captchaLoaderRef.style.display = "none";
             }
             else {
-                setTimeout(loadTurnstile, 1000);
+                setTimeout(loadTurnstile, 500);
             }
         }
         loadTurnstile();
@@ -136,40 +140,40 @@ function App() {
                     />
                 </div>
 
-                <div id="turnstile-container" ref={captchaContainerRef}></div>
+                <div id="turnstile-container" ref={captchaContainerRef}>
+                    <div class="h-[65px] animate-pulse rounded-lg bg-zinc-900" ref={captchaLoaderRef}></div>
+                </div>
 
                 <button
                     type="submit"
-                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
-                    disabled={!isInputUrlValid().success}
+                    class="w-full py-4 flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-950 disabled:text-zinc-700"
+                    disabled={!canSubmit()}
                 >
-                    <span class="flex items-center justify-center gap-2">Shorten it</span>
+                    <Show
+                        when={isSubmitting()}
+                        fallback="Shorten it"
+                    >
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
+                        {/* forces inner height to match text */}
+                        <div class="h-lh"></div>
+                    </Show>
                 </button>
             </form>
 
-            {/* Slide‑down indicator – collapses without reserved space */}
-            <div
-                class={`
-                    ease-out flex justify-center items-center gap-2 transition-all duration-300
-                    ${isSubmitting() ? "mt-12 p-4 max-h-full opacity-100 border border-zinc-500 rounded-2xl" : "transition-none max-h-0 opacity-0 pointer-events-none"}
-                `}
-            >
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse" />
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-100" />
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse delay-200" />
-                {/* forces inner height to match text */}
-                <div class="h-lh"></div>
-            </div>
-
             <Show when={shortIdGenerated()}>
                 {shortId => (
-                    <div class="mt-12 p-4 border border-zinc-500 rounded-2xl flex">
-                        <div class="grow text-left">
-                            <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
-                            <span class="text-white">{shortId()}</span>
-                        </div>
-                        <div class="pl-2">
-                            <CopyButton text={fullBaseHref + shortId()} />
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-zinc-300 mb-4">Your new link</h3>
+                        <div class="p-4 border-2 border-zinc-400 rounded-2xl flex">
+                            <div class="grow text-left">
+                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
+                                <span class="text-white">{shortId()}</span>
+                            </div>
+                            <div class="pl-2">
+                                <CopyButton text={fullBaseHref + shortId()} />
+                            </div>
                         </div>
                     </div>
                 )}

@@ -49,7 +49,13 @@ const addLinkToHistory = (shortId: string, targetUrl: string) => {
         date: new Date().toISOString(),
     };
 
-    setLinkHistory(prev => [newItem, ...prev]);
+    setLinkHistory((prev) => {
+        const newHistory = [newItem, ...prev];
+        if (newHistory.length > 10) {
+            return newHistory.slice(0, 10);
+        }
+        return newHistory;
+    });
     saveHistoryToStorage();
 };
 

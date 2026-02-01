@@ -1,7 +1,9 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequest } from "@tanstack/solid-start/server";
+import { env } from "cloudflare:workers";
 import { z } from "zod";
 
+import { auth } from "../auth/auth";
 import { validateCaptcha } from "../captcha/turnstileValidate";
 import { getShortLinksManager } from "./manager";
 
@@ -14,6 +16,9 @@ export const createShortLink = createServerFn({ method: "POST" })
     .inputValidator(validator)
     .handler(async ({ data }) => {
         const request = getRequest();
+        const session = await auth.api.getSession({ headers: request.headers });
+        const userId = session?.user?.id;
+
         const clientIp = request.headers.get("x-forwarded-for") ?? request.headers.get("cf-connecting-ip");
 
         if (!validateCaptcha(data.captchaToken, clientIp)) {
@@ -22,6 +27,18 @@ export const createShortLink = createServerFn({ method: "POST" })
 
         const manager = await getShortLinksManager();
         const shortId = await manager.createShortLink(data.url);
+
+        if (userId) {
+            const result = await env.DB.prepare(`
+                INSERT INTO sl_user_links (short_id, user_id)
+                VALUES (?, ?)
+            `).bind(shortId, userId).run();
+
+            if (!result.success) {
+                console.error(result.error);
+                return null;
+            }
+        }
 
         return shortId;
     });
