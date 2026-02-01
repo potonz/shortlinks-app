@@ -9,6 +9,10 @@
   --font-mono: "Geist Mono", monospace;
   --color-foreground: white;
   --color-background: black;
+
+  /* Custom breakpoints for table responsiveness */
+  --breakpoint-tablet: 48rem;
+  --breakpoint-desktop: 64rem;
 }
 
 @layer base {

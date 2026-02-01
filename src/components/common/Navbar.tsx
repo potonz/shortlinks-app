@@ -1,7 +1,9 @@
-import { Link } from "@tanstack/solid-router";
+import { ClientOnly, Link } from "@tanstack/solid-router";
 import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 
+import { SidebarToggle } from "~/components/dashboard/sidebar/SidebarToggle";
 import { authClient } from "~/libs/auth/auth-client";
+import { toggleSidebar } from "~/stores/sidebarStore";
 
 import styles from "./Navbar.module.css";
 
@@ -9,6 +11,10 @@ export function Navbar() {
     let dropdownRef!: HTMLDivElement;
     const [dropdownOpen, setDropdownOpen] = createSignal(false);
     const session = authClient.useSession();
+
+    const handleToggleClick = () => {
+        toggleSidebar();
+    };
 
     const handleSignOut = async () => {
         await authClient.signOut();
@@ -30,7 +36,9 @@ export function Navbar() {
     return (
         <div class="flex justify-center px-4">
             <nav class="w-full max-w-xl my-4 bg-black/50 backdrop-blur-md rounded-md flex items-center justify-between">
-                {/* Logo */}
+                <ClientOnly>
+                    <SidebarToggle onClick={handleToggleClick} />
+                </ClientOnly>
                 <Link to="/" class="text-4xl font-bold text-white">Poto</Link>
 
                 <div class="ml-auto flex items-center space-x-2 h-full">
