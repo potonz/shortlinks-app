@@ -38,7 +38,7 @@ jobs:
           body: "${{ steps.git-cliff.outputs.content }}"
 
   lint:
-    uses: potonz/shortlinks-app/.github/workflows/lint.yml
+    uses: potonz/shortlinks-app/.github/workflows/lint.yml@main
 
   deploy:
     runs-on: ubuntu-latest
