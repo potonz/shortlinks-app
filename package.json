@@ -11,7 +11,7 @@
   "type": "module",
   "version": "0.2.7",
   "scripts": {
-    "dev": "CLOUDFLARE_ENV=dev vite dev --port 3000",
+    "dev": "vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit && eslint",
