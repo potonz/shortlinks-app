@@ -7,6 +7,7 @@ import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
 import { addLinkToHistory } from "../stores/linkHistoryStore";
+import { baseUrlWithoutScheme, fullBaseHref } from "../utils/urls";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -19,10 +20,6 @@ export const Route = createFileRoute("/")({
     }),
     component: App,
 });
-
-const baseUrl = new URL(import.meta.env.VITE_SHORT_LINK_BASE_URL);
-const fullBaseHref = baseUrl.href.replace(/\/*$/, "/");
-const baseUrlWithoutScheme = fullBaseHref.replace(baseUrl.protocol + "//", "");
 
 function App() {
     const [url, setUrl] = createSignal("");
@@ -85,11 +82,10 @@ function App() {
                 const zodErrors = JSON.parse(err.message);
                 if (Array.isArray(zodErrors)) {
                     zodErrors.forEach(err => addNotification(err.message, "error", 5000));
+                    return;
                 }
             }
-            else {
-                throw err;
-            }
+            throw err;
         }).catch((err) => {
             addNotification("Unable to generate a short link :( Please try again later.", "error");
             console.error(err);
