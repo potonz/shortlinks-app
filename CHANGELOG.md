@@ -1,3 +1,9 @@
+## [0.2.9] - 2026-02-01
+
+### Revert
+
+- Removing deploy command
+
 ## [0.2.8] - 2026-02-01
 
 ### ⛰️  Features
