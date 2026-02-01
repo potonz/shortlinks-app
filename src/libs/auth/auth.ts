@@ -5,8 +5,8 @@ import { env } from "cloudflare:workers";
 import { D1Dialect } from "./d1helper";
 
 export const auth = betterAuth({
-    baseURL: process.env.BETTER_AUTH_BASE_URL,
-    database: new D1Dialect({ database: env.DB! }),
+    baseURL: process.env.BETTER_AUTH_URL,
+    database: new D1Dialect({ database: env.DB }),
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
