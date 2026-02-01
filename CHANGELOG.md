@@ -1,3 +1,13 @@
+## [0.2.10] - 2026-02-01
+
+### 🐛 Bug Fixes
+
+- Updated better auth base url
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Updated dependencies
+
 ## [0.2.9] - 2026-02-01
 
 ### Revert
