@@ -31,11 +31,11 @@ export async function buildSummaryQuery(userId: string): Promise<IBuildSummaryQu
         AND sl_link_request.timestamp >= datetime('now', '-7 days')
     `;
 
-    const [linksResult, clicksResult, visitorsResult, last7DaysResult] = await env.DB!.batch<{ count: number }>([
-        env.DB!.prepare(totalLinksQuery).bind(userId),
-        env.DB!.prepare(totalClicksQuery).bind(userId),
-        env.DB!.prepare(uniqueVisitorsQuery).bind(userId),
-        env.DB!.prepare(last7DaysQuery).bind(userId),
+    const [linksResult, clicksResult, visitorsResult, last7DaysResult] = await env.DB.batch<{ count: number }>([
+        env.DB.prepare(totalLinksQuery).bind(userId),
+        env.DB.prepare(totalClicksQuery).bind(userId),
+        env.DB.prepare(uniqueVisitorsQuery).bind(userId),
+        env.DB.prepare(last7DaysQuery).bind(userId),
     ]);
 
     return {

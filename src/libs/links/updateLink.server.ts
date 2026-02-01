@@ -13,7 +13,7 @@ interface IUpdateLinkData {
 
 export async function updateLinkQuery(input: IUpdateLinkData, userId: string): Promise<IUpdateLinkResult> {
     if (input.data.originalUrl) {
-        const result = await env.DB!.prepare(`
+        const result = await env.DB.prepare(`
             UPDATE sl_links_map 
             SET target_url = ?
             WHERE short_id = ?

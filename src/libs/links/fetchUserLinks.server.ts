@@ -31,7 +31,7 @@ export async function fetchUserLinksQuery(
         WHERE sl_user_links.user_id = ?
     `;
 
-    const countResult = await env.DB!.prepare(countQuery)
+    const countResult = await env.DB.prepare(countQuery)
         .bind(userId)
         .first<{ total: number }>();
 
@@ -53,7 +53,7 @@ export async function fetchUserLinksQuery(
         LIMIT ? OFFSET ?
     `;
 
-    const result = await env.DB!.prepare(query)
+    const result = await env.DB.prepare(query)
         .bind(userId, input.limit, offset)
         .all<{
         short_id: string;

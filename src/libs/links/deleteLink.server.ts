@@ -4,7 +4,7 @@ import { getShortLinksManager } from "~/libs/shortlinks/manager";
 import type { IDeleteLinkResult } from "~/types/links";
 
 export async function deleteLinkQuery(shortId: string, userId: string): Promise<IDeleteLinkResult> {
-    const deleteUserLinkResult = await env.DB!.prepare(`
+    const deleteUserLinkResult = await env.DB.prepare(`
         DELETE FROM sl_user_links 
         WHERE short_id = ? AND user_id = ?
     `).bind(shortId, userId).run();

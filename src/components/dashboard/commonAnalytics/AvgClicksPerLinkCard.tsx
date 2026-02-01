@@ -7,10 +7,10 @@ export function AvgClicksPerLinkCard() {
     const analyticsQuery = useQuery(() => queryConfig());
 
     const avgClicks = () => {
-        if (analyticsQuery.data?.totalLinks === 0) {
+        if (!analyticsQuery.data || analyticsQuery.data.totalLinks === 0) {
             return "0";
         }
-        const avg = analyticsQuery.data!.totalClicks / analyticsQuery.data!.totalLinks;
+        const avg = analyticsQuery.data.totalClicks / analyticsQuery.data.totalLinks;
         return avg.toFixed(1);
     };
 

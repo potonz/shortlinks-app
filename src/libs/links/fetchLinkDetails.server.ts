@@ -21,7 +21,7 @@ export async function fetchLinkDetailsQuery(shortId: string, userId: string): Pr
         GROUP BY sl_links_map.short_id
     `;
 
-    const result = await env.DB!.prepare(query).bind(shortId, userId).first<{
+    const result = await env.DB.prepare(query).bind(shortId, userId).first<{
         short_id: string;
         target_url: string;
         last_accessed_at: string;

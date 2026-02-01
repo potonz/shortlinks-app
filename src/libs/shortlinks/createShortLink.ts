@@ -29,7 +29,7 @@ export const createShortLink = createServerFn({ method: "POST" })
         const shortId = await manager.createShortLink(data.url);
 
         if (userId) {
-            const result = await env.DB!.prepare(`
+            const result = await env.DB.prepare(`
                 INSERT INTO sl_user_links (short_id, user_id)
                 VALUES (?, ?)
             `).bind(shortId, userId).run();

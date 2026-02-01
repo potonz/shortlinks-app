@@ -73,9 +73,9 @@ export async function buildLinkRequestsQuery(
         OFFSET ?
     `;
 
-    const [countResult, dataResult] = await env.DB!.batch([
-        env.DB!.prepare(countQuery).bind(...bindings),
-        env.DB!.prepare(dataQuery).bind(...bindings, pageSize, offset),
+    const [countResult, dataResult] = await env.DB.batch([
+        env.DB.prepare(countQuery).bind(...bindings),
+        env.DB.prepare(dataQuery).bind(...bindings, pageSize, offset),
     ]) as [
         D1Result<{ total: number }>,
         D1Result<TLinkRequest>,

@@ -16,7 +16,7 @@ export async function buildClicksByTimeQuery(days: number = 30, userId: string):
         ORDER BY date ASC
     `;
 
-    const result = await env.DB!.prepare(query).bind(userId, days).all<{ date: string; clicks: number }>();
+    const result = await env.DB.prepare(query).bind(userId, days).all<{ date: string; clicks: number }>();
 
     return result.results.map(row => ({
         date: parse(row.date, "yyyy-MM-dd", new Date()),
