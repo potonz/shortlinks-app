@@ -14,7 +14,7 @@ export async function buildReferrersQuery(limit: number = 10, userId: string) {
         LIMIT ?
     `;
 
-    const result = await env.DB.prepare(query).bind(userId, limit).all<{ referrer: string; clicks: number }>();
+    const result = await env.DB!.prepare(query).bind(userId, limit).all<{ referrer: string; clicks: number }>();
 
     return result.results.map(row => ({
         referrer: row.referrer,

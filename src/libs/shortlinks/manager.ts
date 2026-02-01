@@ -8,21 +8,21 @@ let shortIdLength = 3;
 
 export const getShortLinksManager = createServerOnlyFn(async () => {
     if (!manager) {
-        const storedLength = await env.CONFIG.get("short_id_length");
+        const storedLength = await env.CONFIG!.get("short_id_length");
         shortIdLength = storedLength ? parseInt(storedLength) : 3;
 
         manager = await createManager({
-            backend: createD1Backend(env.DB),
+            backend: createD1Backend(env.DB!),
             caches: [
                 createInMemoryCache(),
-                createCloudflareKvCache(env.SHORTLINKS_CACHE),
+                createCloudflareKvCache(env.SHORTLINKS_CACHE!),
             ],
             waitUntil,
             shortIdLength,
             async onShortIdLengthUpdated(newLength) {
                 shortIdLength = newLength;
                 try {
-                    await env.CONFIG.put("short_id_length", newLength.toString());
+                    await env.CONFIG!.put("short_id_length", newLength.toString());
                 }
                 catch (err) {
                     console.warn("Failed when updating KV short_id_length", err);

@@ -14,8 +14,8 @@
     "dev": "CLOUDFLARE_ENV=dev vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
+    "lint": "tsc --noEmit && eslint",
+    "lint:fix": "tsc --noEmit && eslint --fix",
     "release": "bun run ./scripts/release.ts",
     "cf-typegen": "wrangler types src/worker-configuration.d.ts"
   },
