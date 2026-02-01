@@ -13,6 +13,7 @@ export const getRouter = () => {
         scrollRestoration: true,
         defaultPreloadStaleTime: 0,
         defaultErrorComponent: ErrorComponent,
+        defaultPendingMinMs: 50,
     });
     setupRouterSsrQueryIntegration({
         router,

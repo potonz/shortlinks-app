@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
+import { updateLinkQuery } from "~/libs/links/updateLink.server";
 import type { IUpdateLinkResult } from "~/types/links";
 
 const validator = z.object({
@@ -30,28 +30,7 @@ export const updateLink = createServerFn({ method: "POST" })
                 };
             }
 
-            if (data.data.originalUrl) {
-                const result = await env.DB!.prepare(`
-                    UPDATE sl_links_map 
-                    SET target_url = ?
-                    WHERE short_id = ?
-                        AND EXISTS (
-                            SELECT 1 FROM sl_user_links 
-                            WHERE short_id = ? AND user_id = ?
-                        )
-                `).bind(data.data.originalUrl, data.shortId, data.shortId, userId).run();
-
-                if (!result.success || result.meta?.changes === 0) {
-                    return {
-                        success: false,
-                        error: "Link not found or access denied",
-                    };
-                }
-            }
-
-            return {
-                success: true,
-            };
+            return await updateLinkQuery(data, userId);
         }
         catch (err) {
             if (err instanceof Error) {

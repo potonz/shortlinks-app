@@ -1,4 +1,4 @@
-export { deleteLink } from "./deleteLink";
-export { fetchLinkDetails } from "./fetchLinkDetails";
-export { fetchUserLinks } from "./fetchUserLinks";
-export { updateLink } from "./updateLink";
+export { deleteLink } from "./deleteLink.functions";
+export { fetchLinkDetails } from "./fetchLinkDetails.functions";
+export { fetchUserLinks } from "./fetchUserLinks.functions";
+export { updateLink } from "./updateLink.functions";
