@@ -1,0 +1,23 @@
+import { useQuery } from "@tanstack/solid-query";
+
+import { AnalyticsCard } from "../AnalyticsCard";
+import { queryConfig } from "./query";
+
+interface Last7DaysClicksCardProps {
+    shortId: string;
+}
+
+export function Last7DaysClicksCard(props: Last7DaysClicksCardProps) {
+    const analyticsQuery = useQuery(() => queryConfig(props.shortId));
+
+    const last7DaysClicks = () => analyticsQuery.data?.last7DaysClicks.toLocaleString() ?? "";
+
+    return (
+        <AnalyticsCard
+            title="Last 7 Days Clicks"
+            value={analyticsQuery.isPending ? "Loading..." : last7DaysClicks()}
+            subtitle={analyticsQuery.error?.message}
+            icon={<i class="bi bi-graph-up" />}
+        />
+    );
+}

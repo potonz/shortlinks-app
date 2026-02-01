@@ -6,6 +6,14 @@ export interface IBuildSummaryQueryResult {
     userId?: string;
 }
 
+export interface IBuildSummaryByShortIdQueryResult {
+    shortId: string;
+    totalClicks: number;
+    uniqueVisitors: number;
+    last7DaysClicks: number;
+    firstRequest: string | null;
+}
+
 export interface IBuildLinkRequestsQueryParams {
     page?: number;
     pageSize?: number;
