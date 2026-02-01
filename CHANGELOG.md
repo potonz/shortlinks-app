@@ -1,3 +1,23 @@
+## [0.2.8] - 2026-02-01
+
+### ⛰️  Features
+
+- Added better-auth for sso
+- Added redirect if (un)authenticated for some routes
+- Added analytics page and links management (#9)
+
+### 🚜 Refactor
+
+- [**breaking**] Remove short links redirecting
+
+### 🎨 Styling
+
+- Fixed z-index issues
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Added better-auth
+
 ## [0.2.7] - 2026-01-10
 
 ### 🚜 Refactor
