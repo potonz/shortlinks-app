@@ -2,8 +2,9 @@ import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { createFileRoute, Link } from "@tanstack/solid-router";
 import { createSignal, Show } from "solid-js";
 
+import { DeleteLinkModal } from "~/components/dashboard/links/DeleteLinkModal";
 import { addNotification } from "~/components/notifications/notificationUtils";
-import { deleteLink, fetchLinkDetails, updateLink } from "~/libs/links";
+import { fetchLinkDetails, updateLink } from "~/libs/links";
 
 export const Route = createFileRoute("/dashboard/links/$shortId/")({
     component: EditLinkPage,
@@ -36,7 +37,6 @@ function EditLinkPage() {
     const [targetUrl, setTargetUrl] = createSignal("");
     const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
     const [isUpdating, setIsUpdating] = createSignal(false);
-    const [isDeleting, setIsDeleting] = createSignal(false);
 
     const handleUpdate = async () => {
         const url = targetUrl();
@@ -69,28 +69,6 @@ function EditLinkPage() {
         }
         finally {
             setIsUpdating(false);
-        }
-    };
-
-    const handleDelete = async () => {
-        setIsDeleting(true);
-        setShowDeleteConfirm(false);
-        try {
-            const result = await deleteLink({ data: shortId() });
-
-            if (!result.success) {
-                throw new Error(result.error || "Failed to delete link");
-            }
-
-            addNotification("Link deleted successfully", "success");
-            context().queryClient.invalidateQueries({ queryKey: ["links", "list"] });
-            navigate({ to: "/dashboard/links" });
-        }
-        catch (error) {
-            addNotification(error instanceof Error ? error.message : "An error occurred while deleting the link", "error");
-        }
-        finally {
-            setIsDeleting(false);
         }
     };
 
@@ -234,7 +212,6 @@ function EditLinkPage() {
 
                                         <button
                                             onClick={() => setShowDeleteConfirm(true)}
-                                            disabled={isDeleting()}
                                             class="flex items-center justify-center gap-2 px-6 py-2 bg-red-900/50 hover:bg-red-900 text-red-400 hover:text-red-300 rounded-lg transition-colors sm:ml-auto"
                                         >
                                             <i class="bi bi-trash"></i>
@@ -248,36 +225,14 @@ function EditLinkPage() {
                 </Show>
 
                 <Show when={showDeleteConfirm()}>
-                    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-                        <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-6 max-w-md mx-4">
-                            <h3 class="text-lg font-semibold text-white mb-2">Delete Link</h3>
-                            <p class="text-zinc-400 mb-6">
-                                Are you sure you want to delete this link? This action cannot be undone and all analytics data will be lost.
-                            </p>
-                            <div class="flex gap-3 justify-end">
-                                <button
-                                    onClick={() => setShowDeleteConfirm(false)}
-                                    disabled={isDeleting()}
-                                    class="px-4 py-2 text-zinc-400 hover:text-white transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleDelete}
-                                    disabled={isDeleting()}
-                                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
-                                >
-                                    <Show
-                                        when={isDeleting()}
-                                        fallback={<i class="bi bi-trash"></i>}
-                                    >
-                                        <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    </Show>
-                                    {isDeleting() ? "Deleting..." : "Delete"}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <DeleteLinkModal
+                        shortId={shortId()}
+                        onCancel={() => setShowDeleteConfirm(false)}
+                        onDeleted={() => {
+                            context().queryClient.invalidateQueries({ queryKey: ["links", "list"] });
+                            navigate({ to: "/dashboard/links" });
+                        }}
+                    />
                 </Show>
             </div>
         </div>
