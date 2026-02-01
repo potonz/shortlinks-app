@@ -3,7 +3,8 @@
   "permission": {
     "edit": {
       "src": "allow",
-      "src/routeTree.gen.ts": "deny"
+      "src/routeTree.gen.ts": "deny",
+      "src/worker-configuration.d.ts": "deny"
     },
     "read": {
       "src/worker-configuration.d.ts": "ask"
