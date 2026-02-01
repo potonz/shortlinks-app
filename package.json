@@ -17,6 +17,7 @@
     "lint": "tsc --noEmit && eslint",
     "lint:fix": "tsc --noEmit && eslint --fix",
     "release": "bun run ./scripts/release.ts",
+    "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types src/worker-configuration.d.ts"
   },
   "dependencies": {
