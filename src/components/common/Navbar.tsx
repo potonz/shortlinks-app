@@ -3,7 +3,7 @@ import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 
 import { SidebarToggle } from "~/components/dashboard/sidebar/SidebarToggle";
 import { authClient } from "~/libs/auth/auth-client";
-import { toggleSidebar } from "~/stores/sidebarStore";
+import { useSidebar } from "~/stores/sidebarStore";
 
 import styles from "./Navbar.module.css";
 
@@ -11,6 +11,7 @@ export function Navbar() {
     let dropdownRef!: HTMLDivElement;
     const [dropdownOpen, setDropdownOpen] = createSignal(false);
     const session = authClient.useSession();
+    const { toggleSidebar } = useSidebar();
 
     const handleToggleClick = () => {
         toggleSidebar();

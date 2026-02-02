@@ -1,15 +1,14 @@
 import { ClientOnly } from "@tanstack/solid-router";
 import { Show } from "solid-js";
 
+import { useSidebar } from "~/stores/sidebarStore";
+
 import { NavItem } from "./NavItem";
 import { SidebarLogo } from "./SidebarLogo";
 
-interface ISidebarProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
+export function Sidebar() {
+    const { isSidebarOpen, closeSidebar } = useSidebar();
 
-export function Sidebar(props: ISidebarProps) {
     return (
         <>
             <div
@@ -18,7 +17,7 @@ export function Sidebar(props: ISidebarProps) {
                     transform transition-transform duration-300 ease-in-out
                     flex flex-col
                     xl:static max-xl:bg-black xl:translate-x-0 xl:z-auto
-                    ${props.isOpen ? "translate-x-0" : "-translate-x-full xl:translate-x-0"}
+                    ${isSidebarOpen() ? "translate-x-0" : "-translate-x-full xl:translate-x-0"}
                 `}
             >
                 <SidebarLogo />
@@ -41,10 +40,10 @@ export function Sidebar(props: ISidebarProps) {
                     </ClientOnly>
                 </nav>
             </div>
-            <Show when={props.isOpen}>
+            <Show when={isSidebarOpen()}>
                 <div
                     class="fixed inset-0 bg-black/50 z-40 transition-opacity duration-200 xl:hidden"
-                    onClick={props.onClose}
+                    onClick={closeSidebar}
                 />
             </Show>
         </>

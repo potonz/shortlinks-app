@@ -4,7 +4,7 @@ import { createSignal, For, Show } from "solid-js";
 import { CopyButton } from "~/components/CopyButton";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { deleteLink } from "~/libs/links";
-import { deleteLinkFromHistory } from "~/stores/linkHistoryStore";
+import { useLinkHistory } from "~/stores/linkHistoryStore";
 import { baseUrlWithoutScheme, fullBaseHref } from "~/utils/urls";
 
 import { LinkActions } from "./LinkActions";
@@ -22,6 +22,7 @@ export function LinksTable() {
     const [sortField, setSortField] = createSignal<SortField>("createdAt");
     const [sortDirection, setSortDirection] = createSignal<SortDirection>("desc");
     const [deletingId, setDeletingId] = createSignal<string | null>(null);
+    const { deleteLinkFromHistory } = useLinkHistory();
 
     const linksQuery = useQuery(() => createLinksQuery(currentPage(), pageSize));
 

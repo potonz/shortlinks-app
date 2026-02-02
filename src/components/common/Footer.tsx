@@ -6,7 +6,7 @@ export function Footer() {
             <div class="flex justify-between items-center w-full max-w-xl">
                 <div>
                     &copy;
-                    {" 2025 Thomas Nguyen. "}
+                    {" " + new Date().getFullYear() + " Thomas Nguyen. "}
                     <a href="/LICENSE" class="whitespace-nowrap">MIT license</a>
                     .
                 </div>

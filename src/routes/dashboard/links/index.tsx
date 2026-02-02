@@ -1,19 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/solid-router";
+import { createFileRoute, Link } from "@tanstack/solid-router";
 
 import { LinksTable } from "~/components/dashboard/links/LinksTable";
 
 export const Route = createFileRoute("/dashboard/links/")({
     component: LinksPage,
-    ssr: false,
 });
 
 function LinksPage() {
-    const navigate = useNavigate();
-
-    const handleCreateNew = () => {
-        navigate({ to: "/" });
-    };
-
     return (
         <div class="p-4 lg:p-8">
             <div class="max-w-7xl mx-auto space-y-6">
@@ -22,13 +15,14 @@ function LinksPage() {
                         <h1 class="text-3xl font-bold text-white">Links</h1>
                         <p class="text-zinc-400 mt-1">Manage and track your short links</p>
                     </div>
-                    <button
-                        onClick={handleCreateNew}
-                        class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                    >
-                        <i class="bi bi-plus-lg"></i>
-                        Create New Link
-                    </button>
+                    <Link to="/">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                        >
+                            <i class="bi bi-plus-lg"></i>
+                            Create New Link
+                        </button>
+                    </Link>
                 </div>
 
                 <LinksTable />

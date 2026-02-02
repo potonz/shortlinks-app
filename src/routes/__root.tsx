@@ -1,6 +1,7 @@
 import { type QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import {
     createRootRouteWithContext,
+    ErrorComponent,
     HeadContent,
     Outlet,
     Scripts,
@@ -13,6 +14,8 @@ import { Footer } from "~/components/common/Footer";
 import { Navbar } from "~/components/common/Navbar";
 import NotificationsContainer from "~/components/notifications/NotificationsContainer";
 import { queryClient } from "~/queryClient";
+import { LinkHistoryProvider } from "~/stores/linkHistoryStore";
+import { SidebarProvider } from "~/stores/sidebarStore";
 import styleCss from "~/styles/styles.css?url";
 
 export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()({
@@ -41,14 +44,20 @@ export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()
     }),
     component: RootComponent,
     pendingComponent: () => "Loading...",
+    notFoundComponent: () => "Not found",
+    errorComponent: ErrorComponent,
 });
 
 function RootComponent() {
     return (
         <QueryClientProvider client={queryClient}>
-            <RootDocument>
-                <Outlet />
-            </RootDocument>
+            <LinkHistoryProvider>
+                <SidebarProvider>
+                    <RootDocument>
+                        <Outlet />
+                    </RootDocument>
+                </SidebarProvider>
+            </LinkHistoryProvider>
         </QueryClientProvider>
     );
 }

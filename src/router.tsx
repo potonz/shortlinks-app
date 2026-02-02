@@ -1,4 +1,4 @@
-import { createRouter, ErrorComponent } from "@tanstack/solid-router";
+import { createRouter } from "@tanstack/solid-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/solid-router-ssr-query";
 
 import { queryClient } from "./queryClient";
@@ -12,7 +12,6 @@ export const getRouter = () => {
         context: { queryClient },
         scrollRestoration: true,
         defaultPreloadStaleTime: 0,
-        defaultErrorComponent: ErrorComponent,
         defaultPendingMinMs: 50,
     });
     setupRouterSsrQueryIntegration({

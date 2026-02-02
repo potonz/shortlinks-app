@@ -1,7 +1,7 @@
 import { ClientOnly } from "@tanstack/solid-router";
 import { For, Show } from "solid-js";
 
-import { deleteLinkFromHistory, linkHistory } from "../stores/linkHistoryStore";
+import { useLinkHistory } from "../stores/linkHistoryStore";
 import { CopyButton } from "./CopyButton";
 
 interface IProps {
@@ -10,16 +10,18 @@ interface IProps {
 }
 
 export function LinksHistory(props: IProps) {
+    const { linkHistory, deleteLinkFromHistory } = useLinkHistory();
+
     return (
         <div>
             <h3 class="text-lg font-semibold text-zinc-300 mb-4">Recent Links</h3>
             <ClientOnly>
                 <Show
-                    when={linkHistory.length > 0}
+                    when={linkHistory().length > 0}
                     fallback={<p class="text-zinc-500 text-sm">No links generated yet</p>}
                 >
                     <div class="space-y-3 max-h-80 overflow-y-auto">
-                        <For each={linkHistory}>
+                        <For each={linkHistory()}>
                             {item => (
                                 <div class="text-left p-4 border border-zinc-700 rounded-2xl flex items-center justify-between gap-2">
                                     <div class="min-w-0">
@@ -47,7 +49,7 @@ export function LinksHistory(props: IProps) {
                                             class="text-zinc-400 hover:text-red-500 transition-colors"
                                             aria-label="Delete link"
                                         >
-                                            <i class="bi bi-trash" />
+                                            <i class="bi bi-x" />
                                         </button>
                                     </div>
                                 </div>

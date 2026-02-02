@@ -5,7 +5,6 @@ import { z } from "zod";
 
 import { Sidebar } from "~/components/dashboard/sidebar/Sidebar";
 import { auth } from "~/libs/auth/auth";
-import { closeSidebar, isSidebarOpen } from "~/stores/sidebarStore";
 
 const checkLoggedIn = createServerFn()
     .inputValidator(z.string().min(0))
@@ -31,10 +30,7 @@ export const Route = createFileRoute("/dashboard")({
 function DashboardLayout() {
     return (
         <div class="grow self-stretch flex">
-            <Sidebar
-                isOpen={isSidebarOpen()}
-                onClose={closeSidebar}
-            />
+            <Sidebar />
             <div class="flex-1 flex flex-col xl:mx-32 max-w-full">
                 <div class="">
                     <Outlet />

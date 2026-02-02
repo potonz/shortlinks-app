@@ -6,7 +6,7 @@ import { CopyButton } from "../components/CopyButton";
 import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
-import { addLinkToHistory } from "../stores/linkHistoryStore";
+import { useLinkHistory } from "../stores/linkHistoryStore";
 import { baseUrlWithoutScheme, fullBaseHref } from "../utils/urls";
 
 export const Route = createFileRoute("/")({
@@ -26,6 +26,7 @@ function App() {
     let captchaContainerRef!: HTMLDivElement;
     let captchaLoaderRef!: HTMLDivElement;
     const [captchaToken, setCaptchaToken] = createSignal("");
+    const { addLinkToHistory } = useLinkHistory();
     const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal("");
