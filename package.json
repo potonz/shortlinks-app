@@ -9,7 +9,7 @@
     "type": "git"
   },
   "type": "module",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",

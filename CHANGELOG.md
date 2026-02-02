@@ -1,3 +1,10 @@
+## [0.2.11] - 2026-02-02
+
+### 🐛 Bug Fixes
+
+- Fixed using signals outside of component
+- Fixed login page
+
 ## [0.2.10] - 2026-02-01
 
 ### 🐛 Bug Fixes
