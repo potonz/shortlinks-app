@@ -1,6 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/solid-router";
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
+import { createSignal } from "solid-js";
+import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
 import { authClient } from "~/libs/auth/auth-client";
@@ -20,45 +22,48 @@ export const Route = createFileRoute("/login")({
         return checkLoggedIn();
     },
     component: RouteComponent,
+    validateSearch: z.object({
+        redirect: z.optional(z.string()),
+    }),
+    ssr: "data-only",
 });
 
 function RouteComponent() {
+    const searchParams = Route.useSearch();
+    const [loadingProvider, setLoadingProvider] = createSignal<string | null>(null);
+
     const handleSignIn = (provider: typeof auth.api.signInSocial.options.metadata.$Infer.body.provider) => {
-        authClient.signIn.social({ provider }).then(console.log).catch(console.error);
+        setLoadingProvider(provider);
+        authClient.signIn
+            .social({ provider, newUserCallbackURL: searchParams().redirect })
+            .then(console.log)
+            .catch(console.error)
+            .finally(() => setLoadingProvider(null));
     };
+
+    const spinner = (
+        <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+        </div>
+    );
+
+    const button = (provider: string, icon: string, label: string) => (
+        <button
+            type="button"
+            onClick={() => handleSignIn(provider)}
+            disabled={loadingProvider() !== null}
+            class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+        >
+            {loadingProvider() === provider ? spinner : <i class={icon}></i>}
+            <span>{loadingProvider() === provider ? "" : label}</span>
+        </button>
+    );
 
     return (
         <div class="w-full max-w-xl text-center">
-            <div>
-                <button
-                    type="button"
-                    onClick={() => handleSignIn("google")}
-                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer flex items-center justify-center gap-2"
-                >
-                    <i class="bi bi-google"></i>
-                    <span>Sign in with Google</span>
-                </button>
-            </div>
-            <div class="mt-4">
-                <button
-                    type="button"
-                    onClick={() => handleSignIn("microsoft")}
-                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer flex items-center justify-center gap-2"
-                >
-                    <i class="bi bi-microsoft"></i>
-                    <span>Sign in with Microsoft</span>
-                </button>
-            </div>
-            <div class="mt-4">
-                <button
-                    type="button"
-                    onClick={() => handleSignIn("github")}
-                    class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer flex items-center justify-center gap-2"
-                >
-                    <i class="bi bi-github"></i>
-                    <span>Sign in with GitHub</span>
-                </button>
-            </div>
+            <div>{button("google", "bi bi-google", "Sign in with Google")}</div>
+            <div class="mt-4">{button("microsoft", "bi bi-microsoft", "Sign in with Microsoft")}</div>
+            <div class="mt-4">{button("github", "bi bi-github", "Sign in with GitHub")}</div>
         </div>
     );
 }
