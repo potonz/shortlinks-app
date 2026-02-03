@@ -66,3 +66,9 @@ export interface IBuildClicksByTimeQueryResult {
     clicks: number;
     userId?: string;
 }
+
+export interface IBrowsersQueryResult {
+    browser: string;
+    clicks: number;
+    userId?: string;
+}

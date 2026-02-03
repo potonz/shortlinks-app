@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router";
 
+import { BrowserList } from "~/components/dashboard/analytics/BrowserList";
 import { ClicksByTimeChart } from "~/components/dashboard/analytics/ClicksByTimeChart";
 import { CountriesList } from "~/components/dashboard/analytics/CountriesList";
 import { FirstRequestCard } from "~/components/dashboard/analytics/FirstRequestCard";
@@ -53,8 +54,9 @@ function RouteComponent() {
                 <CountriesList shortId={shortId()} />
             </div>
 
-            <div class="mt-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 <ReferrersList shortId={shortId()} />
+                <BrowserList shortId={shortId()} />
             </div>
         </div>
     );

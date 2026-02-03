@@ -1,0 +1,97 @@
+import { useQuery } from "@tanstack/solid-query";
+import { For, Show } from "solid-js";
+
+import stylesCard from "../AnalyticsCard.module.css";
+import styles from "./BrowserList.module.css";
+import { browsersQueryConfig } from "./browsersQuery";
+
+interface BrowserListProps {
+    shortId: string;
+}
+
+function getBrowserIcon(browser: string): string {
+    switch (browser.toLowerCase()) {
+        case "chrome":
+            return "bi-browser-chrome";
+        case "firefox":
+            return "bi-browser-firefox";
+        case "safari":
+            return "bi-browser-safari";
+        case "edge":
+            return "bi-browser-edge";
+        default:
+            return "bi-globe";
+    }
+}
+
+export function BrowserList(props: BrowserListProps) {
+    const analyticsQuery = useQuery(() => browsersQueryConfig(props.shortId));
+
+    const data = () => analyticsQuery.data ?? [];
+    const maxClicks = () => {
+        const clicks = data().map(d => d.clicks);
+        return clicks.length > 0 ? Math.max(...clicks) : 1;
+    };
+
+    return (
+        <div class={stylesCard["analytics-card"]}>
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <p class="text-sm font-medium text-zinc-400 mb-1">Top Browsers</p>
+                    <div class={`${stylesCard["value"]} text-3xl font-bold text-white mb-1`}>
+                        {analyticsQuery.isPending ? "Loading..." : data().length}
+                    </div>
+                    <p class="text-sm text-zinc-500">
+                        {analyticsQuery.error
+                            ? `Error: ${analyticsQuery.error.message}`
+                            : "Browser distribution"}
+                    </p>
+                </div>
+                <div class="text-zinc-400">
+                    <span class="text-2xl"><i class="bi bi-browser-chrome" /></span>
+                </div>
+            </div>
+
+            <Show when={analyticsQuery.isPending}>
+                <div class="py-4 text-center text-zinc-500">Loading...</div>
+            </Show>
+
+            <Show when={analyticsQuery.isError}>
+                <div class="py-4 text-center text-red-400">Failed to load data</div>
+            </Show>
+
+            <Show when={data().length > 0}>
+                <div class={styles["list-container"]}>
+                    <For each={data()}>
+                        {(item, index) => {
+                            const percentage = () => (item.clicks / maxClicks()) * 100;
+
+                            return (
+                                <div class={styles["list-item"]}>
+                                    <div class="flex items-center gap-3">
+                                        <span class={styles["rank"]}>{index() + 1}</span>
+                                        <span class={styles["browser-icon"]}><i class={`bi ${getBrowserIcon(item.browser)}`} /></span>
+                                        <span class="text-white flex-1 truncate" title={item.browser}>
+                                            {item.browser}
+                                        </span>
+                                        <span class="text-zinc-400 text-sm">{item.clicks.toLocaleString()}</span>
+                                    </div>
+                                    <div class={styles["bar-container"]}>
+                                        <div
+                                            class={styles["bar"]}
+                                            style={{ width: `${percentage()}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        }}
+                    </For>
+                </div>
+            </Show>
+
+            <Show when={data().length === 0 && !analyticsQuery.isPending && !analyticsQuery.isError}>
+                <div class="py-4 text-center text-zinc-500">No browser data available</div>
+            </Show>
+        </div>
+    );
+}
