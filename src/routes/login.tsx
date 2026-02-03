@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/solid-router";
+import { createFileRoute, Link, redirect } from "@tanstack/solid-router";
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { createSignal } from "solid-js";
@@ -44,8 +44,10 @@ function RouteComponent() {
                 callbackURL,
             })
             .then(console.log)
-            .catch(console.error)
-            .finally(() => setLoadingProvider(null));
+            .catch((err) => {
+                console.error(err);
+                setLoadingProvider(null);
+            });
     };
 
     const spinner = (
@@ -71,6 +73,12 @@ function RouteComponent() {
             <div>{button("google", "bi bi-google", "Sign in with Google")}</div>
             <div class="mt-4">{button("microsoft", "bi bi-microsoft", "Sign in with Microsoft")}</div>
             <div class="mt-4">{button("github", "bi bi-github", "Sign in with GitHub")}</div>
+            <div class="mt-12">
+                {"By signing in, you agree to our "}
+                <Link to="/terms-of-service" class="underline underline-offset-3">Terms of service</Link>
+                {" and "}
+                <Link to="/privacy-policy" class="underline underline-offset-3">Privacy policy</Link>
+            </div>
         </div>
     );
 }
