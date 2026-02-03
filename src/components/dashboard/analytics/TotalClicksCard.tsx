@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/solid-query";
 
 import { AnalyticsCard } from "../AnalyticsCard";
-import { queryConfig } from "./query";
+import { queryConfig } from "./summaryQuery";
 
 interface TotalClicksCardProps {
     shortId: string;

@@ -54,65 +54,63 @@ export function ClicksByTimeChart(props: ClicksByTimeChartProps) {
     };
 
     return (
-        <div class={styles["clicks-by-time-chart"]}>
-            <div class={stylesCard["analytics-card"]}>
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-zinc-400 mb-1">Clicks by Time</p>
-                        <div class={`${stylesCard["value"]} text-3xl font-bold text-white mb-1`}>
-                            {analyticsQuery.isPending ? "Loading..." : `${data().length} days`}
-                        </div>
-                        <p class="text-sm text-zinc-500">
-                            {analyticsQuery.error
-                                ? `Error: ${analyticsQuery.error.message}`
-                                : "Last 30 days"}
-                        </p>
+        <div class={stylesCard["analytics-card"]}>
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-sm font-medium text-zinc-400 mb-1">Clicks by Time</p>
+                    <div class={`${stylesCard["value"]} text-3xl font-bold text-white mb-1`}>
+                        {analyticsQuery.isPending ? "Loading..." : `${data().length} days`}
                     </div>
-                    <div class="text-zinc-400">
-                        <span class="text-2xl"><i class="bi bi-bar-chart-line" /></span>
-                    </div>
+                    <p class="text-sm text-zinc-500">
+                        {analyticsQuery.error
+                            ? `Error: ${analyticsQuery.error.message}`
+                            : "Last 30 days"}
+                    </p>
                 </div>
-
-                <Switch>
-                    <Match when={analyticsQuery.isPending}>
-                        <div class={styles["loading-state"]}>
-                        </div>
-                    </Match>
-                    <Match when={analyticsQuery.isError}>
-                        <div class={styles["error-state"]}>
-                            <p class="text-sm text-red-400">Failed to load chart data</p>
-                        </div>
-                    </Match>
-                    <Match when={data().length > 0}>
-                        <div class={styles["chart-container"]}>
-                            <svg viewBox="0 0 100 60" preserveAspectRatio="none" class={styles["chart"]}>
-                                <defs>
-                                    <linearGradient id="chartGradientShortId" x1="0" x2="0" y1="0" y2="1">
-                                        <stop offset="0%" stop-color="#71717a" stop-opacity="0.5" />
-                                        <stop offset="100%" stop-color="#71717a" stop-opacity="0.05" />
-                                    </linearGradient>
-                                </defs>
-                                <polygon points={area()} fill="url(#chartGradientShortId)" stroke="none" />
-                                <polyline points={lines()} fill="none" stroke="#71717a" stroke-width="1" />
-                            </svg>
-                            <div class={styles["chart-labels"]}>
-                                <For each={data()}>
-                                    {point => (
-                                        <span class={styles["chart-label"]}>
-                                            {format(point.date, "d LLL")}
-                                        </span>
-                                    )}
-                                </For>
-                            </div>
-                        </div>
-                    </Match>
-                    <Match when={data().length == 0}>
-                        <div class={styles["empty-state"]}>
-                            <p class="text-sm text-zinc-500">No data available</p>
-                        </div>
-                    </Match>
-                </Switch>
+                <div class="text-zinc-400">
+                    <span class="text-2xl"><i class="bi bi-bar-chart-line" /></span>
+                </div>
             </div>
+
+            <Switch>
+                <Match when={analyticsQuery.isPending}>
+                    <div class={styles["loading-state"]}>
+                    </div>
+                </Match>
+                <Match when={analyticsQuery.isError}>
+                    <div class={styles["error-state"]}>
+                        <p class="text-sm text-red-400">Failed to load chart data</p>
+                    </div>
+                </Match>
+                <Match when={data().length > 0}>
+                    <div class={styles["chart-container"]}>
+                        <svg viewBox="0 0 100 60" preserveAspectRatio="none" class={styles["chart"]}>
+                            <defs>
+                                <linearGradient id="chartGradientShortId" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stop-color="#71717a" stop-opacity="0.5" />
+                                    <stop offset="100%" stop-color="#71717a" stop-opacity="0.05" />
+                                </linearGradient>
+                            </defs>
+                            <polygon points={area()} fill="url(#chartGradientShortId)" stroke="none" />
+                            <polyline points={lines()} fill="none" stroke="#71717a" stroke-width="1" />
+                        </svg>
+                        <div class={styles["chart-labels"]}>
+                            <For each={data()}>
+                                {point => (
+                                    <span class={styles["chart-label"]}>
+                                        {format(point.date, "d LLL")}
+                                    </span>
+                                )}
+                            </For>
+                        </div>
+                    </div>
+                </Match>
+                <Match when={data().length == 0}>
+                    <div class={styles["empty-state"]}>
+                        <p class="text-sm text-zinc-500">No data available</p>
+                    </div>
+                </Match>
+            </Switch>
         </div>
     );
 }
