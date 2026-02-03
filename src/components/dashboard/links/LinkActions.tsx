@@ -5,8 +5,7 @@ import { DeleteLinkModal } from "./DeleteLinkModal";
 
 interface ILinkActionsProps {
     shortId: string;
-    onDelete: () => Promise<void>;
-    isDeleting: boolean;
+    onDeleted: () => Promise<void>;
 }
 
 export function LinkActions(props: ILinkActionsProps) {
@@ -32,7 +31,6 @@ export function LinkActions(props: ILinkActionsProps) {
             </Link>
             <button
                 onClick={() => setShowDeleteConfirm(true)}
-                disabled={props.isDeleting}
                 class="p-2 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
                 title="Delete link"
             >
@@ -43,7 +41,7 @@ export function LinkActions(props: ILinkActionsProps) {
                 <DeleteLinkModal
                     shortId={props.shortId}
                     onCancel={() => setShowDeleteConfirm(false)}
-                    onDeleted={props.onDelete}
+                    onDeleted={props.onDeleted}
                 />
             </Show>
         </div>

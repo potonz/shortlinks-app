@@ -3,9 +3,6 @@ import { createSignal, For, Show } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
 import { CopyButton } from "~/components/CopyButton";
-import { addNotification } from "~/components/notifications/notificationUtils";
-import { deleteLink } from "~/libs/links";
-import { useLinkHistory } from "~/stores/linkHistoryStore";
 import { baseUrlWithoutScheme, fullBaseHref } from "~/utils/urls";
 
 import { LinkActions } from "./LinkActions";
@@ -22,8 +19,6 @@ export function LinksTable() {
     const [searchQuery, setSearchQuery] = createSignal("");
     const [sortField, setSortField] = createSignal<SortField>("createdAt");
     const [sortDirection, setSortDirection] = createSignal<SortDirection>("desc");
-    const [deletingId, setDeletingId] = createSignal<string | null>(null);
-    const { deleteLinkFromHistory } = useLinkHistory();
 
     const linksQuery = useQuery(() => createLinksQuery(currentPage(), pageSize));
 
@@ -73,23 +68,8 @@ export function LinksTable() {
         }
     };
 
-    const handleDelete = async (shortId: string) => {
-        setDeletingId(shortId);
-        try {
-            const result = await deleteLink({ data: shortId });
-
-            if (result.success) {
-                queryClient.invalidateQueries({ queryKey: ["links", "list"] });
-                deleteLinkFromHistory(shortId);
-                addNotification("Link deleted successfully", "success");
-            }
-            else {
-                addNotification(result.error || "Failed to delete link", "error");
-            }
-        }
-        finally {
-            setDeletingId(null);
-        }
+    const handleDelete = async () => {
+        queryClient.invalidateQueries({ queryKey: ["links", "list"] });
     };
 
     const handlePageChange = (newPage: number) => {
@@ -196,11 +176,6 @@ export function LinksTable() {
                         <For each={sortedLinks()}>
                             {link => (
                                 <div class="col-span-5 grid grid-cols-subgrid hover:bg-zinc-800/50 transition-colors items-center border-b border-zinc-800 last:border-b-0 relative">
-                                    <Show when={deletingId() === link.shortId}>
-                                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm z-10 flex items-center justify-center">
-                                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                                        </div>
-                                    </Show>
                                     {/* Short URL */}
                                     <div class="px-4 py-3 min-w-0">
                                         <div class="flex items-center gap-2">
@@ -239,8 +214,7 @@ export function LinksTable() {
                                     <div class="px-4 py-3">
                                         <LinkActions
                                             shortId={link.shortId}
-                                            onDelete={() => handleDelete(link.shortId)}
-                                            isDeleting={deletingId() === link.shortId}
+                                            onDeleted={handleDelete}
                                         />
                                     </div>
                                 </div>
@@ -253,11 +227,6 @@ export function LinksTable() {
                         <For each={sortedLinks()}>
                             {link => (
                                 <div class="p-4 space-y-3 bg-zinc-900/30 hover:bg-zinc-800/30 transition-colors relative">
-                                    <Show when={deletingId() === link.shortId}>
-                                        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
-                                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                                        </div>
-                                    </Show>
                                     {/* Short URL */}
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 min-w-0 flex-1">
@@ -274,8 +243,7 @@ export function LinksTable() {
                                         <div class="ml-2">
                                             <LinkActions
                                                 shortId={link.shortId}
-                                                onDelete={() => handleDelete(link.shortId)}
-                                                isDeleting={deletingId() === link.shortId}
+                                                onDeleted={handleDelete}
                                             />
                                         </div>
                                     </div>

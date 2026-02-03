@@ -1,8 +1,10 @@
+import { useQueryClient } from "@tanstack/solid-query";
 import { createSignal } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { deleteLink } from "~/libs/links";
+import { useLinkHistory } from "~/stores/linkHistoryStore";
 
 interface DeleteLinkModalProps {
     shortId: string;
@@ -11,12 +13,16 @@ interface DeleteLinkModalProps {
 }
 
 export function DeleteLinkModal(props: DeleteLinkModalProps) {
+    const queryClient = useQueryClient();
     const [isDeleting, setIsDeleting] = createSignal(false);
+    const { deleteLinkFromHistory } = useLinkHistory();
 
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
             const result = await deleteLink({ data: props.shortId });
+            queryClient.invalidateQueries({ queryKey: ["links", "list"] });
+            deleteLinkFromHistory(props.shortId);
 
             if (!result.success) {
                 throw new Error(result.error || "Failed to delete link");
