@@ -1,4 +1,4 @@
-import { ClientOnly, Link } from "@tanstack/solid-router";
+import { ClientOnly, Link, useLocation, useNavigate } from "@tanstack/solid-router";
 import { createEffect, createSignal, Match, Show, Switch } from "solid-js";
 
 import { SidebarToggle } from "~/components/dashboard/sidebar/SidebarToggle";
@@ -8,6 +8,9 @@ import { useSidebar } from "~/stores/sidebarStore";
 import styles from "./Navbar.module.css";
 
 export function Navbar() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     let dropdownRef!: HTMLDivElement;
     const [dropdownOpen, setDropdownOpen] = createSignal(false);
     const session = authClient.useSession();
@@ -19,6 +22,7 @@ export function Navbar() {
 
     const handleSignOut = async () => {
         await authClient.signOut();
+        await navigate({ to: "/" });
     };
 
     createEffect(() => {
@@ -59,7 +63,7 @@ export function Navbar() {
                             </div>
                         </Match>
                         <Match when={!session()?.data?.session.id}>
-                            <Link to="/login" class="flex gap-2 bg-white text-black px-3 py-1 rounded-md hover:bg-zinc-100">
+                            <Link to="/login" search={{ redirect: location().pathname }} class="flex gap-2 bg-white text-black px-3 py-1 rounded-md hover:bg-zinc-100">
                                 Sign in
                             </Link>
                         </Match>
