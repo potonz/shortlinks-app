@@ -2,240 +2,144 @@
 
 ## Project Description
 
-shortlinks-app is a web-based URL shortener service built with TanStack Start and Solid.js. The application allows users to shorten long URLs and provides a simple, clean interface for managing and tracking links.
+shortlinks-app is a web-based URL shortener service built with TanStack Start and Solid.js. Features include URL shortening, link management, analytics (clicks, referrers, countries, time series), and user authentication via Better Auth.
 
 ## Build, Lint, and Test Commands
 
-### Running the Development Server
-- **Command:** `bun run dev`
-- **Description:** Starts the Vite development server with hot module replacement
-- **Default Port:** 3000
-
-### Building for Production
-- **Command:** `bun run build`
-- **Description:** Creates an optimized production build
-
-### Preview Production Build
-- **Command:** `bun run preview`
-- **Description:** Serves the production build locally for testing
-
-### Linting
-- **Command:** `bun run lint`
-- **Description:** Runs ESLint to check for code quality issues
-- **Auto-fix:** `bun run lint:fix` - Automatically fixes fixable issues
-
-### Cloudflare Deployment
-- **Command:** `bun run deploy`
-- **Description:** Deploys the application to Cloudflare using Wrangler
-- **Generate Types:** `bun run cf-typegen` - Regenerates Cloudflare worker types
-
-### Release Management
-- **Command:** `bun run release`
-- **Description:** Executes the release script to manage versioning and changelog
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start Vite dev server (port 3000) |
+| `bun run build` | Create production build |
+| `bun run preview` | Serve production build locally |
+| `bun run lint` | Run TypeScript check + ESLint |
+| `bun run lint:fix` | Auto-fix linting issues |
+| `bun run deploy` | Deploy to Cloudflare Workers |
+| `bun run cf-typegen` | Regenerate worker types |
+| `bun run release` | Manage versioning and changelog |
 
 ## Code Style Guidelines
 
 ### Imports
-- Use absolute imports via TypeScript path aliases configured in `tsconfig.json`
-- Sort imports automatically with ESLint (`simple-import-sort`)
-- Group imports in this order:
-  1. Third-party libraries
-  2. Internal components
-  3. Internal utilities
-  4. Internal types
+- Use absolute imports via `~/*` aliases
+- Sort with ESLint (`simple-import-sort`)
+- Order: third-party → components → utils → types
 
 ### Formatting
-- **Indentation:** 4 spaces (no tabs)
-- **Quotes:** Double quotes for strings
-- **Semicolons:** Required at end of statements
-- **Braces:** Always use braces for blocks (no inline statements)
-- **Line length:** Max 80 characters (soft limit)
+- **Indentation:** 4 spaces
+- **Quotes:** Double quotes
+- **Semicolons:** Required
+- **Braces:** Always use braces
+- **Line length:** Max 80 characters
 
 ### TypeScript
-- Type annotations are strongly preferred for function parameters and return types
-- Use inline type imports when possible:
-  ```typescript
-  import { createSignal } from "solid-js";
-  import { z } from "zod";
-  ```
-- Avoid using `any` or `// @ts-ignore`
+- Explicit type annotations for function params/returns
+- Avoid `any` or `// @ts-ignore`
+- Use inline type imports
 
 ### Naming Conventions
-- **Components:** PascalCase (e.g., `LinksHistory.tsx`)
-- **Functions:** camelCase (e.g., `createShortLink`)
-- **Variables:** camelCase (e.g., `captchaToken`)
-- **Constants:** UPPER_SNAKE_CASE (e.g., `BASE_URL`)
-- **Type names:** PascalCase prefixed with `T` (e.g., `TUser`)
-- **Files:** snake_case for directories, PascalCase for component files
-
-### Solid.js Specifics
-- Use `createEffect` for side effects that depend on signals
-- Avoid direct DOM manipulation; use Solid's reactivity system
-- For event handlers, type the event explicitly when needed:
-  ```typescript
-  function handleClick(event: MouseEvent) { ... }
-  ```
+- **Components:** PascalCase (e.g., `LinksTable.tsx`)
+- **Functions:** camelCase (e.g., `fetchUserLinks`)
+- **Variables:** camelCase (e.g., `shortId`)
+- **Constants:** UPPER_SNAKE_CASE
+- **Types:** PascalCase with `T` prefix (e.g., `TLink`)
+- **Directories:** snake_case
 
 ### Error Handling
-- Use try/catch for asynchronous operations
-- Validate errors and provide user-friendly messages
-- Log errors to console for debugging (in development only)
-- Example from `src/routes/index.tsx`:
-  ```typescript
-  .catch((err) => {
-      if (err instanceof Error) {
-          const zodErrors = JSON.parse(err.message);
-          if (Array.isArray(zodErrors)) {
-              zodErrors.forEach(err => addNotification(err.message, "error", 5000));
-          }
-      } else {
-          throw err;
-      }
-  })
-  ```
+- Use try/catch for async operations
+- Parse and display user-friendly error messages
+- Log errors to console in development
 
-### Tailwind CSS
-- Use Tailwind utility classes for styling
-- Group similar utility classes together
-- Follow the utility-first approach
-- Example from `src/routes/index.tsx`:
-  ```tsx
-  <input
-      class="w-full px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-all animation-duration-300 placeholder-shown:text-ellipsis"
-      ...
-  />
-  ```
+### Solid.js Specifics
+- Use `createSignal`, `createStore`, `createContext` for state
+- Avoid direct DOM manipulation
+- Use `createEffect` for side effects on signals
+- Type event handlers explicitly
 
 ## Architecture Patterns
 
 ### Folder Structure
-- `/src/routes` - TanStack Start route definitions
-- `/src/components` - Reusable UI components
-- `/src/libs` - Business logic and utility functions
-- `/src/stores` - State management with Solid's context/store system
-- `/src/types` - TypeScript type definitions
+```
+src/
+  routes/          # TanStack Start routes
+  components/      # Reusable UI components
+  libs/            # Business logic
+    auth/          # Better Auth configuration
+    analytics/     # Analytics data fetching
+    shortlinks/    # Link management
+    captcha/       # Turnstile validation
+  stores/          # Client-side state
+  types/           # TypeScript definitions
+```
 
-### Component Design
-- Keep components focused and single-purpose
-- Use compound components for related functionality
-- Pass functions as props rather than exposing implementation details
+### API Pattern
+Server functions in `*.server.ts` files, client wrappers in `*.functions.ts`:
+```typescript
+// libs/analytics/summaryByShortId.server.ts
+export async function getSummaryByShortId({ data }: { data: { shortId: string } }) {
+    // DB query with D1/Kysely
+}
 
-### State Management
-- Use Solid's built-in `createSignal`, `createStore`, `createContext`
-- Lift state up to the nearest common ancestor
-- Avoid global state when component-level state suffices
-- Example from `src/stores/linkHistoryStore.ts`:
-  ```typescript
-  const [linkHistory, setLinkHistory] = createStore<Record<string, string>>({});
-  ```
+// libs/analytics/summaryByShortId.functions.ts
+export async function getSummaryByShortId({ data }: { data: { shortId: string } }) {
+    const res = await fetch("/api/analytics/summary", { body: JSON.stringify(data), method: "POST" });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+}
+```
 
-### API Calls
-- Use `fetch` with proper error handling
-- Validate responses with Zod schemas
-- Example from `src/libs/shortlinks/createShortLink.ts`:
-  ```typescript
-  const response = await fetch(`/api/shortlinks`, { method: "POST", body: JSON.stringify(data) });
-  if (!response.ok) {
-      const text = await response.text();
-      throw new Error(text);
-  }
-  ```
+### TanStack Query Usage
+Use `queryOptions` for consistent query configuration:
+```typescript
+export const queryConfig = (shortId: string) => queryOptions({
+    queryKey: ["analytics", "summary", shortId],
+    queryFn: async () => { /* ... */ },
+});
+```
 
-## Linting and ESLint Configuration
+### Better Auth Integration
+- Auth config in `src/libs/auth/auth.ts`
+- Client helpers in `src/libs/auth/auth-client.ts`
+- Use `signIn`, `signOut`, `useSession` from auth client
+- Server-side: access session via `auth.api.getSession`
 
-### ESLint Rules
-- Extended from `@tanstack/eslint-config` for TanStack-specific rules
-- Uses `@stylistic/eslint-plugin` for formatting rules
-- TypeScript support via `typescript-eslint`
-
-### Key Rules Enforced
-1. **Import Sorting:** `simple-import-sort/imports` and `simple-import-sort/exports`
-2. **Consistent Type Imports:** `@typescript-eslint/consistent-type-imports`
-3. **No Unused Variables:** `@typescript-eslint/no-unused-vars` (warn level)
-4. **Indentation:** 4 spaces with special handling for ternary and switch-case
-5. **Space Before Function Paren:** 
-   - Always for anonymous functions
-   - Never for named functions
-   - Always for async arrows
-
-### Ignored Files
-- `dist/` - Build output
-- `.tanstack/` - TanStack configuration
-- `.wrangler/` - Wrangler configuration
-- `**/worker-configuration.d.ts` - Auto-generated types
-
-## Testing Approach
-
-### No Test Framework Currently Configured
-Currently, the project doesn't have a dedicated testing framework. However, you can:
-- Test interactively with the development server
-- Verify functionality using browser DevTools
-- Check API endpoints with `curl` or Postman
-
-## Development Workflow
-
-### Git Commit Messages
-- Follow conventional commits format:
-  - `feat:` for new features
-  - `fix:` for bug fixes
-  - `docs:` for documentation changes
-  - `style:` for formatting changes
-  - `refactor:` for code refactoring
-  - `chore:` for maintenance tasks
-
-### Branching Strategy
-- Use feature branches for new functionality
-- Keep `main` branch stable and deployable
-- Merge through pull requests with code review
-
-## Environment Variables
-
-- Use `VITE_*` prefix for variables needed in the browser
-- Keep sensitive information in `.env` file (gitignored)
-- Example variables:
-  - `VITE_SHORT_LINK_BASE_URL` - Base URL for generated short links
-  - `VITE_CF_TURNSTILE_SITE_KEY` - Cloudflare Turnstile site key
-
-## Cloudflare Integration
-
-### Worker Configuration
-- Application is deployed as a Cloudflare worker
-- Configuration in `wrangler.toml`
-- Environment variables managed through Cloudflare
+### Analytics Features
+- Summary (total clicks, unique visitors, time series)
+- Referrers (by link and aggregated)
+- Countries (geolocation data)
+- Time-series clicks data
+- Use `d3` for charting, `date-fns` for date formatting
 
 ### D1 Database
-- Uses Kysely with D1 for database operations
-- ORM setup in `src/libs/db/client.ts`
+- Use Kysely for type-safe queries
+- Dialect configured in `src/libs/db/client.ts`
+- Helper in `src/libs/auth/d1helper.ts` for Better Auth
+
+## Linting & ESLint
+
+Extended from `@tanstack/eslint-config` with `@stylistic/eslint-plugin`:
+- Import sorting with `simple-import-sort`
+- 4-space indentation
+- Consistent type imports
+- Space before anonymous function parens
 
 ## Testing
 
-There is no need to test anything. Do not write tests.
+No test framework configured. Test interactively via dev server or API tools.
 
-## Continuous Integration
+## Environment Variables
 
-### GitHub Actions
-- Linting workflow: `.github/workflows/lint.yml`
-- Deployment workflow: `.github/workflows/deploy.yml`
+- Browser: `VITE_*` prefix
+- Server: `process.env.*` (Cloudflare secrets)
+- Auth: `GOOGLE_OAUTH_*`, `MICROSOFT_*`, `GITHUB_*`, `VITE_BETTER_AUTH_BASE_URL`
 
-## Migration Guidelines
+## Git Workflow
 
-### Upgrading Dependencies
-- Check breaking changes before upgrading
-- Test thoroughly after upgrades
-- Update documentation for new features
-
-### Refactoring
-- Make incremental changes
-- Ensure backward compatibility
-- Update tests for modified behavior
+- Conventional commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `chore:`
+- Feature branches, PRs with review
+- CI: lint workflow in `.github/workflows/lint.yml`
 
 ## Troubleshooting
 
-### Common Issues
-1. **Module not found errors:**
-   - Run `bun install`
-   - Check `node_modules/.vite` for Vite cache issues
-
-2. **Type errors:**
-   - Ensure `tsconfig.json` paths are correct
-   - Regenerate types with `bun run cf-typegen`
+1. **Module errors:** Run `bun install`, clear Vite cache
+2. **Type errors:** Check `tsconfig.json` paths, run `cf-typegen`
+3. **Auth issues:** Verify Cloudflare secrets and `VITE_BETTER_AUTH_BASE_URL`
