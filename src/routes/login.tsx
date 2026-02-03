@@ -43,7 +43,6 @@ function RouteComponent() {
                 provider,
                 callbackURL,
             })
-            .then(console.log)
             .catch((err) => {
                 console.error(err);
                 setLoadingProvider(null);
