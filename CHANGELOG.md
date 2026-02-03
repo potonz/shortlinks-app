@@ -1,3 +1,20 @@
+## [0.2.13] - 2026-02-03
+
+### ⛰️  Features
+
+- Redirect back after logging in from navbar click
+- Added browsers analytics card
+
+### 🐛 Bug Fixes
+
+- Now keeps loading even when request to login suceeded
+- Fixed link deletion
+
+### 🚜 Refactor
+
+- Simplify some analytics components
+- Added a shared spinner
+
 ## [0.2.12] - 2026-02-03
 
 ### 🐛 Bug Fixes
