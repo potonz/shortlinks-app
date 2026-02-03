@@ -1,3 +1,9 @@
+## [0.2.12] - 2026-02-03
+
+### 🐛 Bug Fixes
+
+- Fixed redirecting in login page
+
 ## [0.2.11] - 2026-02-02
 
 ### 🐛 Bug Fixes
