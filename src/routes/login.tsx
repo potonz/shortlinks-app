@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
 import { authClient } from "~/libs/auth/auth-client";
+import { REDIRECT_WHITELIST } from "~/utils/urls";
 
 const checkLoggedIn = createServerFn()
     .handler(async () => {
@@ -23,19 +24,25 @@ export const Route = createFileRoute("/login")({
     },
     component: RouteComponent,
     validateSearch: z.object({
-        redirect: z.optional(z.string()),
+        redirect: z.optional(
+            z.string().refine(val => REDIRECT_WHITELIST.some(regex => regex.test(val))).catch("/"),
+        ),
     }),
     ssr: "data-only",
 });
 
 function RouteComponent() {
     const searchParams = Route.useSearch();
+    const callbackURL = searchParams().redirect ?? "/dashboard";
     const [loadingProvider, setLoadingProvider] = createSignal<string | null>(null);
 
     const handleSignIn = (provider: typeof auth.api.signInSocial.options.metadata.$Infer.body.provider) => {
         setLoadingProvider(provider);
         authClient.signIn
-            .social({ provider, newUserCallbackURL: searchParams().redirect })
+            .social({
+                provider,
+                callbackURL,
+            })
             .then(console.log)
             .catch(console.error)
             .finally(() => setLoadingProvider(null));

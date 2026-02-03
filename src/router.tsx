@@ -12,7 +12,8 @@ export const getRouter = () => {
         context: { queryClient },
         scrollRestoration: true,
         defaultPreloadStaleTime: 0,
-        defaultPendingMinMs: 50,
+        defaultPendingMs: 50,
+        defaultPendingMinMs: 150,
     });
     setupRouterSsrQueryIntegration({
         router,

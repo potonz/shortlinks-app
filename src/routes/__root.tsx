@@ -45,7 +45,10 @@ export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()
     component: RootComponent,
     pendingComponent: () => "Loading...",
     notFoundComponent: () => "Not found",
-    errorComponent: ErrorComponent,
+    errorComponent: (err) => {
+        console.error(err.error);
+        return <ErrorComponent error={err} />;
+    },
 });
 
 function RootComponent() {
