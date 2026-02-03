@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
 import { createSignal, For, Show } from "solid-js";
 
+import { Spinner } from "~/components/common/Spinner";
 import { CopyButton } from "~/components/CopyButton";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { deleteLink } from "~/libs/links";
@@ -134,9 +135,7 @@ export function LinksTable() {
             </div>
 
             <Show when={isLoading()}>
-                <div class="flex items-center justify-center py-12">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                </div>
+                <Spinner size="md" class="py-12" />
             </Show>
 
             <Show when={!isLoading() && links().length === 0}>

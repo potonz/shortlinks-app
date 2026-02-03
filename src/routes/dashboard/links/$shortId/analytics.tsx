@@ -40,14 +40,14 @@ function RouteComponent() {
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <TotalClicksCard shortId={shortId()} />
                 <UniqueVisitorsCard shortId={shortId()} />
                 <Last7DaysClicksCard shortId={shortId()} />
                 <FirstRequestCard shortId={shortId()} />
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                 <div class="lg:col-span-2">
                     <ClicksByTimeChart shortId={shortId()} />
                 </div>

@@ -2,6 +2,7 @@ import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { createFileRoute, Link } from "@tanstack/solid-router";
 import { createSignal, Show } from "solid-js";
 
+import { Spinner } from "~/components/common/Spinner";
 import { DeleteLinkModal } from "~/components/dashboard/links/DeleteLinkModal";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { fetchLinkDetails, updateLink } from "~/libs/links";
@@ -112,9 +113,7 @@ function EditLinkPage() {
                                 </div>
                             )}
                         >
-                            <div class="flex items-center justify-center py-12">
-                                <div class="w-8 h-8 border-4 border-zinc-600 border-t-blue-500 rounded-full animate-spin"></div>
-                            </div>
+                            <Spinner size="md" class="py-12" />
                         </Show>
                     )}
                 >
@@ -196,7 +195,7 @@ function EditLinkPage() {
                                                     </>
                                                 )}
                                             >
-                                                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                <Spinner size="sm" />
                                                 Saving...
                                             </Show>
                                         </button>

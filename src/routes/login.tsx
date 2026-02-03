@@ -4,6 +4,7 @@ import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { createSignal } from "solid-js";
 import { z } from "zod";
 
+import { Spinner } from "~/components/common/Spinner";
 import { auth } from "~/libs/auth/auth";
 import { authClient } from "~/libs/auth/auth-client";
 import { REDIRECT_WHITELIST } from "~/utils/urls";
@@ -49,12 +50,6 @@ function RouteComponent() {
             });
     };
 
-    const spinner = (
-        <div class="flex items-center justify-center">
-            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
-        </div>
-    );
-
     const button = (provider: string, icon: string, label: string) => (
         <button
             type="button"
@@ -62,7 +57,7 @@ function RouteComponent() {
             disabled={loadingProvider() !== null}
             class="w-full py-4 font-semibold rounded-2xl transition-all animation-duration-300 bg-zinc-300 text-black hover:bg-zinc-100 cursor-pointer flex items-center justify-center gap-2 disabled:cursor-not-allowed"
         >
-            {loadingProvider() === provider ? spinner : <i class={icon}></i>}
+            {loadingProvider() === provider ? <Spinner size="sm" /> : <i class={icon}></i>}
             <span>{loadingProvider() === provider ? "" : label}</span>
         </button>
     );

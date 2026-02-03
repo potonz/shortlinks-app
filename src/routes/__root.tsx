@@ -12,6 +12,7 @@ import { HydrationScript } from "solid-js/web";
 
 import { Footer } from "~/components/common/Footer";
 import { Navbar } from "~/components/common/Navbar";
+import { Spinner } from "~/components/common/Spinner";
 import NotificationsContainer from "~/components/notifications/NotificationsContainer";
 import { queryClient } from "~/queryClient";
 import { LinkHistoryProvider } from "~/stores/linkHistoryStore";
@@ -43,7 +44,7 @@ export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()
         ],
     }),
     component: RootComponent,
-    pendingComponent: () => "Loading...",
+    pendingComponent: () => <Spinner />,
     notFoundComponent: () => "Not found",
     errorComponent: (err) => {
         console.error(err.error);

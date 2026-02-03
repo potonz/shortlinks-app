@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 
+import { Spinner } from "~/components/common/Spinner";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { deleteLink } from "~/libs/links";
 
@@ -53,12 +54,8 @@ export function DeleteLinkModal(props: DeleteLinkModalProps) {
                         class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                         {isDeleting()
-                            ? (
-                                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                            )
-                            : (
-                                <i class="bi bi-trash"></i>
-                            )}
+                            ? <Spinner size="sm" />
+                            : <i class="bi bi-trash"></i>}
                         {isDeleting() ? "Deleting..." : "Delete"}
                     </button>
                 </div>
