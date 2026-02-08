@@ -2,6 +2,8 @@ import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start/solid";
 import { env } from "cloudflare:workers";
 
+import { deleteUserLinks } from "~/libs/links/deleteUserLinks.server";
+
 import { D1Dialect } from "./d1helper";
 
 export const auth = betterAuth({
@@ -19,6 +21,14 @@ export const auth = betterAuth({
         github: {
             clientId: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        },
+    },
+    user: {
+        deleteUser: {
+            enabled: true,
+            afterDelete: async (user) => {
+                await deleteUserLinks(user.id);
+            },
         },
     },
     plugins: [

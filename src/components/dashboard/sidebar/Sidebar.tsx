@@ -37,6 +37,13 @@ export function Sidebar() {
                             label="Links"
                             icon={<i class="bi bi-link-45deg"></i>}
                         />
+                        <NavItem
+                            linkOptions={{
+                                to: "/dashboard/account",
+                            }}
+                            label="Account"
+                            icon={<i class="bi bi-person-gear"></i>}
+                        />
                     </ClientOnly>
                 </nav>
             </div>

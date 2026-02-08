@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as DashboardLinksIndexRouteImport } from './routes/dashboard/links/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as DashboardLinksShortIdIndexRouteImport } from './routes/dashboard/links/$shortId/index'
@@ -50,6 +51,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardAccountRoute = DashboardAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardLinksIndexRoute = DashboardLinksIndexRouteImport.update({
   id: '/links/',
   path: '/links/',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links': typeof DashboardLinksIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/dashboard/account'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/dashboard/account'
     | '/dashboard'
     | '/api/auth/$'
     | '/dashboard/links'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/dashboard/account'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
@@ -200,6 +212,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/account': {
+      id: '/dashboard/account'
+      path: '/account'
+      fullPath: '/dashboard/account'
+      preLoaderRoute: typeof DashboardAccountRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/links/': {
       id: '/dashboard/links/'
       path: '/links'
@@ -232,6 +251,7 @@ declare module '@tanstack/solid-router' {
 }
 
 interface DashboardRouteChildren {
+  DashboardAccountRoute: typeof DashboardAccountRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardLinksIndexRoute: typeof DashboardLinksIndexRoute
   DashboardLinksShortIdAnalyticsRoute: typeof DashboardLinksShortIdAnalyticsRoute
@@ -239,6 +259,7 @@ interface DashboardRouteChildren {
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAccountRoute: DashboardAccountRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardLinksIndexRoute: DashboardLinksIndexRoute,
   DashboardLinksShortIdAnalyticsRoute: DashboardLinksShortIdAnalyticsRoute,
