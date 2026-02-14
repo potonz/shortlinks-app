@@ -1,3 +1,14 @@
+## [0.3.0] - 2026-02-14
+
+### ⛰️  Features
+
+- Allow user deletion
+- [**breaking**] Added support for multiple base urls
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump short link deps
+
 ## [0.2.13] - 2026-02-03
 
 ### ⛰️  Features
