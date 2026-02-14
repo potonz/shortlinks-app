@@ -1,12 +1,20 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
+import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
-import { fetchLinkDetailsQuery } from "~/libs/links/fetchLinkDetails.server";
+import { updateLinkQuery } from "~/libs/shortlinks/updateLink.server";
+import type { IUpdateLinkResult } from "~/types/links";
 
-export const fetchLinkDetails = createServerFn({ method: "GET" })
-    .inputValidator((input: string) => input)
-    .handler(async ({ data: shortId }) => {
+const validator = z.object({
+    shortId: z.string(),
+    baseUrlId: z.number().nullable(),
+    targetUrl: z.string(),
+});
+
+export const updateLink = createServerFn({ method: "POST" })
+    .inputValidator(validator)
+    .handler(async ({ data }): Promise<IUpdateLinkResult> => {
         try {
             const headers = getRequestHeaders();
             const session = await auth.api.getSession({ headers });
@@ -19,11 +27,11 @@ export const fetchLinkDetails = createServerFn({ method: "GET" })
                 };
             }
 
-            return await fetchLinkDetailsQuery(shortId, userId);
+            return await updateLinkQuery(data.shortId, data.targetUrl, data.baseUrlId);
         }
         catch (err) {
             if (err instanceof Error) {
-                console.error("Error fetching link details:", err);
+                console.error("Error updating link:", err);
                 return {
                     success: false,
                     error: err.message,

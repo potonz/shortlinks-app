@@ -1,18 +1,12 @@
 export interface ILink {
+    id: number;
     shortId: string;
     originalUrl: string;
     totalClicks: number;
     createdAt: string;
     lastAccessedAt?: string;
     isActive: boolean;
-}
-
-export interface ILinkWithUser extends ILink {
-    userId: string;
-}
-
-export interface ILinkTableRow extends ILink {
-    shortUrl: string;
+    baseUrlId: number | null;
 }
 
 export interface IPagination {
@@ -24,7 +18,7 @@ export interface IPagination {
 
 export interface IFetchLinksResult {
     success: boolean;
-    data?: ILinkTableRow[];
+    data?: ILink[];
     error?: string;
     pagination?: IPagination;
 }
@@ -39,6 +33,7 @@ export interface IUpdateLinkInput {
     originalUrl?: string;
     expiresAt?: string | null;
     isActive?: boolean;
+    baseUrlId?: number;
 }
 
 export interface IUpdateLinkResult {
@@ -49,4 +44,16 @@ export interface IUpdateLinkResult {
 export interface IDeleteLinkResult {
     success: boolean;
     error?: string;
+}
+
+export interface ICreateLinkInput {
+    url: string;
+    baseUrlId?: number;
+    captchaToken: string;
+}
+
+export interface IBaseUrl {
+    id: number;
+    baseUrl: string;
+    isActive?: boolean;
 }

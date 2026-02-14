@@ -10,3 +10,6 @@ dist-ssr
 .dev.vars*
 .opencode/*
 !.opencode/opencode.jsonc
+
+# Localflare generated files
+.localflare/

@@ -14,8 +14,8 @@
     "dev": "vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit && eslint",
-    "lint:fix": "tsc --noEmit && eslint --fix",
+    "lint": "tsc --noEmit && eslint --fix",
+    "lint:check": "tsc --noEmit && eslint",
     "release": "bun run ./scripts/release.ts",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types src/worker-configuration.d.ts"

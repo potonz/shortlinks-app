@@ -6,7 +6,7 @@ import { buildSummaryByShortIdQuery } from "~/libs/analytics/summaryByShortId.se
 import { auth } from "~/libs/auth/auth";
 
 const inputValidator = z.object({
-    shortId: z.string(),
+    id: z.number(),
 });
 
 export const getSummaryByShortId = createServerFn({ method: "GET" })
@@ -24,7 +24,7 @@ export const getSummaryByShortId = createServerFn({ method: "GET" })
                 };
             }
 
-            const result = await buildSummaryByShortIdQuery(validatedData.shortId, userId);
+            const result = await buildSummaryByShortIdQuery(validatedData.id, userId);
 
             return {
                 success: true,

@@ -40,7 +40,7 @@ export function Navbar() {
 
     return (
         <div class="flex justify-center px-4">
-            <nav class="w-full max-w-xl my-4 bg-black/50 backdrop-blur-md rounded-md flex items-center justify-between">
+            <nav class="w-full max-w-4xl my-4 bg-black/50 backdrop-blur-md rounded-md flex items-center justify-between">
                 <ClientOnly>
                     <SidebarToggle onClick={handleToggleClick} />
                 </ClientOnly>

@@ -6,7 +6,7 @@ import { buildClicksByTimeByShortIdQuery } from "~/libs/analytics/clicksByTimeBy
 import { auth } from "~/libs/auth/auth";
 
 const inputValidator = z.object({
-    shortId: z.string(),
+    id: z.number(),
     days: z.number().optional(),
 });
 
@@ -25,7 +25,7 @@ export const getClicksByTimeByShortId = createServerFn({ method: "GET" })
                 };
             }
 
-            const result = await buildClicksByTimeByShortIdQuery(data.shortId, data.days || 30, userId);
+            const result = await buildClicksByTimeByShortIdQuery(data.id, data.days || 30, userId);
 
             return {
                 success: true,

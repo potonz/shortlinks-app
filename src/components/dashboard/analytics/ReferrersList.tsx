@@ -6,11 +6,11 @@ import styles from "./ReferrersList.module.css";
 import { referrersQueryConfig } from "./referrersQuery";
 
 interface ReferrersListProps {
-    shortId: string;
+    id: number;
 }
 
 export function ReferrersList(props: ReferrersListProps) {
-    const analyticsQuery = useQuery(() => referrersQueryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => referrersQueryConfig(props.id));
 
     const data = () => analyticsQuery.data ?? [];
     const maxClicks = () => {

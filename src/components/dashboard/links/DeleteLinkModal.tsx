@@ -3,11 +3,10 @@ import { createSignal } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
 import { addNotification } from "~/components/notifications/notificationUtils";
-import { deleteLink } from "~/libs/links";
-import { useLinkHistory } from "~/stores/linkHistoryStore";
+import { deleteLink } from "~/libs/shortlinks";
 
 interface DeleteLinkModalProps {
-    shortId: string;
+    id: number;
     onCancel: () => void;
     onDeleted: () => void;
 }
@@ -15,14 +14,12 @@ interface DeleteLinkModalProps {
 export function DeleteLinkModal(props: DeleteLinkModalProps) {
     const queryClient = useQueryClient();
     const [isDeleting, setIsDeleting] = createSignal(false);
-    const { deleteLinkFromHistory } = useLinkHistory();
 
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
-            const result = await deleteLink({ data: props.shortId });
+            const result = await deleteLink({ data: props.id });
             queryClient.invalidateQueries({ queryKey: ["links", "list"] });
-            deleteLinkFromHistory(props.shortId);
 
             if (!result.success) {
                 throw new Error(result.error || "Failed to delete link");

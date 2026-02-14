@@ -4,12 +4,13 @@ import { type ParentComponent } from "solid-js";
 interface LinkHistoryItem {
     shortId: string;
     targetUrl: string;
+    baseUrlId: number;
     date: string;
 }
 
 interface LinkHistoryContextValue {
     linkHistory: () => LinkHistoryItem[];
-    addLinkToHistory: (shortId: string, targetUrl: string) => void;
+    addLinkToHistory: (shortId: string, targetUrl: string, baseUrlId: number) => void;
     deleteLinkFromHistory: (shortId: string) => void;
 }
 
@@ -46,10 +47,11 @@ export const LinkHistoryProvider: ParentComponent = (props) => {
         }
     };
 
-    const addLinkToHistory = (shortId: string, targetUrl: string) => {
+    const addLinkToHistory = (shortId: string, targetUrl: string, baseUrlId: number) => {
         const newItem: LinkHistoryItem = {
             shortId,
             targetUrl,
+            baseUrlId,
             date: new Date().toISOString(),
         };
 

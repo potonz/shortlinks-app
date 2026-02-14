@@ -7,11 +7,11 @@ import styles from "../ClicksByTimeChart.module.css";
 import { clicksByTimeQueryConfig } from "./clicksByTimeQuery";
 
 interface ClicksByTimeChartProps {
-    shortId: string;
+    id: number;
 }
 
 export function ClicksByTimeChart(props: ClicksByTimeChartProps) {
-    const analyticsQuery = useQuery(() => clicksByTimeQueryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => clicksByTimeQueryConfig(props.id));
 
     const data = () => analyticsQuery.data ?? [];
 

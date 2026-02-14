@@ -3,21 +3,17 @@ import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
-import { updateLinkQuery } from "~/libs/links/updateLink.server";
-import type { IUpdateLinkResult } from "~/types/links";
+import { fetchUserLinksQuery } from "~/libs/shortlinks/fetchUserLinks.server";
+import type { IFetchLinksResult } from "~/types/links";
 
-const validator = z.object({
-    shortId: z.string(),
-    data: z.object({
-        originalUrl: z.string().url().optional(),
-        expiresAt: z.string().datetime().nullable().optional(),
-        isActive: z.boolean().optional(),
-    }),
+const paginationValidator = z.object({
+    page: z.number().min(1).default(1),
+    limit: z.number().min(1).max(100).default(10),
 });
 
-export const updateLink = createServerFn({ method: "POST" })
-    .inputValidator(validator)
-    .handler(async ({ data }): Promise<IUpdateLinkResult> => {
+export const fetchUserLinks = createServerFn({ method: "GET" })
+    .inputValidator(paginationValidator)
+    .handler(async ({ data }): Promise<IFetchLinksResult> => {
         try {
             const headers = getRequestHeaders();
             const session = await auth.api.getSession({ headers });
@@ -30,11 +26,11 @@ export const updateLink = createServerFn({ method: "POST" })
                 };
             }
 
-            return await updateLinkQuery(data, userId);
+            return await fetchUserLinksQuery(data, userId);
         }
         catch (err) {
             if (err instanceof Error) {
-                console.error("Error updating link:", err);
+                console.error("Error fetching user links:", err);
                 return {
                     success: false,
                     error: err.message,

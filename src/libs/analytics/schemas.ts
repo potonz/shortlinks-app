@@ -7,7 +7,7 @@ export interface IBuildSummaryQueryResult {
 }
 
 export interface IBuildSummaryByShortIdQueryResult {
-    shortId: string;
+    id: number;
     totalClicks: number;
     uniqueVisitors: number;
     last7DaysClicks: number;
@@ -53,22 +53,26 @@ export interface IBuildCountriesQueryResult {
     country: string;
     clicks: number;
     userId?: string;
+    id?: number;
 }
 
 export interface IBuildReferrersQueryResult {
     referrer: string;
     clicks: number;
     userId?: string;
+    id?: number;
 }
 
 export interface IBuildClicksByTimeQueryResult {
     date: Date;
     clicks: number;
     userId?: string;
+    id?: number;
 }
 
 export interface IBrowsersQueryResult {
     browser: string;
     clicks: number;
     userId?: string;
+    id?: number;
 }

@@ -1,6 +1,6 @@
 import { env } from "cloudflare:workers";
 
-import type { ILinkTableRow } from "~/types/links";
+import type { ILink } from "~/types/links";
 
 interface IFetchUserLinksQueryInput {
     page: number;
@@ -9,7 +9,7 @@ interface IFetchUserLinksQueryInput {
 
 interface IFetchUserLinksQueryResult {
     success: boolean;
-    data?: ILinkTableRow[];
+    data?: ILink[];
     pagination?: {
         page: number;
         limit: number;
@@ -38,15 +38,17 @@ export async function fetchUserLinksQuery(
     const totalLinks = countResult?.total || 0;
 
     const query = `
-        SELECT 
+        SELECT
+            sl_user_links.link_map_id as id,
             sl_links_map.short_id,
             sl_links_map.target_url,
+            sl_links_map.base_url_id,
             sl_links_map.last_accessed_at,
             sl_links_map.created_at,
             COUNT(sl_link_request.id) as total_clicks
         FROM sl_user_links
-        INNER JOIN sl_links_map ON sl_user_links.short_id = sl_links_map.short_id
-        LEFT JOIN sl_link_request ON sl_links_map.short_id = sl_link_request.short_id
+        INNER JOIN sl_links_map ON sl_user_links.link_map_id = sl_links_map.id
+        LEFT JOIN sl_link_request ON sl_links_map.id = sl_link_request.link_map_id
         WHERE sl_user_links.user_id = ?
         GROUP BY sl_links_map.short_id
         ORDER BY sl_links_map.created_at DESC
@@ -56,19 +58,20 @@ export async function fetchUserLinksQuery(
     const result = await env.DB.prepare(query)
         .bind(userId, input.limit, offset)
         .all<{
+        id: number;
         short_id: string;
         target_url: string;
+        base_url_id: number | null;
         last_accessed_at: string;
         created_at: string;
         total_clicks: number;
     }>();
 
-    const baseUrl = import.meta.env.VITE_SHORT_LINK_BASE_URL || "";
-
-    const links: ILinkTableRow[] = result.results.map(row => ({
+    const links: ILink[] = result.results.map(row => ({
+        id: row.id,
         shortId: row.short_id,
         originalUrl: row.target_url,
-        shortUrl: `${baseUrl}/${row.short_id}`,
+        baseUrlId: row.base_url_id,
         totalClicks: row.total_clicks || 0,
         createdAt: row.created_at,
         lastAccessedAt: row.last_accessed_at,

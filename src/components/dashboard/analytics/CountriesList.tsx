@@ -6,11 +6,11 @@ import styles from "./CountriesList.module.css";
 import { countriesQueryConfig } from "./countriesQuery";
 
 interface CountriesListProps {
-    shortId: string;
+    id: number;
 }
 
 export function CountriesList(props: CountriesListProps) {
-    const analyticsQuery = useQuery(() => countriesQueryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => countriesQueryConfig(props.id));
 
     const data = () => analyticsQuery.data ?? [];
     const maxClicks = () => {

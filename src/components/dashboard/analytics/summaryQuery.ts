@@ -2,10 +2,10 @@ import { queryOptions } from "@tanstack/solid-query";
 
 import { getSummaryByShortId } from "~/libs/analytics/summaryByShortId.functions";
 
-export const queryConfig = (shortId: string) => queryOptions({
-    queryKey: ["analytics", "summary", shortId],
+export const queryConfig = (id: number) => queryOptions({
+    queryKey: ["analytics", "summary", id],
     queryFn: async () => {
-        const result = await getSummaryByShortId({ data: { shortId } });
+        const result = await getSummaryByShortId({ data: { id } });
 
         if (result.success) {
             return result.data;

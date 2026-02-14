@@ -6,7 +6,7 @@ import { buildReferrersByShortIdQuery } from "~/libs/analytics/referrersByShortI
 import { auth } from "~/libs/auth/auth";
 
 const inputValidator = z.object({
-    shortId: z.string(),
+    id: z.number(),
     limit: z.number().optional(),
 });
 
@@ -25,7 +25,7 @@ export const getReferrersByShortId = createServerFn({ method: "GET" })
                 };
             }
 
-            const result = await buildReferrersByShortIdQuery(data.shortId, data.limit || 10, userId);
+            const result = await buildReferrersByShortIdQuery(data.id, data.limit || 10, userId);
 
             return {
                 success: true,

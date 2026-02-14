@@ -2,10 +2,10 @@ import { queryOptions } from "@tanstack/solid-query";
 
 import { getBrowsersByShortId } from "~/libs/analytics/browsersByShortId.functions";
 
-export const browsersQueryConfig = (shortId: string, limit?: number) => queryOptions({
-    queryKey: ["analytics", "browsers", shortId],
+export const browsersQueryConfig = (id: number, limit?: number) => queryOptions({
+    queryKey: ["analytics", "browsers", id],
     queryFn: async () => {
-        const result = await getBrowsersByShortId({ data: { shortId, limit } });
+        const result = await getBrowsersByShortId({ data: { id, limit } });
 
         if (result.success) {
             return result.data;

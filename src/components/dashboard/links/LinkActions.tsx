@@ -4,6 +4,7 @@ import { createSignal, Show } from "solid-js";
 import { DeleteLinkModal } from "./DeleteLinkModal";
 
 interface ILinkActionsProps {
+    id: number;
     shortId: string;
     onDeleted: () => Promise<void>;
 }
@@ -14,16 +15,16 @@ export function LinkActions(props: ILinkActionsProps) {
     return (
         <div class="flex items-center justify-end gap-2">
             <Link
-                to="/dashboard/links/$shortId"
-                params={{ shortId: props.shortId }}
+                to="/dashboard/links/$id"
+                params={{ id: props.id.toString() }}
                 class="p-2 text-zinc-400 hover:text-blue-400 hover:bg-zinc-800 rounded-lg transition-colors"
                 title="Edit link"
             >
                 <i class="bi bi-pencil"></i>
             </Link>
             <Link
-                to="/dashboard/links/$shortId/analytics"
-                params={{ shortId: props.shortId }}
+                to="/dashboard/links/$id/analytics"
+                params={{ id: props.id.toString() }}
                 class="p-2 text-zinc-400 hover:text-green-400 hover:bg-zinc-800 rounded-lg transition-colors"
                 title="View analytics"
             >
@@ -39,7 +40,7 @@ export function LinkActions(props: ILinkActionsProps) {
 
             <Show when={showDeleteConfirm()}>
                 <DeleteLinkModal
-                    shortId={props.shortId}
+                    id={props.id}
                     onCancel={() => setShowDeleteConfirm(false)}
                     onDeleted={props.onDeleted}
                 />
