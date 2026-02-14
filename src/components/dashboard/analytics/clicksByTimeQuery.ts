@@ -2,10 +2,10 @@ import { queryOptions } from "@tanstack/solid-query";
 
 import { getClicksByTimeByShortId } from "~/libs/analytics/clicksByTimeByShortId.functions";
 
-export const clicksByTimeQueryConfig = (shortId: string, days?: number) => queryOptions({
-    queryKey: ["analytics", "clicks-by-time", shortId],
+export const clicksByTimeQueryConfig = (id: number, days?: number) => queryOptions({
+    queryKey: ["analytics", "clicks-by-time", id],
     queryFn: async () => {
-        const result = await getClicksByTimeByShortId({ data: { shortId, days } });
+        const result = await getClicksByTimeByShortId({ data: { id, days } });
 
         if (result.success) {
             return result.data;

@@ -3,13 +3,16 @@ import { getRequest } from "@tanstack/solid-start/server";
 import { env } from "cloudflare:workers";
 import { z } from "zod";
 
+import { defaultBaseUrl } from "~/utils/urls";
+
 import { auth } from "../auth/auth";
 import { validateCaptcha } from "../captcha/turnstileValidate";
 import { getShortLinksManager } from "./manager";
 
 const validator = z.object({
-    url: z.httpUrl("Invalid URL, please check and try again.").refine(value => !value.startsWith(import.meta.env.VITE_SHORT_LINK_BASE_URL), "we cannot shorten ourselves :("),
+    url: z.httpUrl("Invalid URL, please check and try again.").refine(value => !value.startsWith(defaultBaseUrl.url.href), "we cannot shorten ourselves :("),
     captchaToken: z.string("Invalid captcha token, please reload the page or try again.").min(1, "missing captcha token"),
+    baseUrlId: z.number().nullable().optional(),
 });
 
 export const createShortLink = createServerFn({ method: "POST" })
@@ -26,13 +29,22 @@ export const createShortLink = createServerFn({ method: "POST" })
         }
 
         const manager = await getShortLinksManager();
-        const shortId = await manager.createShortLink(data.url);
+        const shortId = await manager.createShortLink(data.url, data.baseUrlId ?? null);
 
         if (userId) {
+            const linkMapResult = await env.DB.prepare(`
+                SELECT id FROM sl_links_map WHERE short_id = ? AND (base_url_id = ? OR (base_url_id IS NULL AND ? IS NULL))
+            `).bind(shortId, data.baseUrlId ?? null, data.baseUrlId ?? null).first<{ id: number }>();
+
+            if (!linkMapResult) {
+                console.error("Failed to find created link in sl_links_map");
+                return null;
+            }
+
             const result = await env.DB.prepare(`
-                INSERT INTO sl_user_links (short_id, user_id)
+                INSERT INTO sl_user_links (link_map_id, user_id)
                 VALUES (?, ?)
-            `).bind(shortId, userId).run();
+            `).bind(linkMapResult.id, userId).run();
 
             if (!result.success) {
                 console.error(result.error);

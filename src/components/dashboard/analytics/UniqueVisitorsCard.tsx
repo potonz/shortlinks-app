@@ -4,11 +4,11 @@ import { AnalyticsCard } from "../AnalyticsCard";
 import { queryConfig } from "./summaryQuery";
 
 interface UniqueVisitorsCardProps {
-    shortId: string;
+    id: number;
 }
 
 export function UniqueVisitorsCard(props: UniqueVisitorsCardProps) {
-    const analyticsQuery = useQuery(() => queryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => queryConfig(props.id));
 
     const uniqueVisitors = () => analyticsQuery.data?.uniqueVisitors.toLocaleString() ?? "";
 

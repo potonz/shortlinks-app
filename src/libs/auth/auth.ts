@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start/solid";
-import { env } from "cloudflare:workers";
+import { env, waitUntil } from "cloudflare:workers";
 
-import { deleteUserLinks } from "~/libs/links/deleteUserLinks.server";
+import { deleteUserLinks } from "~/libs/shortlinks/deleteUserLinks.server";
 
 import { D1Dialect } from "./d1helper";
 
@@ -27,7 +27,7 @@ export const auth = betterAuth({
         deleteUser: {
             enabled: true,
             afterDelete: async (user) => {
-                await deleteUserLinks(user.id);
+                waitUntil(deleteUserLinks(user.id));
             },
         },
     },

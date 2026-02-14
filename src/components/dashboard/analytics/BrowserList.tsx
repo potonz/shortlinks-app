@@ -6,7 +6,7 @@ import styles from "./BrowserList.module.css";
 import { browsersQueryConfig } from "./browsersQuery";
 
 interface BrowserListProps {
-    shortId: string;
+    id: number;
 }
 
 function getBrowserIcon(browser: string): string {
@@ -25,7 +25,7 @@ function getBrowserIcon(browser: string): string {
 }
 
 export function BrowserList(props: BrowserListProps) {
-    const analyticsQuery = useQuery(() => browsersQueryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => browsersQueryConfig(props.id));
 
     const data = () => analyticsQuery.data ?? [];
     const maxClicks = () => {

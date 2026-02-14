@@ -3,19 +3,21 @@ import { createFileRoute, Link } from "@tanstack/solid-router";
 import { createSignal, Show } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
+import { CopyButton } from "~/components/CopyButton";
 import { DeleteLinkModal } from "~/components/dashboard/links/DeleteLinkModal";
 import { addNotification } from "~/components/notifications/notificationUtils";
-import { fetchLinkDetails, updateLink } from "~/libs/links";
+import { fetchLinkDetails, updateLink } from "~/libs/shortlinks";
+import { getBaseUrlHref, getBaseUrlLabel } from "~/utils/urls";
 
-export const Route = createFileRoute("/dashboard/links/$shortId/")({
+export const Route = createFileRoute("/dashboard/links/$id/")({
     component: EditLinkPage,
 });
 
-function linkDetailsQueryOptions(shortId: string) {
+function linkDetailsQueryOptions(id: number) {
     return queryOptions({
-        queryKey: ["link", "details", shortId],
+        queryKey: ["link", "details", id],
         queryFn: async () => {
-            const result = await fetchLinkDetails({ data: shortId });
+            const result = await fetchLinkDetails({ data: id });
             if (!result.success) {
                 throw new Error(result.error || "Failed to fetch link details");
             }
@@ -31,9 +33,9 @@ function EditLinkPage() {
     const navigate = Route.useNavigate();
     const context = Route.useRouteContext();
 
-    const shortId = () => params().shortId;
+    const id = () => parseInt(params().id, 10);
 
-    const linkQuery = useQuery(() => linkDetailsQueryOptions(shortId()));
+    const linkQuery = useQuery(() => linkDetailsQueryOptions(id()));
 
     const [targetUrl, setTargetUrl] = createSignal("");
     const [showDeleteConfirm, setShowDeleteConfirm] = createSignal(false);
@@ -50,10 +52,9 @@ function EditLinkPage() {
         try {
             const result = await updateLink({
                 data: {
-                    shortId: shortId(),
-                    data: {
-                        originalUrl: url,
-                    },
+                    shortId: linkQuery.data?.shortId ?? "",
+                    targetUrl: url,
+                    baseUrlId: null,
                 },
             });
 
@@ -62,7 +63,7 @@ function EditLinkPage() {
             }
 
             addNotification("Link updated successfully", "success");
-            context().queryClient.invalidateQueries({ queryKey: ["link", "details", shortId()] });
+            context().queryClient.invalidateQueries({ queryKey: ["link", "details", id()] });
             context().queryClient.invalidateQueries({ queryKey: ["links", "list"] });
         }
         catch (error) {
@@ -130,17 +131,20 @@ function EditLinkPage() {
                                             for="shortId"
                                             class="block text-sm font-medium text-zinc-400 mb-2"
                                         >
-                                            Short ID
+                                            Short URL
                                         </label>
-                                        <input
-                                            type="text"
-                                            id="shortId"
-                                            value={link().shortId}
-                                            disabled
-                                            class="w-full px-4 py-2 bg-zinc-950 text-zinc-500 border border-zinc-800 rounded-lg cursor-not-allowed"
-                                        />
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="text"
+                                                id="shortId"
+                                                value={getBaseUrlLabel(link().baseUrlId ?? 0) + link().shortId}
+                                                disabled
+                                                class="flex-1 px-4 py-2 bg-zinc-950 text-zinc-500 border border-zinc-800 rounded-lg cursor-not-allowed"
+                                            />
+                                            <CopyButton text={getBaseUrlHref(link().baseUrlId ?? 0) + link().shortId} />
+                                        </div>
                                         <p class="text-sm text-zinc-500 mt-1">
-                                            The short ID cannot be changed
+                                            The short URL cannot be changed
                                         </p>
                                     </div>
 
@@ -201,8 +205,8 @@ function EditLinkPage() {
                                         </button>
 
                                         <Link
-                                            to="/dashboard/links/$shortId/analytics"
-                                            params={{ shortId: link().shortId }}
+                                            to="/dashboard/links/$id/analytics"
+                                            params={{ id: id().toString() }}
                                             class="flex items-center justify-center gap-2 px-6 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors"
                                         >
                                             <i class="bi bi-graph-up"></i>
@@ -225,7 +229,7 @@ function EditLinkPage() {
 
                 <Show when={showDeleteConfirm()}>
                     <DeleteLinkModal
-                        shortId={shortId()}
+                        id={id()}
                         onCancel={() => setShowDeleteConfirm(false)}
                         onDeleted={() => {
                             context().queryClient.invalidateQueries({ queryKey: ["links", "list"] });

@@ -3,17 +3,14 @@ import { getRequestHeaders } from "@tanstack/solid-start/server";
 import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
-import { fetchUserLinksQuery } from "~/libs/links/fetchUserLinks.server";
-import type { IFetchLinksResult } from "~/types/links";
+import { deleteLinkQuery } from "~/libs/shortlinks/deleteLink.server";
+import type { IDeleteLinkResult } from "~/types/links";
 
-const paginationValidator = z.object({
-    page: z.number().min(1).default(1),
-    limit: z.number().min(1).max(100).default(10),
-});
+const validator = z.number();
 
-export const fetchUserLinks = createServerFn({ method: "GET" })
-    .inputValidator(paginationValidator)
-    .handler(async ({ data }): Promise<IFetchLinksResult> => {
+export const deleteLink = createServerFn({ method: "POST" })
+    .inputValidator(validator)
+    .handler(async ({ data: id }): Promise<IDeleteLinkResult> => {
         try {
             const headers = getRequestHeaders();
             const session = await auth.api.getSession({ headers });
@@ -26,11 +23,11 @@ export const fetchUserLinks = createServerFn({ method: "GET" })
                 };
             }
 
-            return await fetchUserLinksQuery(data, userId);
+            return await deleteLinkQuery(id, userId);
         }
         catch (err) {
             if (err instanceof Error) {
-                console.error("Error fetching user links:", err);
+                console.error("Error deleting link:", err);
                 return {
                     success: false,
                     error: err.message,

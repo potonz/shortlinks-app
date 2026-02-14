@@ -6,7 +6,7 @@ import { buildCountriesByShortIdQuery } from "~/libs/analytics/countriesByShortI
 import { auth } from "~/libs/auth/auth";
 
 const inputValidator = z.object({
-    shortId: z.string(),
+    id: z.number(),
     limit: z.number().optional(),
 });
 
@@ -25,7 +25,7 @@ export const getCountriesByShortId = createServerFn({ method: "GET" })
                 };
             }
 
-            const result = await buildCountriesByShortIdQuery(data.shortId, data.limit || 10, userId);
+            const result = await buildCountriesByShortIdQuery(data.id, data.limit || 10, userId);
 
             return {
                 success: true,

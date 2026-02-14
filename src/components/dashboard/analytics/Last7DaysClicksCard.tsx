@@ -4,11 +4,11 @@ import { AnalyticsCard } from "../AnalyticsCard";
 import { queryConfig } from "./summaryQuery";
 
 interface Last7DaysClicksCardProps {
-    shortId: string;
+    id: number;
 }
 
 export function Last7DaysClicksCard(props: Last7DaysClicksCardProps) {
-    const analyticsQuery = useQuery(() => queryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => queryConfig(props.id));
 
     const last7DaysClicks = () => analyticsQuery.data?.last7DaysClicks.toLocaleString() ?? "";
 

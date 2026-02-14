@@ -37,14 +37,17 @@ export const getShortLinksManager = createServerOnlyFn(async () => {
 function createInMemoryCache(): ICache {
     const cache: Record<string, string> = {};
     return {
-        get(shortId) {
-            if (shortId in cache) {
-                return cache[shortId];
+        get(key) {
+            if (key in cache) {
+                return cache[key];
             }
             return null;
         },
-        set(shortId, targetUrl) {
-            cache[shortId] = targetUrl;
+        set(key, targetUrl) {
+            cache[key] = targetUrl;
+        },
+        delete(key) {
+            delete cache[key];
         },
     };
 }
@@ -56,6 +59,9 @@ function createCloudflareKvCache(kv: KVNamespace): ICache {
         },
         set(shortId, targetUrl) {
             return kv.put(shortId, targetUrl, { expirationTtl: 31_536_000 });
+        },
+        delete(key) {
+            return kv.delete(key);
         },
     };
 }

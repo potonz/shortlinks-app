@@ -1,16 +1,12 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
-import { z } from "zod";
 
 import { auth } from "~/libs/auth/auth";
-import { deleteLinkQuery } from "~/libs/links/deleteLink.server";
-import type { IDeleteLinkResult } from "~/types/links";
+import { fetchLinkDetailsQuery } from "~/libs/shortlinks/fetchLinkDetails.server";
 
-const validator = z.string();
-
-export const deleteLink = createServerFn({ method: "POST" })
-    .inputValidator(validator)
-    .handler(async ({ data: shortId }): Promise<IDeleteLinkResult> => {
+export const fetchLinkDetails = createServerFn({ method: "GET" })
+    .inputValidator((input: number) => input)
+    .handler(async ({ data: id }) => {
         try {
             const headers = getRequestHeaders();
             const session = await auth.api.getSession({ headers });
@@ -23,11 +19,11 @@ export const deleteLink = createServerFn({ method: "POST" })
                 };
             }
 
-            return await deleteLinkQuery(shortId, userId);
+            return await fetchLinkDetailsQuery(id, userId);
         }
         catch (err) {
             if (err instanceof Error) {
-                console.error("Error deleting link:", err);
+                console.error("Error fetching link details:", err);
                 return {
                     success: false,
                     error: err.message,

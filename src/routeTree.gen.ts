@@ -18,8 +18,8 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as DashboardLinksIndexRouteImport } from './routes/dashboard/links/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as DashboardLinksShortIdIndexRouteImport } from './routes/dashboard/links/$shortId/index'
-import { Route as DashboardLinksShortIdAnalyticsRouteImport } from './routes/dashboard/links/$shortId/analytics'
+import { Route as DashboardLinksIdIndexRouteImport } from './routes/dashboard/links/$id/index'
+import { Route as DashboardLinksIdAnalyticsRouteImport } from './routes/dashboard/links/$id/analytics'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -66,16 +66,15 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardLinksShortIdIndexRoute =
-  DashboardLinksShortIdIndexRouteImport.update({
-    id: '/links/$shortId/',
-    path: '/links/$shortId/',
-    getParentRoute: () => DashboardRoute,
-  } as any)
-const DashboardLinksShortIdAnalyticsRoute =
-  DashboardLinksShortIdAnalyticsRouteImport.update({
-    id: '/links/$shortId/analytics',
-    path: '/links/$shortId/analytics',
+const DashboardLinksIdIndexRoute = DashboardLinksIdIndexRouteImport.update({
+  id: '/links/$id/',
+  path: '/links/$id/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardLinksIdAnalyticsRoute =
+  DashboardLinksIdAnalyticsRouteImport.update({
+    id: '/links/$id/analytics',
+    path: '/links/$id/analytics',
     getParentRoute: () => DashboardRoute,
   } as any)
 
@@ -89,8 +88,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
-  '/dashboard/links/$shortId/analytics': typeof DashboardLinksShortIdAnalyticsRoute
-  '/dashboard/links/$shortId/': typeof DashboardLinksShortIdIndexRoute
+  '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/dashboard/links/$id/': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,8 +100,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links': typeof DashboardLinksIndexRoute
-  '/dashboard/links/$shortId/analytics': typeof DashboardLinksShortIdAnalyticsRoute
-  '/dashboard/links/$shortId': typeof DashboardLinksShortIdIndexRoute
+  '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/dashboard/links/$id': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,8 +114,8 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
-  '/dashboard/links/$shortId/analytics': typeof DashboardLinksShortIdAnalyticsRoute
-  '/dashboard/links/$shortId/': typeof DashboardLinksShortIdIndexRoute
+  '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/dashboard/links/$id/': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,8 +129,8 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
-    | '/dashboard/links/$shortId/analytics'
-    | '/dashboard/links/$shortId/'
+    | '/dashboard/links/$id/analytics'
+    | '/dashboard/links/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -142,8 +141,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/auth/$'
     | '/dashboard/links'
-    | '/dashboard/links/$shortId/analytics'
-    | '/dashboard/links/$shortId'
+    | '/dashboard/links/$id/analytics'
+    | '/dashboard/links/$id'
   id:
     | '__root__'
     | '/'
@@ -155,8 +154,8 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
-    | '/dashboard/links/$shortId/analytics'
-    | '/dashboard/links/$shortId/'
+    | '/dashboard/links/$id/analytics'
+    | '/dashboard/links/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -233,18 +232,18 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/links/$shortId/': {
-      id: '/dashboard/links/$shortId/'
-      path: '/links/$shortId'
-      fullPath: '/dashboard/links/$shortId/'
-      preLoaderRoute: typeof DashboardLinksShortIdIndexRouteImport
+    '/dashboard/links/$id/': {
+      id: '/dashboard/links/$id/'
+      path: '/links/$id'
+      fullPath: '/dashboard/links/$id/'
+      preLoaderRoute: typeof DashboardLinksIdIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/links/$shortId/analytics': {
-      id: '/dashboard/links/$shortId/analytics'
-      path: '/links/$shortId/analytics'
-      fullPath: '/dashboard/links/$shortId/analytics'
-      preLoaderRoute: typeof DashboardLinksShortIdAnalyticsRouteImport
+    '/dashboard/links/$id/analytics': {
+      id: '/dashboard/links/$id/analytics'
+      path: '/links/$id/analytics'
+      fullPath: '/dashboard/links/$id/analytics'
+      preLoaderRoute: typeof DashboardLinksIdAnalyticsRouteImport
       parentRoute: typeof DashboardRoute
     }
   }
@@ -254,16 +253,16 @@ interface DashboardRouteChildren {
   DashboardAccountRoute: typeof DashboardAccountRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardLinksIndexRoute: typeof DashboardLinksIndexRoute
-  DashboardLinksShortIdAnalyticsRoute: typeof DashboardLinksShortIdAnalyticsRoute
-  DashboardLinksShortIdIndexRoute: typeof DashboardLinksShortIdIndexRoute
+  DashboardLinksIdAnalyticsRoute: typeof DashboardLinksIdAnalyticsRoute
+  DashboardLinksIdIndexRoute: typeof DashboardLinksIdIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAccountRoute: DashboardAccountRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardLinksIndexRoute: DashboardLinksIndexRoute,
-  DashboardLinksShortIdAnalyticsRoute: DashboardLinksShortIdAnalyticsRoute,
-  DashboardLinksShortIdIndexRoute: DashboardLinksShortIdIndexRoute,
+  DashboardLinksIdAnalyticsRoute: DashboardLinksIdAnalyticsRoute,
+  DashboardLinksIdIndexRoute: DashboardLinksIdIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(

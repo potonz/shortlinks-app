@@ -3,7 +3,7 @@ import { createSignal, For, Show } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
 import { CopyButton } from "~/components/CopyButton";
-import { baseUrlWithoutScheme, fullBaseHref } from "~/utils/urls";
+import { getBaseUrlHref, getBaseUrlLabel } from "~/utils/urls";
 
 import { LinkActions } from "./LinkActions";
 import { createLinksQuery } from "./query";
@@ -31,7 +31,7 @@ export function LinksTable() {
         return links().filter(link =>
             link.shortId.toLowerCase().includes(query)
             || link.originalUrl.toLowerCase().includes(query)
-            || (baseUrlWithoutScheme + link.shortId).toLowerCase().includes(query),
+            || (getBaseUrlLabel(link.baseUrlId ?? 0) + link.shortId).toLowerCase().includes(query),
         );
     };
 
@@ -180,14 +180,14 @@ export function LinksTable() {
                                     <div class="px-4 py-3 min-w-0">
                                         <div class="flex items-center gap-2">
                                             <a
-                                                href={fullBaseHref + link.shortId}
+                                                href={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
                                                 target="potoPreviewWindow"
                                                 class="font-medium truncate text-zinc-500 hover:text-white"
                                             >
-                                                <span>{baseUrlWithoutScheme}</span>
+                                                <span>{getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
                                                 <span class="text-white">{link.shortId}</span>
                                             </a>
-                                            <CopyButton text={fullBaseHref + link.shortId} />
+                                            <CopyButton text={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
                                         </div>
                                     </div>
 
@@ -213,6 +213,7 @@ export function LinksTable() {
                                     {/* Actions */}
                                     <div class="px-4 py-3">
                                         <LinkActions
+                                            id={link.id}
                                             shortId={link.shortId}
                                             onDeleted={handleDelete}
                                         />
@@ -231,17 +232,18 @@ export function LinksTable() {
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 min-w-0 flex-1">
                                             <a
-                                                href={fullBaseHref + link.shortId}
+                                                href={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
                                                 target="potoPreviewWindow"
                                                 class="font-medium truncate text-zinc-500 hover:text-white"
                                             >
-                                                <span>{baseUrlWithoutScheme}</span>
+                                                <span>{getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
                                                 <span class="text-white">{link.shortId}</span>
                                             </a>
-                                            <CopyButton text={fullBaseHref + link.shortId} />
+                                            <CopyButton text={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
                                         </div>
                                         <div class="ml-2">
                                             <LinkActions
+                                                id={link.id}
                                                 shortId={link.shortId}
                                                 onDeleted={handleDelete}
                                             />

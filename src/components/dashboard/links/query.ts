@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/solid-query";
 
-import { fetchUserLinks } from "~/libs/links";
+import { fetchUserLinks } from "~/libs/shortlinks";
 
 export const createLinksQuery = (page: number, limit: number) =>
     queryOptions({

@@ -4,11 +4,11 @@ import { AnalyticsCard } from "../AnalyticsCard";
 import { queryConfig } from "./summaryQuery";
 
 interface FirstRequestCardProps {
-    shortId: string;
+    id: number;
 }
 
 export function FirstRequestCard(props: FirstRequestCardProps) {
-    const analyticsQuery = useQuery(() => queryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => queryConfig(props.id));
 
     const firstRequest = () => {
         if (!analyticsQuery.data?.firstRequest) {

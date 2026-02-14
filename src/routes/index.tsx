@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, For, onMount, Show } from "solid-js";
 import { z } from "zod";
 
 import { CopyButton } from "../components/CopyButton";
@@ -7,7 +7,7 @@ import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
 import { useLinkHistory } from "../stores/linkHistoryStore";
-import { baseUrlWithoutScheme, fullBaseHref } from "../utils/urls";
+import { BASE_URLS, fullBaseHref, getBaseUrlById, getBaseUrlHref, getBaseUrlLabel } from "../utils/urls";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -23,13 +23,18 @@ export const Route = createFileRoute("/")({
 
 function App() {
     const [url, setUrl] = createSignal("");
+    const [selectedBaseUrlId, setSelectedBaseUrlId] = createSignal<number>(BASE_URLS[0].id);
     let captchaContainerRef!: HTMLDivElement;
     let captchaLoaderRef!: HTMLDivElement;
     const [captchaToken, setCaptchaToken] = createSignal("");
     const { addLinkToHistory } = useLinkHistory();
-    const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(fullBaseHref)).safeParse(url()).success;
+
+    const selectedBaseUrl = () => getBaseUrlById(selectedBaseUrlId());
+    const selectedFullBaseHref = () => selectedBaseUrl()?.url.href ?? fullBaseHref;
+
+    const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(selectedFullBaseHref())).safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
-    const [shortIdGenerated, setShortIdGenerated] = createSignal("");
+    const [shortIdGenerated, setShortIdGenerated] = createSignal<{ id: string; baseUrlId: number } | null>(null);
 
     function onInput(event: Event & { currentTarget: HTMLInputElement }) {
         let value = event.currentTarget.value;
@@ -59,6 +64,7 @@ function App() {
 
         const _url = url();
         const _captchaToken = captchaToken();
+        const _baseUrlId = selectedBaseUrlId();
         if (!_url) return;
         if (!_captchaToken) return;
 
@@ -68,23 +74,27 @@ function App() {
             data: {
                 url: _url,
                 captchaToken: _captchaToken,
+                baseUrlId: _baseUrlId,
             },
         }).then((shortId) => {
             if (shortId) {
                 setUrl("");
-                setShortIdGenerated(shortId);
-                addLinkToHistory(shortId, _url);
+                setShortIdGenerated({ id: shortId, baseUrlId: _baseUrlId });
+                addLinkToHistory(shortId, _url, _baseUrlId);
             }
             else {
                 addNotification("Unable to generate a short link :( Please try again later.", "error");
             }
         }).catch((err) => {
             if (err instanceof Error) {
-                const zodErrors = JSON.parse(err.message);
-                if (Array.isArray(zodErrors)) {
-                    zodErrors.forEach(err => addNotification(err.message, "error", 5000));
-                    return;
+                try {
+                    const zodErrors = JSON.parse(err.message);
+                    if (Array.isArray(zodErrors)) {
+                        zodErrors.forEach(err => addNotification(err.message, "error", 5000));
+                        return;
+                    }
                 }
+                catch { /* not a JSON, fallback to generic error notification */ }
             }
             throw err;
         }).catch((err) => {
@@ -125,20 +135,34 @@ function App() {
     });
 
     return (
-        <div class="w-full max-w-xl text-center">
+        <div class="w-full max-w-4xl text-center">
             <form onSubmit={handleSubmit} class="space-y-6">
                 <div>
                     <label class="block mb-2" for="input_url">Enter your long URL</label>
-                    <input
-                        type="url"
-                        id="input_url"
-                        placeholder="https://IamAVeryLongUrlWithAnalyticsStuff.Tld/?utm_campaign=potonz&amp;utm_medium=yes"
-                        value={url()}
-                        onInput={onInput}
-                        onChange={onChange}
-                        required
-                        class="w-full px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-all animation-duration-300 placeholder-shown:text-ellipsis"
-                    />
+                    <div class="flex flex-wrap gap-2">
+                        <select
+                            id="select_base_url"
+                            value={selectedBaseUrlId()}
+                            onChange={e => setSelectedBaseUrlId(Number(e.currentTarget.value))}
+                            class="grow md:grow-0 px-4 py-4 bg-zinc-900 text-white border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-shadow cursor-pointer"
+                        >
+                            <For each={BASE_URLS}>
+                                {baseUrl => (
+                                    <option value={baseUrl.id}>{baseUrl.url.host}</option>
+                                )}
+                            </For>
+                        </select>
+                        <input
+                            type="url"
+                            id="input_url"
+                            placeholder="https://IamAVeryLongUrlWithAnalyticsStuff.Tld/?utm_campaign=potonz&amp;utm_medium=yes"
+                            value={url()}
+                            onInput={onInput}
+                            onChange={onChange}
+                            required
+                            class="grow min-w-0 px-6 py-4 bg-zinc-950 text-center text-white placeholder-zinc-500 border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-shadow placeholder-shown:text-ellipsis"
+                        />
+                    </div>
                 </div>
 
                 <div id="turnstile-container" ref={captchaContainerRef}>
@@ -164,16 +188,19 @@ function App() {
             </form>
 
             <Show when={shortIdGenerated()}>
-                {shortId => (
+                {link => (
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-zinc-300 mb-4">Your new link</h3>
                         <div class="p-4 border-2 border-zinc-400 rounded-2xl flex">
                             <div class="grow text-left">
-                                <span class="text-zinc-500">{baseUrlWithoutScheme}</span>
-                                <span class="text-white">{shortId()}</span>
+                                <span class="text-zinc-500">{getBaseUrlLabel(link().baseUrlId)}</span>
+                                <span class="text-white">
+
+                                    {link().id}
+                                </span>
                             </div>
                             <div class="pl-2">
-                                <CopyButton text={fullBaseHref + shortId()} />
+                                <CopyButton text={getBaseUrlHref(link().baseUrlId) + link().id} />
                             </div>
                         </div>
                     </div>
@@ -182,7 +209,7 @@ function App() {
 
             {/* Link History Section */}
             <div class="mt-12">
-                <LinksHistory baseUrlWithoutScheme={baseUrlWithoutScheme} fullBaseHref={fullBaseHref} />
+                <LinksHistory />
             </div>
         </div>
     );

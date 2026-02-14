@@ -4,11 +4,11 @@ import { AnalyticsCard } from "../AnalyticsCard";
 import { queryConfig } from "./summaryQuery";
 
 interface TotalClicksCardProps {
-    shortId: string;
+    id: number;
 }
 
 export function TotalClicksCard(props: TotalClicksCardProps) {
-    const analyticsQuery = useQuery(() => queryConfig(props.shortId));
+    const analyticsQuery = useQuery(() => queryConfig(props.id));
 
     const totalClicks = () => analyticsQuery.data?.totalClicks.toLocaleString() ?? "";
 

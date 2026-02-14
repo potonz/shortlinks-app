@@ -11,8 +11,8 @@ shortlinks-app is a web-based URL shortener service built with TanStack Start an
 | `bun run dev` | Start Vite dev server (port 3000) |
 | `bun run build` | Create production build |
 | `bun run preview` | Serve production build locally |
-| `bun run lint` | Run TypeScript check + ESLint |
-| `bun run lint:fix` | Auto-fix linting issues |
+| `bun run lint` | Run TypeScript check + ESLint auto-fix |
+| `bun run lint:check` | Only check lint issues without fixing |
 | `bun run deploy` | Deploy to Cloudflare Workers |
 | `bun run cf-typegen` | Regenerate worker types |
 | `bun run release` | Manage versioning and changelog |
@@ -30,11 +30,12 @@ shortlinks-app is a web-based URL shortener service built with TanStack Start an
 - **Semicolons:** Required
 - **Braces:** Always use braces
 - **Line length:** Max 80 characters
+- **Function parens:** Space before anonymous functions, none before named functions
 
 ### TypeScript
 - Explicit type annotations for function params/returns
 - Avoid `any` or `// @ts-ignore`
-- Use inline type imports
+- Use inline type imports (e.g., `import type { TLink } from "~types/links"`)
 
 ### Naming Conventions
 - **Components:** PascalCase (e.g., `LinksTable.tsx`)
@@ -114,6 +115,13 @@ export const queryConfig = (shortId: string) => queryOptions({
 - Dialect configured in `src/libs/db/client.ts`
 - Helper in `src/libs/auth/d1helper.ts` for Better Auth
 
+### Common Development Tasks
+
+#### Creating a new API endpoint
+1. Create server function in `src/libs/*/[name].server.ts`
+2. Create client wrapper in `src/libs/*/[name].functions.ts`
+3. Add route handler in appropriate route file
+
 ## Linting & ESLint
 
 Extended from `@tanstack/eslint-config` with `@stylistic/eslint-plugin`:
@@ -124,7 +132,7 @@ Extended from `@tanstack/eslint-config` with `@stylistic/eslint-plugin`:
 
 ## Testing
 
-No test framework configured. Test interactively via dev server or API tools.
+No test framework configured.
 
 ## Environment Variables
 
