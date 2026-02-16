@@ -1,3 +1,13 @@
+## [0.3.1] - 2026-02-16
+
+### 🐛 Bug Fixes
+
+- Fixed incorrect link map id column
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove unused
+
 ## [0.3.0] - 2026-02-14
 
 ### ⛰️  Features
