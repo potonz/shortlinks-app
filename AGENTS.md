@@ -11,7 +11,7 @@ shortlinks-app is a web-based URL shortener service built with TanStack Start an
 | `bun run dev` | Start Vite dev server (port 3000) |
 | `bun run build` | Create production build |
 | `bun run preview` | Serve production build locally |
-| `bun run lint` | Run TypeScript check + ESLint auto-fix |
+| `bun run lint` | Run TypeScript check + ESLint check and auto-fix (recommended) |
 | `bun run lint:check` | Only check lint issues without fixing |
 | `bun run deploy` | Deploy to Cloudflare Workers |
 | `bun run cf-typegen` | Regenerate worker types |
