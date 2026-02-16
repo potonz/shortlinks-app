@@ -6,24 +6,24 @@ export async function buildSummaryByShortIdQuery(id: number, userId: string): Pr
     const totalClicksQuery = `
         SELECT COUNT(*) as totalClicks
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
-        WHERE sl_user_links.id = ?
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
+        WHERE sl_user_links.link_map_id = ?
         AND sl_user_links.user_id = ?
     `;
 
     const uniqueVisitorsQuery = `
         SELECT COUNT(DISTINCT sl_link_request.ip_address) as uniqueVisitors
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
-        WHERE sl_user_links.id = ?
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
+        WHERE sl_user_links.link_map_id = ?
         AND sl_user_links.user_id = ?
     `;
 
     const last7DaysClicksQuery = `
         SELECT COUNT(*) as last7DaysClicks
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
-        WHERE sl_user_links.id = ?
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
+        WHERE sl_user_links.link_map_id = ?
         AND sl_user_links.user_id = ?
         AND sl_link_request.timestamp >= datetime('now', '-7 days')
     `;
@@ -31,8 +31,8 @@ export async function buildSummaryByShortIdQuery(id: number, userId: string): Pr
     const firstRequestQuery = `
         SELECT MIN(sl_link_request.timestamp) as firstRequest
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
-        WHERE sl_user_links.id = ?
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
+        WHERE sl_user_links.link_map_id = ?
         AND sl_user_links.user_id = ?
     `;
 

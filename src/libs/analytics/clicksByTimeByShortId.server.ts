@@ -9,8 +9,8 @@ export async function buildClicksByTimeByShortIdQuery(id: number, days: number =
             substr(sl_link_request.timestamp, 1, 10) as date,
             COUNT(*) as clicks
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
-        WHERE sl_user_links.id = ?
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
+        WHERE sl_user_links.link_map_id = ?
         AND sl_user_links.user_id = ?
         AND sl_link_request.timestamp >= datetime('now', '-' || ? || ' days')
         GROUP BY date

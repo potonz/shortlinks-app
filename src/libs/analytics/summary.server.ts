@@ -12,21 +12,21 @@ export async function buildSummaryQuery(userId: string): Promise<IBuildSummaryQu
     const totalClicksQuery = `
         SELECT COUNT(*) as count
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
         WHERE sl_user_links.user_id = ?
     `;
 
     const uniqueVisitorsQuery = `
         SELECT COUNT(DISTINCT sl_link_request.ip_address) as count
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
         WHERE sl_user_links.user_id = ?
     `;
 
     const last7DaysQuery = `
         SELECT COUNT(*) as count
         FROM sl_link_request
-        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.id
+        INNER JOIN sl_user_links ON sl_link_request.link_map_id = sl_user_links.link_map_id
         WHERE sl_user_links.user_id = ?
         AND sl_link_request.timestamp >= datetime('now', '-7 days')
     `;
