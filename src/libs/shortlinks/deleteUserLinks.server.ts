@@ -4,11 +4,11 @@ import { getShortLinksManager } from "~/libs/shortlinks/manager";
 
 export async function deleteUserLinks(userId: string): Promise<void> {
     const shortLinksResult = await env.DB.prepare(`
-        SELECT sl_user_links.id, sl_links_map.short_id, sl_links_map.base_url_id
+        SELECT sl_links_map.short_id, sl_links_map.base_url_id
         FROM sl_user_links
         INNER JOIN sl_links_map ON sl_links_map.id = sl_user_links.link_map_id
         WHERE user_id = ?
-    `).bind(userId).all<{ id: number; short_id: string; base_url_id: number | null }>();
+    `).bind(userId).all<{ short_id: string; base_url_id: number | null }>();
 
     if (shortLinksResult.success && shortLinksResult.results.length > 0) {
         const manager = await getShortLinksManager();
