@@ -8,6 +8,8 @@ import { auth } from "~/libs/auth/auth";
 const inputValidator = z.object({
     id: z.number(),
     days: z.number().optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
 });
 
 export const getClicksByTimeByShortId = createServerFn({ method: "GET" })
@@ -25,7 +27,16 @@ export const getClicksByTimeByShortId = createServerFn({ method: "GET" })
                 };
             }
 
-            const result = await buildClicksByTimeByShortIdQuery(data.id, data.days || 30, userId);
+            const startDate = data.startDate ? new Date(data.startDate) : undefined;
+            const endDate = data.endDate ? new Date(data.endDate) : undefined;
+
+            const result = await buildClicksByTimeByShortIdQuery(
+                data.id,
+                data.days || 30,
+                userId,
+                startDate,
+                endDate,
+            );
 
             return {
                 success: true,

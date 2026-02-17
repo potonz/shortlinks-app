@@ -1,0 +1,123 @@
+.date-range-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.preset-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.preset-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #3f3f46;
+    background: transparent;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+    border-color: #52525b;
+    color: #e4e4e7;
+}
+
+.preset-btn.active {
+    background: #27272a;
+    border-color: #71717a;
+    color: #fafafa;
+}
+
+.custom-date-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: #18181b;
+    border-radius: 8px;
+    border: 1px solid #3f3f46;
+}
+
+.date-inputs {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 140px;
+}
+
+.date-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #a1a1aa;
+}
+
+.date-input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #3f3f46;
+    background: #27272a;
+    color: #fafafa;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.date-input:focus {
+    border-color: #71717a;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+    cursor: pointer;
+}
+
+.custom-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.cancel-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #3f3f46;
+    background: transparent;
+    color: #a1a1aa;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+    border-color: #52525b;
+    color: #e4e4e7;
+}
+
+.apply-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #71717a;
+    color: #fafafa;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.apply-btn:hover {
+    background: #52525b;
+}
