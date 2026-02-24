@@ -7,7 +7,7 @@ import { CopyButton } from "~/components/CopyButton";
 import { DeleteLinkModal } from "~/components/dashboard/links/DeleteLinkModal";
 import { addNotification } from "~/components/notifications/notificationUtils";
 import { fetchLinkDetails, updateLink } from "~/libs/shortlinks";
-import { getBaseUrlHref, getBaseUrlLabel } from "~/utils/urls";
+import { createBaseUrlsHelper } from "~/utils/urls";
 
 export const Route = createFileRoute("/dashboard/links/$id/")({
     component: EditLinkPage,
@@ -29,6 +29,9 @@ function linkDetailsQueryOptions(id: number) {
 }
 
 function EditLinkPage() {
+    const ctx = Route.useRouteContext();
+    const baseUrlsHelper = createBaseUrlsHelper(ctx().baseUrls);
+
     const params = Route.useParams();
     const navigate = Route.useNavigate();
     const context = Route.useRouteContext();
@@ -137,11 +140,11 @@ function EditLinkPage() {
                                             <input
                                                 type="text"
                                                 id="shortId"
-                                                value={getBaseUrlLabel(link().baseUrlId ?? 0) + link().shortId}
+                                                value={baseUrlsHelper.getBaseUrlLabel(link().baseUrlId ?? 0) + link().shortId}
                                                 disabled
                                                 class="flex-1 px-4 py-2 bg-zinc-950 text-zinc-500 border border-zinc-800 rounded-lg cursor-not-allowed"
                                             />
-                                            <CopyButton text={getBaseUrlHref(link().baseUrlId ?? 0) + link().shortId} />
+                                            <CopyButton text={baseUrlsHelper.getBaseUrlHref(link().baseUrlId ?? 0) + link().shortId} />
                                         </div>
                                         <p class="text-sm text-zinc-500 mt-1">
                                             The short URL cannot be changed

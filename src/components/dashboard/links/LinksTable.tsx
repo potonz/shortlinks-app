@@ -1,9 +1,10 @@
+import type { IBaseUrlRecord } from "@potonz/shortlinks-manager";
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
 import { createSignal, For, Show } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
 import { CopyButton } from "~/components/CopyButton";
-import { getBaseUrlHref, getBaseUrlLabel } from "~/utils/urls";
+import { createBaseUrlsHelper } from "~/utils/urls";
 
 import { LinkActions } from "./LinkActions";
 import { createLinksQuery } from "./query";
@@ -13,7 +14,13 @@ type SortDirection = "asc" | "desc";
 
 const pageSize = 10;
 
-export function LinksTable() {
+interface IProps {
+    baseUrls: IBaseUrlRecord[];
+}
+
+export function LinksTable(props: IProps) {
+    const baseUrlsHelper = createBaseUrlsHelper(props.baseUrls);
+
     const queryClient = useQueryClient();
     const [currentPage, setCurrentPage] = createSignal(1);
     const [searchQuery, setSearchQuery] = createSignal("");
@@ -31,7 +38,7 @@ export function LinksTable() {
         return links().filter(link =>
             link.shortId.toLowerCase().includes(query)
             || link.originalUrl.toLowerCase().includes(query)
-            || (getBaseUrlLabel(link.baseUrlId ?? 0) + link.shortId).toLowerCase().includes(query),
+            || (baseUrlsHelper.getBaseUrlLabel(link.baseUrlId ?? 0) + link.shortId).toLowerCase().includes(query),
         );
     };
 
@@ -180,14 +187,14 @@ export function LinksTable() {
                                     <div class="px-4 py-3 min-w-0">
                                         <div class="flex items-center gap-2">
                                             <a
-                                                href={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
+                                                href={baseUrlsHelper.getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
                                                 target="potoPreviewWindow"
                                                 class="font-medium truncate text-zinc-500 hover:text-white"
                                             >
-                                                <span>{getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
+                                                <span>{baseUrlsHelper.getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
                                                 <span class="text-white">{link.shortId}</span>
                                             </a>
-                                            <CopyButton text={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
+                                            <CopyButton text={baseUrlsHelper.getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
                                         </div>
                                     </div>
 
@@ -232,14 +239,14 @@ export function LinksTable() {
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2 min-w-0 flex-1">
                                             <a
-                                                href={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
+                                                href={baseUrlsHelper.getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId}
                                                 target="potoPreviewWindow"
                                                 class="font-medium truncate text-zinc-500 hover:text-white"
                                             >
-                                                <span>{getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
+                                                <span>{baseUrlsHelper.getBaseUrlLabel(link.baseUrlId ?? 0)}</span>
                                                 <span class="text-white">{link.shortId}</span>
                                             </a>
-                                            <CopyButton text={getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
+                                            <CopyButton text={baseUrlsHelper.getBaseUrlHref(link.baseUrlId ?? 0) + link.shortId} />
                                         </div>
                                         <div class="ml-2">
                                             <LinkActions

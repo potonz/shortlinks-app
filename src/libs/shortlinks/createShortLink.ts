@@ -3,14 +3,15 @@ import { getRequest } from "@tanstack/solid-start/server";
 import { env } from "cloudflare:workers";
 import { z } from "zod";
 
-import { defaultBaseUrl } from "~/utils/urls";
+import { createBaseUrlsHelper } from "~/utils/urls";
 
 import { auth } from "../auth/auth";
 import { validateCaptcha } from "../captcha/turnstileValidate";
+import { getBaseUrls } from "./getBaseUrls.functions";
 import { getShortLinksManager } from "./manager";
 
 const validator = z.object({
-    url: z.httpUrl("Invalid URL, please check and try again.").refine(value => !value.startsWith(defaultBaseUrl.url.href), "we cannot shorten ourselves :("),
+    url: z.httpUrl("Invalid URL, please check and try again."),
     captchaToken: z.string("Invalid captcha token, please reload the page or try again.").min(1, "missing captcha token"),
     baseUrlId: z.number().nullable().optional(),
 });
@@ -18,6 +19,11 @@ const validator = z.object({
 export const createShortLink = createServerFn({ method: "POST" })
     .inputValidator(validator)
     .handler(async ({ data }) => {
+        const baseUrls = await getBaseUrls();
+        const baseUrlsHelper = createBaseUrlsHelper(baseUrls);
+
+        const targetUrl = baseUrlsHelper.validationShortLink().parse(data.url);
+
         const request = getRequest();
         const session = await auth.api.getSession({ headers: request.headers });
         const userId = session?.user?.id;
@@ -29,7 +35,7 @@ export const createShortLink = createServerFn({ method: "POST" })
         }
 
         const manager = await getShortLinksManager();
-        const shortId = await manager.createShortLink(data.url, data.baseUrlId ?? null);
+        const shortId = await manager.createShortLink(targetUrl, data.baseUrlId ?? null);
 
         if (userId) {
             const linkMapResult = await env.DB.prepare(`

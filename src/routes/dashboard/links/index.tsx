@@ -7,6 +7,8 @@ export const Route = createFileRoute("/dashboard/links/")({
 });
 
 function LinksPage() {
+    const ctx = Route.useRouteContext();
+
     return (
         <div class="p-4 lg:p-8">
             <div class="max-w-7xl mx-auto space-y-6">
@@ -25,7 +27,7 @@ function LinksPage() {
                     </Link>
                 </div>
 
-                <LinksTable />
+                <LinksTable baseUrls={ctx().baseUrls} />
             </div>
         </div>
     );

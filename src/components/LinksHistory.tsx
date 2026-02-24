@@ -1,11 +1,19 @@
+import type { IBaseUrlRecord } from "@potonz/shortlinks-manager";
 import { ClientOnly } from "@tanstack/solid-router";
 import { For, Show } from "solid-js";
 
+import { createBaseUrlsHelper } from "~/utils/urls";
+
 import { useLinkHistory } from "../stores/linkHistoryStore";
-import { getBaseUrlById } from "../utils/urls";
 import { CopyButton } from "./CopyButton";
 
-export function LinksHistory() {
+interface IProps {
+    baseUrls: IBaseUrlRecord[];
+}
+
+export function LinksHistory(props: IProps) {
+    const baseUrlsHelper = createBaseUrlsHelper(props.baseUrls);
+
     const { linkHistory, deleteLinkFromHistory } = useLinkHistory();
 
     return (
@@ -19,7 +27,7 @@ export function LinksHistory() {
                     <div class="space-y-3 max-h-80 overflow-y-auto">
                         <For each={linkHistory()}>
                             {(item) => {
-                                const baseUrl = getBaseUrlById(item.baseUrlId);
+                                const baseUrl = baseUrlsHelper.getBaseUrlById(item.baseUrlId);
                                 const baseUrlLabel = baseUrl?.url.host ?? "link";
                                 const baseUrlHref = baseUrl?.url.href ?? "https://example.com/";
                                 return (

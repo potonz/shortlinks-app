@@ -1,3 +1,4 @@
+import type { IBaseUrlRecord } from "@potonz/shortlinks-manager";
 import { type QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import {
     createRootRouteWithContext,
@@ -14,12 +15,13 @@ import { Footer } from "~/components/common/Footer";
 import { Navbar } from "~/components/common/Navbar";
 import { Spinner } from "~/components/common/Spinner";
 import NotificationsContainer from "~/components/notifications/NotificationsContainer";
+import { getBaseUrls } from "~/libs/shortlinks/getBaseUrls.functions";
 import { queryClient } from "~/queryClient";
 import { LinkHistoryProvider } from "~/stores/linkHistoryStore";
 import { SidebarProvider } from "~/stores/sidebarStore";
 import styleCss from "~/styles/styles.css?url";
 
-export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()({
+export const Route = createRootRouteWithContext <{ queryClient: QueryClient; baseUrls: IBaseUrlRecord[] }>()({
     head: () => ({
         meta: [
             {
@@ -43,6 +45,11 @@ export const Route = createRootRouteWithContext <{ queryClient: QueryClient }>()
             { rel: "stylesheet", href: styleCss },
         ],
     }),
+    beforeLoad: async () => {
+        return {
+            baseUrls: await getBaseUrls(),
+        };
+    },
     component: RootComponent,
     pendingComponent: () => <Spinner />,
     notFoundComponent: () => "Not found",

@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { createSignal, For, onMount, Show } from "solid-js";
-import { z } from "zod";
+
+import { createBaseUrlsHelper } from "~/utils/urls";
 
 import { CopyButton } from "../components/CopyButton";
 import { LinksHistory } from "../components/LinksHistory";
 import { addNotification } from "../components/notifications/notificationUtils";
 import { createShortLink } from "../libs/shortlinks/createShortLink";
 import { useLinkHistory } from "../stores/linkHistoryStore";
-import { BASE_URLS, fullBaseHref, getBaseUrlById, getBaseUrlHref, getBaseUrlLabel } from "../utils/urls";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -22,17 +22,19 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
+    const ctx = Route.useRouteContext();
+    const baseUrlsHelper = createBaseUrlsHelper(ctx().baseUrls);
+
     const [url, setUrl] = createSignal("");
-    const [selectedBaseUrlId, setSelectedBaseUrlId] = createSignal<number>(BASE_URLS[0].id);
+    const [selectedBaseUrlId, setSelectedBaseUrlId] = createSignal<number>(baseUrlsHelper.BASE_URLS_ACTIVE[0]?.id ?? 0);
     let captchaContainerRef!: HTMLDivElement;
     let captchaLoaderRef!: HTMLDivElement;
     const [captchaToken, setCaptchaToken] = createSignal("");
     const { addLinkToHistory } = useLinkHistory();
 
-    const selectedBaseUrl = () => getBaseUrlById(selectedBaseUrlId());
-    const selectedFullBaseHref = () => selectedBaseUrl()?.url.href ?? fullBaseHref;
+    const selectedBaseUrl = () => baseUrlsHelper.getBaseUrlById(selectedBaseUrlId());
 
-    const canSubmit = () => !isSubmitting() && captchaToken() && z.httpUrl().refine(url => !url.startsWith(selectedFullBaseHref())).safeParse(url()).success;
+    const canSubmit = () => !isSubmitting() && captchaToken() && baseUrlsHelper.validationShortLink().safeParse(url()).success;
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [shortIdGenerated, setShortIdGenerated] = createSignal<{ id: string; baseUrlId: number } | null>(null);
 
@@ -146,7 +148,7 @@ function App() {
                             onChange={e => setSelectedBaseUrlId(Number(e.currentTarget.value))}
                             class="grow md:grow-0 px-4 py-4 bg-zinc-900 text-white border border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-shadow cursor-pointer"
                         >
-                            <For each={BASE_URLS}>
+                            <For each={baseUrlsHelper.BASE_URLS_ACTIVE}>
                                 {baseUrl => (
                                     <option value={baseUrl.id}>{baseUrl.url.host}</option>
                                 )}
@@ -193,14 +195,13 @@ function App() {
                         <h3 class="text-lg font-semibold text-zinc-300 mb-4">Your new link</h3>
                         <div class="p-4 border-2 border-zinc-400 rounded-2xl flex">
                             <div class="grow text-left">
-                                <span class="text-zinc-500">{getBaseUrlLabel(link().baseUrlId)}</span>
+                                <span class="text-zinc-500">{selectedBaseUrl()?.url.host.replace(/\/*$/, "/")}</span>
                                 <span class="text-white">
-
                                     {link().id}
                                 </span>
                             </div>
                             <div class="pl-2">
-                                <CopyButton text={getBaseUrlHref(link().baseUrlId) + link().id} />
+                                <CopyButton text={selectedBaseUrl()?.url.href.replace(/\/*$/, "/") + link().id} />
                             </div>
                         </div>
                     </div>
@@ -209,7 +210,7 @@ function App() {
 
             {/* Link History Section */}
             <div class="mt-12">
-                <LinksHistory />
+                <LinksHistory baseUrls={ctx().baseUrls} />
             </div>
         </div>
     );
