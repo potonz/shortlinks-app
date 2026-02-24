@@ -1,3 +1,18 @@
+## [0.4.0] - 2026-02-24
+
+### ⛰️  Features
+
+- Added clicks by date range instead of hardcoded
+- Added ga4 analytics for users
+
+### 🚜 Refactor
+
+- Load base urls from DB instead of hardcoded
+
+### ⚙️ Miscellaneous Tasks
+
+- *(deps)* Bump all packages
+
 ## [0.3.1] - 2026-02-16
 
 ### 🐛 Bug Fixes
