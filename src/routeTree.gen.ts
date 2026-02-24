@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardGa4SettingsRouteImport } from './routes/dashboard/ga4-settings'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as DashboardLinksIndexRouteImport } from './routes/dashboard/links/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -51,6 +52,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardGa4SettingsRoute = DashboardGa4SettingsRouteImport.update({
+  id: '/ga4-settings',
+  path: '/ga4-settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links': typeof DashboardLinksIndexRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/ga4-settings'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/ga4-settings'
     | '/dashboard'
     | '/api/auth/$'
     | '/dashboard/links'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/ga4-settings'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
@@ -211,6 +223,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/ga4-settings': {
+      id: '/dashboard/ga4-settings'
+      path: '/ga4-settings'
+      fullPath: '/dashboard/ga4-settings'
+      preLoaderRoute: typeof DashboardGa4SettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/account': {
       id: '/dashboard/account'
       path: '/account'
@@ -251,6 +270,7 @@ declare module '@tanstack/solid-router' {
 
 interface DashboardRouteChildren {
   DashboardAccountRoute: typeof DashboardAccountRoute
+  DashboardGa4SettingsRoute: typeof DashboardGa4SettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardLinksIndexRoute: typeof DashboardLinksIndexRoute
   DashboardLinksIdAnalyticsRoute: typeof DashboardLinksIdAnalyticsRoute
@@ -259,6 +279,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAccountRoute: DashboardAccountRoute,
+  DashboardGa4SettingsRoute: DashboardGa4SettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardLinksIndexRoute: DashboardLinksIndexRoute,
   DashboardLinksIdAnalyticsRoute: DashboardLinksIdAnalyticsRoute,

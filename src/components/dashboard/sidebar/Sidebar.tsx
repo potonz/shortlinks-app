@@ -39,6 +39,13 @@ export function Sidebar() {
                         />
                         <NavItem
                             linkOptions={{
+                                to: "/dashboard/ga4-settings",
+                            }}
+                            label="GA4"
+                            icon={<i class="bi bi-google"></i>}
+                        />
+                        <NavItem
+                            linkOptions={{
                                 to: "/dashboard/account",
                             }}
                             label="Account"

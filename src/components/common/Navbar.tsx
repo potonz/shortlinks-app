@@ -45,6 +45,9 @@ export function Navbar() {
                     <SidebarToggle onClick={handleToggleClick} />
                 </ClientOnly>
                 <Link to="/" class="text-4xl font-bold text-white">Poto</Link>
+                <div class="hidden md:block ml-8">
+                    Open-source URL shortener
+                </div>
 
                 <div class="ml-auto flex items-center space-x-2 h-full">
                     <a
