@@ -1,3 +1,9 @@
+## [0.4.1] - 2026-02-24
+
+### 🐛 Bug Fixes
+
+- [**breaking**] Fixed broken migration file
+
 ## [0.4.0] - 2026-02-24
 
 ### ⛰️  Features
