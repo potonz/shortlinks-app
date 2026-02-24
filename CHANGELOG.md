@@ -1,3 +1,9 @@
+## [0.4.2] - 2026-02-24
+
+### 🐛 Bug Fixes
+
+- Removed static base url fetching
+
 ## [0.4.1] - 2026-02-24
 
 ### 🐛 Bug Fixes
