@@ -14,7 +14,7 @@
         "@tanstack/solid-query": "^5.90.23",
         "@tanstack/solid-router": "~1.162.8",
         "@tanstack/solid-router-devtools": "~1.162.8",
-        "@tanstack/solid-router-ssr-query": "~1.162.8",
+        "@tanstack/solid-router-ssr-query": "~1.163.3",
         "@tanstack/solid-start": "~1.162.8",
         "@tanstack/start-static-server-functions": "~1.162.8",
         "better-auth": "^1.4.19",
@@ -399,7 +399,7 @@
 
     "@tanstack/router-plugin": ["@tanstack/router-plugin@1.162.8", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/plugin-syntax-jsx": "^7.27.1", "@babel/plugin-syntax-typescript": "^7.27.1", "@babel/template": "^7.27.2", "@babel/traverse": "^7.28.5", "@babel/types": "^7.28.5", "@tanstack/router-core": "1.162.6", "@tanstack/router-generator": "1.162.6", "@tanstack/router-utils": "1.161.4", "@tanstack/virtual-file-routes": "1.161.4", "chokidar": "^3.6.0", "unplugin": "^2.1.2", "zod": "^3.24.2" }, "peerDependencies": { "@rsbuild/core": ">=1.0.2", "@tanstack/react-router": "^1.162.8", "vite": ">=5.0.0 || >=6.0.0 || >=7.0.0", "vite-plugin-solid": "^2.11.10", "webpack": ">=5.92.0" }, "optionalPeers": ["@rsbuild/core", "@tanstack/react-router", "vite", "vite-plugin-solid", "webpack"] }, "sha512-u6ZqYEjIA8jXge6JSl5UFFYPzVRciee0vwDwtkIF1Sb+G4cDdDaEjYQ4aN1/va8D7n3LptYvSMU8SeGkX+9slA=="],
 
-    "@tanstack/router-ssr-query-core": ["@tanstack/router-ssr-query-core@1.162.6", "", { "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/router-core": ">=1.127.0" } }, "sha512-kE1uENrVTubRCJybYUJrHR90Tzxh/tqKX8e6sVnccc694sNB4yNgAMsyxgqhWGUgOux7BZUj5dhoREjaU9XflA=="],
+    "@tanstack/router-ssr-query-core": ["@tanstack/router-ssr-query-core@1.163.3", "", { "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/router-core": ">=1.127.0" } }, "sha512-i01cZdgG+fOEEuDclg1eq2X5Ptm0UF5cNYeFwMDBLQnNfil5NrDwxdFPdDx/YLevMaeGbVbiFS0m0u9A3ItzjA=="],
 
     "@tanstack/router-utils": ["@tanstack/router-utils@1.161.4", "", { "dependencies": { "@babel/core": "^7.28.5", "@babel/generator": "^7.28.5", "@babel/parser": "^7.28.5", "@babel/types": "^7.28.5", "ansis": "^4.1.0", "babel-dead-code-elimination": "^1.0.12", "diff": "^8.0.2", "pathe": "^2.0.3", "tinyglobby": "^0.2.15" } }, "sha512-r8TpjyIZoqrXXaf2DDyjd44gjGBoyE+/oEaaH68yLI9ySPO1gUWmQENZ1MZnmBnpUGN24NOZxdjDLc8npK0SAw=="],
 
@@ -409,7 +409,7 @@
 
     "@tanstack/solid-router-devtools": ["@tanstack/solid-router-devtools@1.162.8", "", { "dependencies": { "@tanstack/router-devtools-core": "1.162.6" }, "peerDependencies": { "@tanstack/router-core": "^1.162.6", "@tanstack/solid-router": "^1.162.8", "solid-js": "^1.9.10" }, "optionalPeers": ["@tanstack/router-core"] }, "sha512-kI9gtloCQU/W/uTPZR5PP1qZwFkkdN8soj7dVN6ByxV0lLrbJjxoxrSiynd/YvWZ2YaW15TF+U2NbWV506EwyQ=="],
 
-    "@tanstack/solid-router-ssr-query": ["@tanstack/solid-router-ssr-query@1.162.8", "", { "dependencies": { "@tanstack/router-ssr-query-core": "1.162.6" }, "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/solid-query": ">=5.90.0", "@tanstack/solid-router": ">=1.127.0", "solid-js": "^1.9.10" } }, "sha512-i+nlga2EjpSp3cgTydWdaK+M7DNU2ip5lVZOD9wfP6sm1NkPXW0Y/b5F0/CEgEX0fry7IeTNFDlc6G4NvzD2ow=="],
+    "@tanstack/solid-router-ssr-query": ["@tanstack/solid-router-ssr-query@1.163.3", "", { "dependencies": { "@tanstack/router-ssr-query-core": "1.163.3" }, "peerDependencies": { "@tanstack/query-core": ">=5.90.0", "@tanstack/solid-query": ">=5.90.0", "@tanstack/solid-router": ">=1.127.0", "solid-js": "^1.9.10" } }, "sha512-GWWs1iYDPa7iWdEKVhOqF8SSv1tD173cMotOLJUNYgR7TYU72XPFS5Q939+ebL3LoxLbrtlgx/XUzu/gVY6zag=="],
 
     "@tanstack/solid-start": ["@tanstack/solid-start@1.162.8", "", { "dependencies": { "@tanstack/solid-router": "1.162.8", "@tanstack/solid-start-client": "1.162.8", "@tanstack/solid-start-server": "1.162.8", "@tanstack/start-client-core": "1.162.6", "@tanstack/start-plugin-core": "1.162.8", "@tanstack/start-server-core": "1.162.6", "pathe": "^2.0.3" }, "peerDependencies": { "solid-js": ">=1.0.0", "vite": ">=7.0.0" } }, "sha512-AFAhg8ER9OVr6o3CKYDFhwhgxCQInSMcjKmVUto/jHVADkfjfgn7h9drAa6N+vdkvXk/5jZfKJWBfSFuaL86KQ=="],
 
