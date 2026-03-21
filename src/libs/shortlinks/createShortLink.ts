@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequest } from "@tanstack/solid-start/server";
-import { env } from "cloudflare:workers";
 import { z } from "zod";
 
 import { createBaseUrlsHelper } from "~/utils/urls";
@@ -8,6 +7,7 @@ import { createBaseUrlsHelper } from "~/utils/urls";
 import { auth } from "../auth/auth";
 import { validateCaptcha } from "../captcha/turnstileValidate";
 import { getBaseUrls } from "./getBaseUrls.functions";
+import { createLinkQuery } from "./createLinkQuery";
 import { getShortLinksManager } from "./manager";
 
 const validator = z.object({
@@ -34,29 +34,15 @@ export const createShortLink = createServerFn({ method: "POST" })
             return null;
         }
 
-        const manager = await getShortLinksManager();
-        const shortId = await manager.createShortLink(targetUrl, data.baseUrlId ?? null);
-
         if (userId) {
-            const linkMapResult = await env.DB.prepare(`
-                SELECT id FROM sl_links_map WHERE short_id = ? AND (base_url_id = ? OR (base_url_id IS NULL AND ? IS NULL))
-            `).bind(shortId, data.baseUrlId ?? null, data.baseUrlId ?? null).first<{ id: number }>();
-
-            if (!linkMapResult) {
-                console.error("Failed to find created link in sl_links_map");
-                return null;
-            }
-
-            const result = await env.DB.prepare(`
-                INSERT INTO sl_user_links (link_map_id, user_id)
-                VALUES (?, ?)
-            `).bind(linkMapResult.id, userId).run();
-
+            const result = await createLinkQuery(userId, targetUrl, data.baseUrlId ?? null);
             if (!result.success) {
                 console.error(result.error);
                 return null;
             }
+            return result.shortId;
         }
 
-        return shortId;
+        const manager = await getShortLinksManager();
+        return await manager.createShortLink(targetUrl, data.baseUrlId ?? null);
     });
