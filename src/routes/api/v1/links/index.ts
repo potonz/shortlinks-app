@@ -3,8 +3,8 @@ import { z } from "zod";
 
 import { verifyApiKeyFromRequest } from "~/libs/auth/verifyApiKeyFromRequest";
 import { createLinkQuery } from "~/libs/shortlinks/createLinkQuery";
-import { getBaseUrls } from "~/libs/shortlinks/getBaseUrls.functions";
 import { fetchUserLinksQuery } from "~/libs/shortlinks/fetchUserLinks.server";
+import { getBaseUrls } from "~/libs/shortlinks/getBaseUrls.functions";
 import { createBaseUrlsHelper } from "~/utils/urls";
 
 function json(data: unknown, status = 200): Response {
@@ -40,7 +40,8 @@ export const Route = createFileRoute("/api/v1/links/")({
                 let body: z.infer<typeof bodySchema>;
                 try {
                     body = bodySchema.parse(await request.json());
-                } catch {
+                }
+                catch {
                     return json({ error: "Invalid request body" }, 400);
                 }
 
@@ -50,7 +51,8 @@ export const Route = createFileRoute("/api/v1/links/")({
                 let targetUrl: string;
                 try {
                     targetUrl = baseUrlsHelper.validationShortLink().parse(body.url);
-                } catch {
+                }
+                catch {
                     return json({ error: "URL is not allowed or is a shortlink domain" }, 422);
                 }
 

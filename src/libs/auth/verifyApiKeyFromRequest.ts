@@ -1,8 +1,8 @@
 import { auth } from "~/libs/auth/auth";
 
-export type ApiKeyVerifyResult =
-    | { success: true; userId: string }
-    | { success: false; response: Response };
+export type ApiKeyVerifyResult
+    = | { success: true; userId: string }
+        | { success: false; response: Response };
 
 export async function verifyApiKeyFromRequest(request: Request): Promise<ApiKeyVerifyResult> {
     const authHeader = request.headers.get("Authorization");

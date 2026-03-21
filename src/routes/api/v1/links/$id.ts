@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/solid-router";
 import { z } from "zod";
 
 import { verifyApiKeyFromRequest } from "~/libs/auth/verifyApiKeyFromRequest";
+import { deleteLinkQuery } from "~/libs/shortlinks/deleteLink.server";
 import { fetchLinkDetailsQuery } from "~/libs/shortlinks/fetchLinkDetails.server";
 import { updateLinkQuery } from "~/libs/shortlinks/updateLink.server";
-import { deleteLinkQuery } from "~/libs/shortlinks/deleteLink.server";
 
 function json(data: unknown, status = 200): Response {
     return new Response(JSON.stringify(data), {
@@ -46,7 +46,8 @@ export const Route = createFileRoute("/api/v1/links/$id")({
                 let body: z.infer<typeof bodySchema>;
                 try {
                     body = bodySchema.parse(await request.json());
-                } catch {
+                }
+                catch {
                     return json({ error: "Invalid request body" }, 400);
                 }
 

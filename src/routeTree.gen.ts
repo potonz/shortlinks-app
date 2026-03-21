@@ -20,7 +20,9 @@ import { Route as DashboardAccountRouteImport } from './routes/dashboard/account
 import { Route as DashboardLinksIndexRouteImport } from './routes/dashboard/links/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as DashboardLinksIdIndexRouteImport } from './routes/dashboard/links/$id/index'
+import { Route as ApiV1LinksIndexRouteImport } from './routes/api/v1/links/index'
 import { Route as DashboardLinksIdAnalyticsRouteImport } from './routes/dashboard/links/$id/analytics'
+import { Route as ApiV1LinksIdRouteImport } from './routes/api/v1/links/$id'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -77,12 +79,22 @@ const DashboardLinksIdIndexRoute = DashboardLinksIdIndexRouteImport.update({
   path: '/links/$id/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const ApiV1LinksIndexRoute = ApiV1LinksIndexRouteImport.update({
+  id: '/api/v1/links/',
+  path: '/api/v1/links/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardLinksIdAnalyticsRoute =
   DashboardLinksIdAnalyticsRouteImport.update({
     id: '/links/$id/analytics',
     path: '/links/$id/analytics',
     getParentRoute: () => DashboardRoute,
   } as any)
+const ApiV1LinksIdRoute = ApiV1LinksIdRouteImport.update({
+  id: '/api/v1/links/$id',
+  path: '/api/v1/links/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,7 +107,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
+  '/api/v1/links/$id': typeof ApiV1LinksIdRoute
   '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/api/v1/links/': typeof ApiV1LinksIndexRoute
   '/dashboard/links/$id/': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -108,7 +122,9 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links': typeof DashboardLinksIndexRoute
+  '/api/v1/links/$id': typeof ApiV1LinksIdRoute
   '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/api/v1/links': typeof ApiV1LinksIndexRoute
   '/dashboard/links/$id': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRoutesById {
@@ -123,7 +139,9 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/links/': typeof DashboardLinksIndexRoute
+  '/api/v1/links/$id': typeof ApiV1LinksIdRoute
   '/dashboard/links/$id/analytics': typeof DashboardLinksIdAnalyticsRoute
+  '/api/v1/links/': typeof ApiV1LinksIndexRoute
   '/dashboard/links/$id/': typeof DashboardLinksIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -139,7 +157,9 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
+    | '/api/v1/links/$id'
     | '/dashboard/links/$id/analytics'
+    | '/api/v1/links/'
     | '/dashboard/links/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,7 +172,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/auth/$'
     | '/dashboard/links'
+    | '/api/v1/links/$id'
     | '/dashboard/links/$id/analytics'
+    | '/api/v1/links'
     | '/dashboard/links/$id'
   id:
     | '__root__'
@@ -166,7 +188,9 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/links/'
+    | '/api/v1/links/$id'
     | '/dashboard/links/$id/analytics'
+    | '/api/v1/links/'
     | '/dashboard/links/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -177,6 +201,8 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiV1LinksIdRoute: typeof ApiV1LinksIdRoute
+  ApiV1LinksIndexRoute: typeof ApiV1LinksIndexRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -258,12 +284,26 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DashboardLinksIdIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/api/v1/links/': {
+      id: '/api/v1/links/'
+      path: '/api/v1/links'
+      fullPath: '/api/v1/links/'
+      preLoaderRoute: typeof ApiV1LinksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/links/$id/analytics': {
       id: '/dashboard/links/$id/analytics'
       path: '/links/$id/analytics'
       fullPath: '/dashboard/links/$id/analytics'
       preLoaderRoute: typeof DashboardLinksIdAnalyticsRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/api/v1/links/$id': {
+      id: '/api/v1/links/$id'
+      path: '/api/v1/links/$id'
+      fullPath: '/api/v1/links/$id'
+      preLoaderRoute: typeof ApiV1LinksIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -297,6 +337,8 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiV1LinksIdRoute: ApiV1LinksIdRoute,
+  ApiV1LinksIndexRoute: ApiV1LinksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
