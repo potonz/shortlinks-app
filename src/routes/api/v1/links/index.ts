@@ -32,8 +32,11 @@ export const Route = createFileRoute("/api/v1/links/")({
                 const auth = await verifyApiKeyFromRequest(request);
                 if (!auth.success) return auth.response;
 
+                const baseUrls = await getBaseUrls();
+                const baseUrlsHelper = createBaseUrlsHelper(baseUrls);
+
                 const bodySchema = z.object({
-                    url: z.string().url(),
+                    url: baseUrlsHelper.validationShortLink(),
                     baseUrlId: z.number().int().positive().nullable().optional(),
                 });
 
@@ -45,18 +48,7 @@ export const Route = createFileRoute("/api/v1/links/")({
                     return json({ error: "Invalid request body" }, 400);
                 }
 
-                const baseUrls = await getBaseUrls();
-                const baseUrlsHelper = createBaseUrlsHelper(baseUrls);
-
-                let targetUrl: string;
-                try {
-                    targetUrl = baseUrlsHelper.validationShortLink().parse(body.url);
-                }
-                catch {
-                    return json({ error: "URL is not allowed or is a shortlink domain" }, 422);
-                }
-
-                const result = await createLinkQuery(auth.userId, targetUrl, body.baseUrlId ?? null);
+                const result = await createLinkQuery(auth.userId, body.url, body.baseUrlId ?? null);
                 if (!result.success) {
                     return json({ error: result.error }, 500);
                 }

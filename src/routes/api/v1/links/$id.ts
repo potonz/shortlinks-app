@@ -4,7 +4,9 @@ import { z } from "zod";
 import { verifyApiKeyFromRequest } from "~/libs/auth/verifyApiKeyFromRequest";
 import { deleteLinkQuery } from "~/libs/shortlinks/deleteLink.server";
 import { fetchLinkDetailsQuery } from "~/libs/shortlinks/fetchLinkDetails.server";
+import { getBaseUrls } from "~/libs/shortlinks/getBaseUrls.functions";
 import { updateLinkQuery } from "~/libs/shortlinks/updateLink.server";
+import { createBaseUrlsHelper } from "~/utils/urls";
 
 function json(data: unknown, status = 200): Response {
     return new Response(JSON.stringify(data), {
@@ -38,9 +40,11 @@ export const Route = createFileRoute("/api/v1/links/$id")({
                 const link = await fetchLinkDetailsQuery(id, auth.userId);
                 if (!link.success || !link.data) return json({ error: "Link not found or access denied" }, 404);
 
+                const baseUrls = await getBaseUrls();
+                const baseUrlsHelper = createBaseUrlsHelper(baseUrls);
+
                 const bodySchema = z.object({
-                    url: z.string().url().optional(),
-                    baseUrlId: z.number().int().positive().nullable().optional(),
+                    url: baseUrlsHelper.validationShortLink(),
                 });
 
                 let body: z.infer<typeof bodySchema>;
@@ -51,14 +55,10 @@ export const Route = createFileRoute("/api/v1/links/$id")({
                     return json({ error: "Invalid request body" }, 400);
                 }
 
-                if (!body.url && body.baseUrlId === undefined) {
-                    return json({ error: "Nothing to update" }, 400);
-                }
-
                 const result = await updateLinkQuery(
                     link.data.shortId,
-                    body.url ?? link.data.originalUrl,
-                    body.baseUrlId !== undefined ? body.baseUrlId : link.data.baseUrlId,
+                    body.url,
+                    link.data.baseUrlId,
                 );
 
                 if (!result.success) return json({ error: result.error }, 422);

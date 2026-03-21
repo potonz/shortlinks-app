@@ -51,13 +51,17 @@ function EditLinkPage() {
             return;
         }
 
+        if (!linkQuery.data) {
+            return;
+        }
+
         setIsUpdating(true);
         try {
             const result = await updateLink({
                 data: {
-                    shortId: linkQuery.data?.shortId ?? "",
+                    shortId: linkQuery.data.shortId ?? "",
                     targetUrl: url,
-                    baseUrlId: null,
+                    baseUrlId: linkQuery.data.baseUrlId,
                 },
             });
 
