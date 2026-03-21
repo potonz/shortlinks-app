@@ -127,7 +127,7 @@ function EditLinkPage() {
                 >
                     {(link) => {
                         if (!targetUrl()) {
-                            setTargetUrl(link().originalUrl);
+                            setTargetUrl(link().targetUrl);
                         }
 
                         return (
@@ -194,7 +194,7 @@ function EditLinkPage() {
                                     <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-zinc-800">
                                         <button
                                             onClick={handleUpdate}
-                                            disabled={isUpdating() || targetUrl() === link().originalUrl}
+                                            disabled={isUpdating() || targetUrl() === link().targetUrl}
                                             class="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                                         >
                                             <Show

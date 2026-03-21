@@ -13,6 +13,7 @@ export async function fetchLinkDetailsQuery(id: number, userId: string): Promise
             sl_links_map.short_id,
             sl_links_map.target_url,
             sl_links_map.base_url_id,
+            sl_base_urls.base_url,
             sl_links_map.last_accessed_at,
             sl_links_map.created_at,
             COUNT(sl_link_request.id) as total_clicks
@@ -29,6 +30,7 @@ export async function fetchLinkDetailsQuery(id: number, userId: string): Promise
         short_id: string;
         target_url: string;
         base_url_id: number | null;
+        base_url: string | null;
         last_accessed_at: string;
         created_at: string;
         total_clicks: number;
@@ -41,11 +43,21 @@ export async function fetchLinkDetailsQuery(id: number, userId: string): Promise
         };
     }
 
+    let fullShortLink = null;
+    if (result.base_url) {
+        try {
+            fullShortLink = new URL(result.short_id, result.base_url).href;
+        }
+        catch { /* do nothing */ }
+    }
+
     const link: ILink = {
         id: result.id,
         shortId: result.short_id,
         baseUrlId: result.base_url_id,
-        originalUrl: result.target_url,
+        baseUrl: result.base_url,
+        fullShortLink,
+        targetUrl: result.target_url,
         totalClicks: result.total_clicks || 0,
         createdAt: result.created_at,
         lastAccessedAt: result.last_accessed_at,

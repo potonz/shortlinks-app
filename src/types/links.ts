@@ -1,12 +1,14 @@
 export interface ILink {
     id: number;
     shortId: string;
-    originalUrl: string;
+    targetUrl: string;
     totalClicks: number;
     createdAt: string;
     lastAccessedAt?: string;
     isActive: boolean;
     baseUrlId: number | null;
+    baseUrl: string | null;
+    fullShortLink: string | null;
 }
 
 export interface IPagination {
