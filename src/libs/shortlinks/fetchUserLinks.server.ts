@@ -43,11 +43,13 @@ export async function fetchUserLinksQuery(
             sl_links_map.short_id,
             sl_links_map.target_url,
             sl_links_map.base_url_id,
+            sl_base_urls.base_url,
             sl_links_map.last_accessed_at,
             sl_links_map.created_at,
             COUNT(sl_link_request.id) as total_clicks
         FROM sl_user_links
         INNER JOIN sl_links_map ON sl_user_links.link_map_id = sl_links_map.id
+        LEFT JOIN sl_base_urls ON sl_links_map.base_url_id = sl_base_urls.id
         LEFT JOIN sl_link_request ON sl_links_map.id = sl_link_request.link_map_id
         WHERE sl_user_links.user_id = ?
         GROUP BY sl_links_map.short_id
@@ -62,21 +64,34 @@ export async function fetchUserLinksQuery(
         short_id: string;
         target_url: string;
         base_url_id: number | null;
+        base_url: string | null;
         last_accessed_at: string;
         created_at: string;
         total_clicks: number;
     }>();
 
-    const links: ILink[] = result.results.map(row => ({
-        id: row.id,
-        shortId: row.short_id,
-        originalUrl: row.target_url,
-        baseUrlId: row.base_url_id,
-        totalClicks: row.total_clicks || 0,
-        createdAt: row.created_at,
-        lastAccessedAt: row.last_accessed_at,
-        isActive: true,
-    }));
+    const links: ILink[] = result.results.map((row) => {
+        let fullShortLink = null;
+        if (row.base_url) {
+            try {
+                fullShortLink = new URL(row.short_id, row.base_url).href;
+            }
+            catch { /* do nothing */ }
+        }
+
+        return {
+            id: row.id,
+            shortId: row.short_id,
+            targetUrl: row.target_url,
+            baseUrlId: row.base_url_id,
+            baseUrl: row.base_url,
+            fullShortLink,
+            totalClicks: row.total_clicks || 0,
+            createdAt: row.created_at,
+            lastAccessedAt: row.last_accessed_at,
+            isActive: true,
+        };
+    });
 
     return {
         success: true,

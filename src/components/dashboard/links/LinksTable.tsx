@@ -37,7 +37,7 @@ export function LinksTable(props: IProps) {
         const query = searchQuery().toLowerCase();
         return links().filter(link =>
             link.shortId.toLowerCase().includes(query)
-            || link.originalUrl.toLowerCase().includes(query)
+            || link.targetUrl.toLowerCase().includes(query)
             || (baseUrlsHelper.getBaseUrlLabel(link.baseUrlId ?? 0) + link.shortId).toLowerCase().includes(query),
         );
     };
@@ -57,7 +57,7 @@ export function LinksTable(props: IProps) {
                     comparison = a.totalClicks - b.totalClicks;
                     break;
                 case "originalUrl":
-                    comparison = a.originalUrl.localeCompare(b.originalUrl);
+                    comparison = a.targetUrl.localeCompare(b.targetUrl);
                     break;
             }
 
@@ -201,13 +201,13 @@ export function LinksTable(props: IProps) {
                                     {/* Original URL */}
                                     <div class="px-4 py-3 min-w-0">
                                         <a
-                                            href={link.originalUrl}
+                                            href={link.targetUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             class="text-zinc-400 hover:text-white truncate block"
-                                            title={link.originalUrl}
+                                            title={link.targetUrl}
                                         >
-                                            {truncateUrl(link.originalUrl, 80)}
+                                            {truncateUrl(link.targetUrl, 80)}
                                         </a>
                                     </div>
 
@@ -261,13 +261,13 @@ export function LinksTable(props: IProps) {
                                     <div>
                                         <div class="text-zinc-500 text-xs mb-1">Destination</div>
                                         <a
-                                            href={link.originalUrl}
+                                            href={link.targetUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             class="text-zinc-300 hover:text-white text-sm truncate block"
-                                            title={link.originalUrl}
+                                            title={link.targetUrl}
                                         >
-                                            {truncateUrl(link.originalUrl, 60)}
+                                            {truncateUrl(link.targetUrl, 60)}
                                         </a>
                                     </div>
 
