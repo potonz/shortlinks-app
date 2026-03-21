@@ -46,6 +46,13 @@ export function Sidebar() {
                         />
                         <NavItem
                             linkOptions={{
+                                to: "/dashboard/api-keys",
+                            }}
+                            label="API Keys"
+                            icon={<i class="bi bi-key"></i>}
+                        />
+                        <NavItem
+                            linkOptions={{
                                 to: "/dashboard/account",
                             }}
                             label="Account"

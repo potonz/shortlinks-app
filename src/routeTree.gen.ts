@@ -16,6 +16,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardGa4SettingsRouteImport } from './routes/dashboard/ga4-settings'
+import { Route as DashboardApiKeysRouteImport } from './routes/dashboard/api-keys'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as DashboardLinksIndexRouteImport } from './routes/dashboard/links/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -57,6 +58,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 const DashboardGa4SettingsRoute = DashboardGa4SettingsRouteImport.update({
   id: '/ga4-settings',
   path: '/ga4-settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardApiKeysRoute = DashboardApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/dashboard/account': typeof DashboardAccountRoute
+  '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/ga4-settings': typeof DashboardGa4SettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/api-keys'
     | '/dashboard/ga4-settings'
     | '/dashboard/'
     | '/api/auth/$'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/api-keys'
     | '/dashboard/ga4-settings'
     | '/dashboard'
     | '/api/auth/$'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/dashboard/account'
+    | '/dashboard/api-keys'
     | '/dashboard/ga4-settings'
     | '/dashboard/'
     | '/api/auth/$'
@@ -256,6 +268,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DashboardGa4SettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/api-keys': {
+      id: '/dashboard/api-keys'
+      path: '/api-keys'
+      fullPath: '/dashboard/api-keys'
+      preLoaderRoute: typeof DashboardApiKeysRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/account': {
       id: '/dashboard/account'
       path: '/account'
@@ -310,6 +329,7 @@ declare module '@tanstack/solid-router' {
 
 interface DashboardRouteChildren {
   DashboardAccountRoute: typeof DashboardAccountRoute
+  DashboardApiKeysRoute: typeof DashboardApiKeysRoute
   DashboardGa4SettingsRoute: typeof DashboardGa4SettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardLinksIndexRoute: typeof DashboardLinksIndexRoute
@@ -319,6 +339,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAccountRoute: DashboardAccountRoute,
+  DashboardApiKeysRoute: DashboardApiKeysRoute,
   DashboardGa4SettingsRoute: DashboardGa4SettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardLinksIndexRoute: DashboardLinksIndexRoute,
