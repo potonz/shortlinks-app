@@ -1,3 +1,19 @@
+## [0.5.0] - 2026-03-21
+
+### ⛰️  Features
+
+- Add API key support and REST API for short links
+- Added full short link url when fetching short IDs
+- Added api keys management page
+
+### 🐛 Bug Fixes
+
+- Fixed updating short link
+
+### ⚙️ Miscellaneous Tasks
+
+- Apply eslint auto-fixes and regenerate route tree
+
 ## [0.4.2] - 2026-02-24
 
 ### 🐛 Bug Fixes
