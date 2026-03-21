@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { apiKey } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start/solid";
 import { env, waitUntil } from "cloudflare:workers";
 
@@ -32,6 +33,7 @@ export const auth = betterAuth({
         },
     },
     plugins: [
+        apiKey(),
         // cookie plugin MUST be last
         tanstackStartCookies(),
     ],
