@@ -28,5 +28,4 @@ jobs:
         run: bun ci
 
       - name: Lint
-        run: bun run lint
-
+        run: bun run prisma:generate && bun run lint

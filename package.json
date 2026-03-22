@@ -19,6 +19,7 @@
     "release": "bun run ./scripts/release.ts",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types src/worker-configuration.d.ts",
+    "prisma:generate": "prisma generate",
     "prisma:migrate": "bun run ./scripts/migrate.ts"
   },
   "dependencies": {
