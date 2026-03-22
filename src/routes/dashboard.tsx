@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Sidebar } from "~/components/dashboard/sidebar/Sidebar";
 import { auth } from "~/libs/auth/auth";
 
-const checkLoggedIn = createServerFn()
+const checkLoggedIn = createServerFn({ method: "GET" })
     .inputValidator(z.string().min(0))
     .handler(async ({ data: href }) => {
         if (!(await auth.api.getSession({ headers: getRequestHeaders() }))) {

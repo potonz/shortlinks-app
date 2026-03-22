@@ -1,29 +1,13 @@
-import { createFileRoute, redirect } from "@tanstack/solid-router";
-import { createServerFn } from "@tanstack/solid-start";
-import { getRequestHeaders } from "@tanstack/solid-start/server";
+import { createFileRoute } from "@tanstack/solid-router";
 import { createResource, createSignal, For, Show } from "solid-js";
 
-import { auth } from "~/libs/auth/auth";
 import { deleteGa4Config } from "~/libs/ga4/deleteGa4Config.functions";
 import { getUserGa4Configs } from "~/libs/ga4/getUserGa4Configs.functions";
 import { saveGa4Config } from "~/libs/ga4/saveGa4Config.functions";
 import { testGa4Connection } from "~/libs/ga4/testGa4Connection.functions";
 import type { TGA4Config } from "~/libs/ga4/types";
 
-const checkAuth = createServerFn()
-    .handler(async () => {
-        if (!(await auth.api.getSession({ headers: getRequestHeaders() }))) {
-            redirect({
-                to: "/login",
-                throw: true,
-            });
-        }
-    });
-
 export const Route = createFileRoute("/dashboard/ga4-settings")({
-    beforeLoad() {
-        return checkAuth();
-    },
     component: RouteComponent,
 });
 
