@@ -13,3 +13,5 @@ dist-ssr
 
 # Localflare generated files
 .localflare/
+
+/src/generated/prisma

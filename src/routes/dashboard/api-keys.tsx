@@ -2,6 +2,7 @@ import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { createFileRoute, redirect } from "@tanstack/solid-router";
 import { createServerFn } from "@tanstack/solid-start";
 import { getRequestHeaders } from "@tanstack/solid-start/server";
+import { formatDistanceToNow } from "date-fns";
 import { createSignal, For, Show } from "solid-js";
 
 import { Spinner } from "~/components/common/Spinner";
@@ -207,8 +208,19 @@ function RouteComponent() {
                                                     ••••••••
                                                 </div>
                                             </div>
-                                            <div class="text-zinc-500 text-xs shrink-0">
-                                                {new Date(key.createdAt).toLocaleDateString()}
+                                            <div class="text-zinc-500 text-xs shrink-0 text-right">
+                                                <div>
+                                                    {new Date(key.createdAt).toLocaleDateString()}
+                                                </div>
+                                                <Show when={key.lastRequest}>
+                                                    <div class="text-zinc-600">
+                                                        {"Last used "}
+                                                        {formatDistanceToNow(
+                                                            new Date(key.lastRequest!),
+                                                            { addSuffix: true },
+                                                        )}
+                                                    </div>
+                                                </Show>
                                             </div>
                                             <button
                                                 onClick={() => handleDelete(key.id)}

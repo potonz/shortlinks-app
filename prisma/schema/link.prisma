@@ -1,0 +1,52 @@
+// =============================================================================
+// Link Management Models
+// =============================================================================
+// Core shortlink entities: link mappings, base URLs, and user-link ownership.
+// =============================================================================
+
+model LinkMap {
+  id             Int       @id @default(autoincrement())
+  shortId        String    @map("short_id")
+  targetUrl      String    @map("target_url")
+  baseUrlId      Int?      @map("base_url_id")
+  lastAccessedAt DateTime? @default(now()) @map("last_accessed_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  baseUrl  BaseUrl?      @relation(fields: [baseUrlId], references: [id])
+  requests LinkRequest[]
+  users    UserLink[]
+
+  @@unique([shortId, baseUrlId])
+  @@index([lastAccessedAt])
+  @@index([baseUrlId])
+  @@index([shortId, baseUrlId])
+  @@map("sl_links_map")
+}
+
+model BaseUrl {
+  id        Int      @id @default(autoincrement())
+  baseUrl   String   @unique @map("base_url")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  links LinkMap[]
+
+  @@map("sl_base_urls")
+}
+
+model UserLink {
+  id          Int      @id @default(autoincrement())
+  linkMapId   Int?     @map("link_map_id")
+  userId      String?  @map("user_id")
+  ga4ConfigId Int?     @map("ga4_config_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user      User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  linkMap   LinkMap?       @relation(fields: [linkMapId], references: [id])
+  ga4Config UserGa4Config? @relation(fields: [ga4ConfigId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([linkMapId])
+  @@index([userId, linkMapId])
+  @@map("sl_user_links")
+}
