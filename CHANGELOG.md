@@ -1,3 +1,17 @@
+## [0.6.0] - 2026-03-22
+
+### ⛰️  Features
+
+- [**breaking**] Added prisma for DB
+
+### 🚜 Refactor
+
+- Moved api keys list to a new component
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove unnecessary auth checks
+
 ## [0.5.0] - 2026-03-21
 
 ### ⛰️  Features
