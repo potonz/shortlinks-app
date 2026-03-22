@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { $ } from "bun";
 import { createSpinner } from "nanospinner";
 import { argv } from "process";

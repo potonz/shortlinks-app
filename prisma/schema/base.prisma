@@ -1,0 +1,17 @@
+// =============================================================================
+// Prisma Configuration
+// =============================================================================
+// Generator and datasource configuration for Cloudflare D1 (SQLite).
+// This file is part of a multi-file schema — all .prisma files in this
+// directory are merged automatically by Prisma.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../../src/generated/prisma"
+  runtime  = "cloudflare"
+}
+
+datasource db {
+  provider = "sqlite"
+}

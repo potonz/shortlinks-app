@@ -1,0 +1,46 @@
+// =============================================================================
+// Analytics Models
+// =============================================================================
+// Click tracking, geolocation data, and GA4 integration configuration.
+// =============================================================================
+
+model LinkRequest {
+  id             Int       @id @default(autoincrement())
+  linkMapId      Int?      @map("link_map_id")
+  ipAddress      String?   @map("ip_address")
+  country        String?
+  region         String?
+  city           String?
+  latitude       Float?
+  longitude      Float?
+  timezone       String?
+  asn            Int?
+  asOrganization String?   @map("as_organization")
+  userAgent      String?   @map("user_agent")
+  referer        String?
+  timestamp      DateTime? @default(now())
+
+  linkMap LinkMap? @relation(fields: [linkMapId], references: [id])
+
+  @@index([linkMapId])
+  @@index([timestamp])
+  @@index([linkMapId, timestamp])
+  @@map("sl_link_request")
+}
+
+model UserGa4Config {
+  id                 Int       @id @default(autoincrement())
+  userId             String    @map("user_id")
+  name               String
+  measurementId      String    @map("measurement_id")
+  apiSecretEncrypted String    @map("api_secret_encrypted")
+  enabled            Boolean   @default(true)
+  createdAt          DateTime? @default(now()) @map("created_at")
+  updatedAt          DateTime? @default(now()) @map("updated_at")
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userLinks UserLink[]
+
+  @@index([userId])
+  @@map("sl_user_ga4_config")
+}
