@@ -1,26 +1,10 @@
-import { createFileRoute, redirect } from "@tanstack/solid-router";
-import { createServerFn } from "@tanstack/solid-start";
-import { getRequestHeaders } from "@tanstack/solid-start/server";
+import { createFileRoute } from "@tanstack/solid-router";
 import { createSignal, Show } from "solid-js";
 
 import { DeleteAccountModal } from "~/components/dashboard/account/DeleteAccountModal";
-import { auth } from "~/libs/auth/auth";
 import { authClient } from "~/libs/auth/auth-client";
 
-const checkAuth = createServerFn()
-    .handler(async () => {
-        if (!(await auth.api.getSession({ headers: getRequestHeaders() }))) {
-            redirect({
-                to: "/login",
-                throw: true,
-            });
-        }
-    });
-
 export const Route = createFileRoute("/dashboard/account")({
-    beforeLoad() {
-        return checkAuth();
-    },
     component: RouteComponent,
 });
 
