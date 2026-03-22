@@ -29,5 +29,5 @@ export async function verifyApiKeyFromRequest(request: Request): Promise<ApiKeyV
         };
     }
 
-    return { success: true, userId: result.key.userId };
+    return { success: true, userId: result.key.referenceId };
 }
