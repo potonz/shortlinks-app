@@ -1,3 +1,9 @@
+## [0.6.1] - 2026-03-22
+
+### 🐛 Bug Fixes
+
+- Remove prerendering static pages
+
 ## [0.6.0] - 2026-03-22
 
 ### ⛰️  Features
